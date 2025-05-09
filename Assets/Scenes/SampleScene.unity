@@ -314,6 +314,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42103341d3e7c0c4487417611df863be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frontWheel: {fileID: 0}
+  rearWheel: {fileID: 0}
+  wheelRadius: 0.35
 --- !u!4 &1549634379 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2347578152554576823, guid: edc40542d7bfe9b43b4ce7b99378cb60, type: 3}
