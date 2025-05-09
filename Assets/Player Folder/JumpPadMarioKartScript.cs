@@ -19,5 +19,6 @@ public class JumpPadMarioKartScript : MonoBehaviour
         {
             player.AddExternalForce(launchDirection.normalized * jumpForce);
         }
+
     }
 }
