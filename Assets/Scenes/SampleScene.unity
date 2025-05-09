@@ -474,13 +474,64 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4398337250737435596, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1370035386}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3909644277157914998, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1937752476}
+    - targetCorrespondingSourceObject: {fileID: 3909644277157914998, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1937752477}
   m_SourcePrefab: {fileID: 100100000, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
 --- !u!4 &1937752472 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4398337250737435596, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
   m_PrefabInstance: {fileID: 1937752471}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1937752473 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3909644277157914998, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
+  m_PrefabInstance: {fileID: 1937752471}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1937752474 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3228453980397354237, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
+  m_PrefabInstance: {fileID: 1937752471}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1937752475 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1247664354682438953, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
+  m_PrefabInstance: {fileID: 1937752471}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1937752476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937752473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42103341d3e7c0c4487417611df863be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontWheel: {fileID: 1937752475}
+  rearWheel: {fileID: 1937752474}
+  wheelRadius: 0.35
+--- !u!114 &1937752477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937752473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42103341d3e7c0c4487417611df863be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontWheel: {fileID: 1937752475}
+  rearWheel: {fileID: 1937752474}
+  wheelRadius: 0.35
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
