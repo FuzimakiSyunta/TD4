@@ -240,9 +240,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42103341d3e7c0c4487417611df863be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontWheel: {fileID: 2111134231526138490}
-  rearWheel: {fileID: 8477227746815083201}
-  wheelRadius: 0.35
+  frontWheelRotator: {fileID: 0}
+  rearWheelRotator: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &7520188249775935500 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
