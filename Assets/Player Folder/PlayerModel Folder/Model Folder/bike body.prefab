@@ -307,6 +307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42103341d3e7c0c4487417611df863be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontWheel: {fileID: 3153564445681458236}
-  rearWheel: {fileID: 711178044206438600}
-  wheelRadius: 0.35
+  frontWheelRotator: {fileID: 0}
+  rearWheelRotator: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
