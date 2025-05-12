@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerOperation : MonoBehaviour
 {
+    public FrontWheelRotatorScript frontWheelRotator;
+    public RearWheelRotatorScript rearWheelRotator;
+
     //プレイヤーのPosition
     Vector3 playerPosition = Vector3.zero;
 
@@ -22,7 +25,7 @@ public class PlayerOperation : MonoBehaviour
     float maxSpeed = 500f;
     
     //ブレーキによる減速
-    float brakePower = 20f;
+    float brakePower = 50f;
 
     // 回転速度(左右)
     float turnSpeed = 100f;
@@ -33,18 +36,12 @@ public class PlayerOperation : MonoBehaviour
     float currentBank = 0f;
     float targetBank = 0f;
 
+    
 
-    public Transform frontWheel;     // 前輪
-    public Transform rearWheel;      // 後輪
-   
-    public float wheelRadius = 0.35f;
 
-    private float frontWheelAngle = 0f;
-    private float rearWheelAngle = 0f;
 
-    // 外部からのジャンプ力
-    private Vector3 externalVelocity = Vector3.zero;
-  //  private Vector3 force;
+
+    [SerializeField] LayerMask groundLayer; // 地面レイヤーを指定
 
 
     // Start is called before the first frame update
@@ -52,89 +49,95 @@ public class PlayerOperation : MonoBehaviour
     {
         //初期化
         playerPosition = new Vector3(0.0f, 0.0f, 0.0f);
-        playerRotation = new Vector3(0.0f, 0.0f, 0.0f);
+        playerRotation = new Vector3(30.0f, 0.0f, 0.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
         //プレイヤー
-        MovePlayer();
+        MovePlayer();      
 
-       
+        StickToGround();
 
-        RotateWheel();
+        //タイヤの回転処理
+        if (frontWheelRotator != null)
+        {
+            frontWheelRotator.Rotate(playerSpeed);
+        }
+        if (rearWheelRotator != null)
+        {
+            rearWheelRotator.Rotate(playerSpeed);
+        }
+
     }
+
+  
 
     //プレイヤー操作
     void MovePlayer()
     {
-        // 加減速処理
         if (Input.GetKey(KeyCode.W))
+        {
             playerSpeed += acceleration * Time.deltaTime;
+        }
         else
+        {
             playerSpeed -= deceleration * Time.deltaTime;
+        }
 
         if (Input.GetKey(KeyCode.S))
+        {
             playerSpeed -= brakePower * Time.deltaTime;
+        }
 
         playerSpeed = Mathf.Clamp(playerSpeed, 0f, maxSpeed);
 
-        // Y軸回転（左：Aキー、右：Dキー）
         float turn = 0f;
-        if (Input.GetKey(KeyCode.A))
-            turn = -1f;
-        else if (Input.GetKey(KeyCode.D))
-            turn = 1f;
+        if (Input.GetKey(KeyCode.A)) turn = -1f;
+        else if (Input.GetKey(KeyCode.D)) turn = 1f;
 
-        // 回転（左右） - Y軸回転
         transform.Rotate(0f, turn * turnSpeed * Time.deltaTime, 0f);
 
-        // Z軸のバンク（傾き）を計算
         targetBank = Mathf.Lerp(targetBank, -turn * bankAngle, Time.deltaTime * bankLerpSpeed);
-
-        // バンク（傾き）を反映
         currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
 
-        // Z軸のバンクを適用してプレイヤーの回転を設定
         Quaternion targetRotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, currentBank);
         transform.rotation = targetRotation;
 
-        // 前方に進む
         transform.position += transform.forward * playerSpeed * Time.deltaTime;
-
-        // 外部加力（ジャンプなど）を加える
-        transform.position += externalVelocity * Time.deltaTime;
-
-        // 外部力を徐々に減衰（自然に落下するように）
-        externalVelocity = Vector3.Lerp(externalVelocity, Vector3.zero, Time.deltaTime * 2f);
-
+       
     }
 
-    void RotateWheel()
+   
+
+    
+
+   
+
+    // 地面に吸着させる処理
+    void StickToGround()
     {
-        // タイヤの円周 = 2πr
-        float circumference = 2f * Mathf.PI * wheelRadius;
+        if (!IsGrounded()) return;
 
-        // 進んだ距離 = 速度 × 時間
-        float distance = playerSpeed * Time.deltaTime;
+        Ray ray = new Ray(transform.position + Vector3.up * 1f, Vector3.down);
+        RaycastHit hit;
 
-        // 回転角（度） = 進んだ距離 / 周長 × 360°
-        float deltaAngle = (distance / circumference) * 360f;
+        if (Physics.Raycast(ray, out hit, 2f, groundLayer))
+        {
+            Vector3 targetPosition = transform.position;
+            targetPosition.y = hit.point.y;
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
 
-        // 後輪・前輪ともに回転（X軸）
-        rearWheelAngle += deltaAngle;
-        frontWheelAngle += deltaAngle;
-
-        rearWheel.localRotation = Quaternion.Euler(rearWheelAngle, 0f, 0f);
-        frontWheel.localRotation = Quaternion.Euler(frontWheelAngle, 0f, 0f);
-
-
+            // 地面の傾きに合わせて回転（オプション）
+            Quaternion groundRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+            transform.rotation = Quaternion.Lerp(transform.rotation, groundRotation, Time.deltaTime * 5f);
+        }
     }
 
-    internal void AddExternalForce(Vector3 force)
+    bool IsGrounded()
     {
-        externalVelocity += force;
+        return Physics.Raycast(transform.position, Vector3.down, 1.0f);
     }
 }
 
