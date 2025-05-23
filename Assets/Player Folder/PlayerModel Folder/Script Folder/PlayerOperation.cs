@@ -1,75 +1,43 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerOperation : MonoBehaviour
 {
-    //ƒvƒŒƒCƒ„[‚ÌPosition
-    Vector3 playerPosition = Vector3.zero;
+    public Transform modelTransform; // ãƒ¢ãƒ‡ãƒ«ï¼ˆè¦‹ãŸç›®ï¼‰ã ã‘ã‚’å‚¾ã‘ã‚‹
+    public FrontWheelRotatorScript frontWheelRotator;
+    public RearWheelRotatorScript rearWheelRotator;
 
-    //ƒvƒŒƒCƒ„[‚Ì‰ñ“]
-    Vector3 playerRotation = Vector3.zero;
-
-    //ƒXƒs[ƒh
     float playerSpeed = 0f;
-    //‰Á‘¬
-    float acceleration = 100f;
-    //Œ¸‘¬
+    float acceleration = 500f;
     float deceleration = 50f;
-    
-    //Å‚‘¬“x
     float maxSpeed = 500f;
-    
-    //ƒuƒŒ[ƒL‚É‚æ‚éŒ¸‘¬
-    float brakePower = 20f;
+    float brakePower = 50f;
 
-    // ‰ñ“]‘¬“x(¶‰E)
     float turnSpeed = 100f;
-    
-    // ŒX‚«iƒoƒ“ƒNj
+    float rotationY = 0f;
+
     float bankAngle = 20f;
     float bankLerpSpeed = 5f;
     float currentBank = 0f;
     float targetBank = 0f;
 
-
-    public Transform frontWheel;     // ‘O—Ö
-    public Transform rearWheel;      // Œã—Ö
-   
-    public float wheelRadius = 0.35f;
-
-    private float frontWheelAngle = 0f;
-    private float rearWheelAngle = 0f;
-
-    // ŠO•”‚©‚ç‚ÌƒWƒƒƒ“ƒv—Í
-    private Vector3 externalVelocity = Vector3.zero;
-  //  private Vector3 force;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //‰Šú‰»
-        playerPosition = new Vector3(0.0f, 0.0f, 0.0f);
-        playerRotation = new Vector3(0.0f, 0.0f, 0.0f);
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        //ƒvƒŒƒCƒ„[
-        MovePlayer();
-
-       
-
-        RotateWheel();
+        HandleInput();
+        HandleMovement();
+        HandleBankRotation();
+        HandleWheelAnimation();
     }
 
-    //ƒvƒŒƒCƒ„[‘€ì
-    void MovePlayer()
+    void HandleInput()
     {
-        // ‰ÁŒ¸‘¬ˆ—
+        float turn = 0f;
+        if (Input.GetKey(KeyCode.A)) turn = -1f;
+        else if (Input.GetKey(KeyCode.D)) turn = 1f;
+
+        rotationY += turn * turnSpeed * Time.deltaTime;
+
+        transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+
         if (Input.GetKey(KeyCode.W))
             playerSpeed += acceleration * Time.deltaTime;
         else
@@ -79,63 +47,49 @@ public class PlayerOperation : MonoBehaviour
             playerSpeed -= brakePower * Time.deltaTime;
 
         playerSpeed = Mathf.Clamp(playerSpeed, 0f, maxSpeed);
+    }
 
-        // Y²‰ñ“]i¶FAƒL[A‰EFDƒL[j
+    void HandleMovement()
+    {
+        // åœ°å½¢ã«æ²¿ã£ãŸç§»å‹•æ–¹å‘
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
+        Ray ray = new Ray(rayOrigin, Vector3.down);
+        Vector3 moveDir = transform.forward;
+        Vector3 groundNormal = Vector3.up;
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 2f))
+        {
+            groundNormal = hit.normal;
+            moveDir = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
+
+            Quaternion targetRot = Quaternion.LookRotation(moveDir, groundNormal);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 5f);
+        }
+
+        transform.position += moveDir * playerSpeed * Time.deltaTime;
+    }
+
+    void HandleBankRotation()
+    {
         float turn = 0f;
-        if (Input.GetKey(KeyCode.A))
-            turn = -1f;
-        else if (Input.GetKey(KeyCode.D))
-            turn = 1f;
+        if (Input.GetKey(KeyCode.A)) turn = -1f;
+        else if (Input.GetKey(KeyCode.D)) turn = 1f;
 
-        // ‰ñ“]i¶‰Ej - Y²‰ñ“]
-        transform.Rotate(0f, turn * turnSpeed * Time.deltaTime, 0f);
-
-        // Z²‚Ìƒoƒ“ƒNiŒX‚«j‚ğŒvZ
-        targetBank = Mathf.Lerp(targetBank, -turn * bankAngle, Time.deltaTime * bankLerpSpeed);
-
-        // ƒoƒ“ƒNiŒX‚«j‚ğ”½‰f
+        targetBank = -turn * bankAngle;
         currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
 
-        // Z²‚Ìƒoƒ“ƒN‚ğ“K—p‚µ‚ÄƒvƒŒƒCƒ„[‚Ì‰ñ“]‚ğİ’è
-        Quaternion targetRotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, currentBank);
-        transform.rotation = targetRotation;
-
-        // ‘O•û‚Éi‚Ş
-        transform.position += transform.forward * playerSpeed * Time.deltaTime;
-
-        // ŠO•”‰Á—ÍiƒWƒƒƒ“ƒv‚È‚Çj‚ğ‰Á‚¦‚é
-        transform.position += externalVelocity * Time.deltaTime;
-
-        // ŠO•”—Í‚ğ™X‚ÉŒ¸Ši©‘R‚É—‰º‚·‚é‚æ‚¤‚Éj
-        externalVelocity = Vector3.Lerp(externalVelocity, Vector3.zero, Time.deltaTime * 2f);
-
+        if (modelTransform != null)
+        {
+            modelTransform.localRotation = Quaternion.Euler(0f, 0f, currentBank);
+        }
     }
 
-    void RotateWheel()
+    void HandleWheelAnimation()
     {
-        // ƒ^ƒCƒ„‚Ì‰~ü = 2ƒÎr
-        float circumference = 2f * Mathf.PI * wheelRadius;
+        if (frontWheelRotator != null)
+            frontWheelRotator.Rotate(playerSpeed);
 
-        // i‚ñ‚¾‹——£ = ‘¬“x ~ ŠÔ
-        float distance = playerSpeed * Time.deltaTime;
-
-        // ‰ñ“]Špi“xj = i‚ñ‚¾‹——£ / ü’· ~ 360‹
-        float deltaAngle = (distance / circumference) * 360f;
-
-        // Œã—ÖE‘O—Ö‚Æ‚à‚É‰ñ“]iX²j
-        rearWheelAngle += deltaAngle;
-        frontWheelAngle += deltaAngle;
-
-        rearWheel.localRotation = Quaternion.Euler(rearWheelAngle, 0f, 0f);
-        frontWheel.localRotation = Quaternion.Euler(frontWheelAngle, 0f, 0f);
-
-
-    }
-
-    internal void AddExternalForce(Vector3 force)
-    {
-        externalVelocity += force;
+        if (rearWheelRotator != null)
+            rearWheelRotator.Rotate(playerSpeed);
     }
 }
-
-
