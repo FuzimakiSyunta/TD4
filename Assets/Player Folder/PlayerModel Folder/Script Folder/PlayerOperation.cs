@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(Collider))]
 public class PlayerOperation : MonoBehaviour
 {
-    public Transform modelTransform; // ← モデル（見た目）だけを傾ける
+    public Transform modelTransform; // モデル（見た目）だけを傾ける
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
 
@@ -14,47 +13,45 @@ public class PlayerOperation : MonoBehaviour
     float brakePower = 50f;
 
     float turnSpeed = 100f;
+    float rotationY = 0f;
 
     float bankAngle = 20f;
     float bankLerpSpeed = 5f;
     float currentBank = 0f;
     float targetBank = 0f;
 
-    float yRotation = 0f;
-
-    Rigidbody rb;
-
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        rb.useGravity = true;
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-    }
-
     void Update()
     {
+        HandleInput();
+        HandleMovement();
         HandleBankRotation();
         HandleWheelAnimation();
     }
 
-    void FixedUpdate()
+    void HandleInput()
     {
-        HandleMovement();
+        float turn = 0f;
+        if (Input.GetKey(KeyCode.A)) turn = -1f;
+        else if (Input.GetKey(KeyCode.D)) turn = 1f;
+
+        rotationY += turn * turnSpeed * Time.deltaTime;
+
+        transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+
+        if (Input.GetKey(KeyCode.W))
+            playerSpeed += acceleration * Time.deltaTime;
+        else
+            playerSpeed -= deceleration * Time.deltaTime;
+
+        if (Input.GetKey(KeyCode.S))
+            playerSpeed -= brakePower * Time.deltaTime;
+
+        playerSpeed = Mathf.Clamp(playerSpeed, 0f, maxSpeed);
     }
 
     void HandleMovement()
     {
-        if (Input.GetKey(KeyCode.W))
-            playerSpeed += acceleration * Time.fixedDeltaTime;
-        else
-            playerSpeed -= deceleration * Time.fixedDeltaTime;
-
-        if (Input.GetKey(KeyCode.S))
-            playerSpeed -= brakePower * Time.fixedDeltaTime;
-
-        playerSpeed = Mathf.Clamp(playerSpeed, 0f, maxSpeed);
-
+        // 地形に沿った移動方向
         Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
         Ray ray = new Ray(rayOrigin, Vector3.down);
         Vector3 moveDir = transform.forward;
@@ -66,11 +63,10 @@ public class PlayerOperation : MonoBehaviour
             moveDir = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
 
             Quaternion targetRot = Quaternion.LookRotation(moveDir, groundNormal);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, Time.fixedDeltaTime * 5f));
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 5f);
         }
 
-        Vector3 newPos = rb.position + moveDir * playerSpeed * Time.fixedDeltaTime;
-        rb.MovePosition(newPos);
+        transform.position += moveDir * playerSpeed * Time.deltaTime;
     }
 
     void HandleBankRotation()
@@ -79,9 +75,6 @@ public class PlayerOperation : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) turn = -1f;
         else if (Input.GetKey(KeyCode.D)) turn = 1f;
 
-        yRotation += turn * turnSpeed * Time.deltaTime;
-
-        // Zバンクだけモデルに適用
         targetBank = -turn * bankAngle;
         currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
 
@@ -100,4 +93,3 @@ public class PlayerOperation : MonoBehaviour
             rearWheelRotator.Rotate(playerSpeed);
     }
 }
-
