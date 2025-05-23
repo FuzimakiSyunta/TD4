@@ -1,144 +1,95 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerOperation : MonoBehaviour
 {
+    public Transform modelTransform; // ãƒ¢ãƒ‡ãƒ«ï¼ˆè¦‹ãŸç›®ï¼‰ã ã‘ã‚’å‚¾ã‘ã‚‹
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
 
-    //ƒvƒŒƒCƒ„[‚ÌPosition
-    Vector3 playerPosition = Vector3.zero;
-
-    //ƒvƒŒƒCƒ„[‚Ì‰ñ“]
-    Vector3 playerRotation = Vector3.zero;
-
-    //ƒXƒs[ƒh
     float playerSpeed = 0f;
-    //‰Á‘¬
-    float acceleration = 100f;
-    //Œ¸‘¬
+    float acceleration = 500f;
     float deceleration = 50f;
-    
-    //Å‚‘¬“x
     float maxSpeed = 500f;
-    
-    //ƒuƒŒ[ƒL‚É‚æ‚éŒ¸‘¬
     float brakePower = 50f;
 
-    // ‰ñ“]‘¬“x(¶‰E)
     float turnSpeed = 100f;
-    
-    // ŒX‚«iƒoƒ“ƒNj
+    float rotationY = 0f;
+
     float bankAngle = 20f;
     float bankLerpSpeed = 5f;
     float currentBank = 0f;
     float targetBank = 0f;
 
-    
-
-
-
-
-    [SerializeField] LayerMask groundLayer; // ’n–ÊƒŒƒCƒ„[‚ğw’è
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //‰Šú‰»
-        playerPosition = new Vector3(0.0f, 0.0f, 0.0f);
-        playerRotation = new Vector3(30.0f, 0.0f, 0.0f);
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        //ƒvƒŒƒCƒ„[
-        MovePlayer();      
-
-        StickToGround();
-
-        //ƒ^ƒCƒ„‚Ì‰ñ“]ˆ—
-        if (frontWheelRotator != null)
-        {
-            frontWheelRotator.Rotate(playerSpeed);
-        }
-        if (rearWheelRotator != null)
-        {
-            rearWheelRotator.Rotate(playerSpeed);
-        }
-
+        HandleInput();
+        HandleMovement();
+        HandleBankRotation();
+        HandleWheelAnimation();
     }
 
-  
-
-    //ƒvƒŒƒCƒ„[‘€ì
-    void MovePlayer()
+    void HandleInput()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            playerSpeed += acceleration * Time.deltaTime;
-        }
-        else
-        {
-            playerSpeed -= deceleration * Time.deltaTime;
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            playerSpeed -= brakePower * Time.deltaTime;
-        }
-
-        playerSpeed = Mathf.Clamp(playerSpeed, 0f, maxSpeed);
-
         float turn = 0f;
         if (Input.GetKey(KeyCode.A)) turn = -1f;
         else if (Input.GetKey(KeyCode.D)) turn = 1f;
 
-        transform.Rotate(0f, turn * turnSpeed * Time.deltaTime, 0f);
+        rotationY += turn * turnSpeed * Time.deltaTime;
 
-        targetBank = Mathf.Lerp(targetBank, -turn * bankAngle, Time.deltaTime * bankLerpSpeed);
-        currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
+        transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
 
-        Quaternion targetRotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, currentBank);
-        transform.rotation = targetRotation;
+        if (Input.GetKey(KeyCode.W))
+            playerSpeed += acceleration * Time.deltaTime;
+        else
+            playerSpeed -= deceleration * Time.deltaTime;
 
-        transform.position += transform.forward * playerSpeed * Time.deltaTime;
-       
+        if (Input.GetKey(KeyCode.S))
+            playerSpeed -= brakePower * Time.deltaTime;
+
+        playerSpeed = Mathf.Clamp(playerSpeed, 0f, maxSpeed);
     }
 
-   
-
-    
-
-   
-
-    // ’n–Ê‚É‹z’…‚³‚¹‚éˆ—
-    void StickToGround()
+    void HandleMovement()
     {
-        if (!IsGrounded()) return;
+        // åœ°å½¢ã«æ²¿ã£ãŸç§»å‹•æ–¹å‘
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
+        Ray ray = new Ray(rayOrigin, Vector3.down);
+        Vector3 moveDir = transform.forward;
+        Vector3 groundNormal = Vector3.up;
 
-        Ray ray = new Ray(transform.position + Vector3.up * 1f, Vector3.down);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, 2f, groundLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, 2f))
         {
-            Vector3 targetPosition = transform.position;
-            targetPosition.y = hit.point.y;
-            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
+            groundNormal = hit.normal;
+            moveDir = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
 
-            // ’n–Ê‚ÌŒX‚«‚É‡‚í‚¹‚Ä‰ñ“]iƒIƒvƒVƒ‡ƒ“j
-            Quaternion groundRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
-            transform.rotation = Quaternion.Lerp(transform.rotation, groundRotation, Time.deltaTime * 5f);
+            Quaternion targetRot = Quaternion.LookRotation(moveDir, groundNormal);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 5f);
+        }
+
+        transform.position += moveDir * playerSpeed * Time.deltaTime;
+    }
+
+    void HandleBankRotation()
+    {
+        float turn = 0f;
+        if (Input.GetKey(KeyCode.A)) turn = -1f;
+        else if (Input.GetKey(KeyCode.D)) turn = 1f;
+
+        targetBank = -turn * bankAngle;
+        currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
+
+        if (modelTransform != null)
+        {
+            modelTransform.localRotation = Quaternion.Euler(0f, 0f, currentBank);
         }
     }
 
-    bool IsGrounded()
+    void HandleWheelAnimation()
     {
-        return Physics.Raycast(transform.position, Vector3.down, 1.0f);
+        if (frontWheelRotator != null)
+            frontWheelRotator.Rotate(playerSpeed);
+
+        if (rearWheelRotator != null)
+            rearWheelRotator.Rotate(playerSpeed);
     }
 }
-
-
