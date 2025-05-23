@@ -16,12 +16,12 @@ public class ImageSelector : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             currentIndex = (currentIndex + 1) % images.Length;
             UpdateHighlight();
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             currentIndex = (currentIndex - 1 + images.Length) % images.Length;
             UpdateHighlight();
