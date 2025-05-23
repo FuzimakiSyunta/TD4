@@ -69,14 +69,14 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _KernelSize: 5
+    - _KernelSize: 13
     - _Metallic: 0
     - _Mode: 0
     - _NumSamples: 10
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SampleCount: 8
-    - _Sigma: 1
+    - _Sigma: 22
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
