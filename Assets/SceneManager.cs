@@ -1,27 +1,18 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SceneManager : MonoBehaviour
+public class SceneSwitcher : MonoBehaviour
 {
-    internal static void LoadScene(string v)
-    {
-        throw new NotImplementedException();
-    }
+    public string targetSceneName = "GameScene"; // à⁄ìÆêÊÇÃÉVÅ[Éì
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (SceneManager.GetActiveScene().name != targetSceneName)
+            {
+                SceneManager.LoadScene(targetSceneName);
+            }
+        }
     }
-
 }
-
