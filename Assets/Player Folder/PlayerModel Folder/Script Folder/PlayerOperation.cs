@@ -20,6 +20,13 @@ public class PlayerOperation : MonoBehaviour
     float currentBank = 0f;
     float targetBank = 0f;
 
+  
+    void Start()
+    {
+       // stunt = GetComponent<Stunt>();
+
+    }
+
     void Update()
     {
         HandleInput();
@@ -47,6 +54,9 @@ public class PlayerOperation : MonoBehaviour
             playerSpeed -= brakePower * Time.deltaTime;
 
         playerSpeed = Mathf.Clamp(playerSpeed, 0f, maxSpeed);
+
+        //アニメーションの処理
+       // stunt.PlayerAnimation();
     }
 
     void HandleMovement()
