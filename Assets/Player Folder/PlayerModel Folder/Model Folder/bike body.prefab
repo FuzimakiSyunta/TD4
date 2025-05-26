@@ -526,11 +526,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42103341d3e7c0c4487417611df863be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modelTransform: {fileID: 0}
   frontWheelRotator: {fileID: 996239549820002592}
   rearWheelRotator: {fileID: 3155367914758034526}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!64 &7753316546631458459
 MeshCollider:
   m_ObjectHideFlags: 0
