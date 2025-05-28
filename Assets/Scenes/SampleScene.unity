@@ -729,11 +729,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!4 &1746999076 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2647538207541595557, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
-  m_PrefabInstance: {fileID: 1937752471}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1826869840 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2847987345846167111, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
@@ -825,9 +820,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4398337250737435596, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1370035386}
-    - targetCorrespondingSourceObject: {fileID: 4398337250737435596, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 3853458812809740948, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 672890414}
+      addedObject: {fileID: 356319813}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3909644277157914998, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
       insertIndex: -1
@@ -867,14 +862,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42103341d3e7c0c4487417611df863be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modelTransform: {fileID: 0}
   frontWheelRotator: {fileID: 0}
   rearWheelRotator: {fileID: 0}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  modelTransform: {fileID: 0}
-  frontWheelRotator: {fileID: 1937752479}
-  rearWheelRotator: {fileID: 1937752478}
 --- !u!4 &1937752477 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4398337250737435596, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
@@ -961,37 +951,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 7572a263cabf2ec43a9cdfa1cf82e2a3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &2021453426
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: -6400281290468069383, guid: 99c9cd5e6fdea1d42bd08b6f7420e044, type: 3}
-  m_PrefabInstance: {fileID: 992485725}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2021453423}
-  m_Mesh: {fileID: -2432090755550338912, guid: 99c9cd5e6fdea1d42bd08b6f7420e044, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -999,3 +958,4 @@ SceneRoots:
   - {fileID: 1625612739}
   - {fileID: 1937752471}
   - {fileID: 322137130}
+  - {fileID: 1444876333}

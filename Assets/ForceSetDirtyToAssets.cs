@@ -1,11 +1,9 @@
-#if UNITY_EDITOR
+ï»¿#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 
-/// <summary>
-/// ‘I‘ğ’†‚ÌƒAƒZƒbƒg‚É‘Î‚µ‚ÄDirtyƒtƒ‰ƒO‚ğ‹­§“I‚Éİ’è‚·‚éƒXƒNƒŠƒvƒg
-/// </summary>
+
 public class ForceSetDirtyToAssets
 {
     [MenuItem("Assets/Set Assets as Dirty", false)]
