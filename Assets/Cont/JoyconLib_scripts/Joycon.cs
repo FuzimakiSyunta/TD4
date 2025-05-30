@@ -244,7 +244,15 @@ public class Joycon
             return Quaternion.identity;
         }
     }
-	public int Attach(byte leds_ = 0x0)
+    public Quaternion GetRotation()
+    {
+        float pitch = Mathf.Atan2(acc_g.y, acc_g.x) * Mathf.Rad2Deg;
+        float roll = Mathf.Atan2(acc_g.z, acc_g.x) * Mathf.Rad2Deg; 
+
+        return Quaternion.Euler(-roll, 0, pitch);
+    }
+
+    public int Attach(byte leds_ = 0x0)
     {
         state = state_.ATTACHED;
         byte[] a = { 0x0 };
