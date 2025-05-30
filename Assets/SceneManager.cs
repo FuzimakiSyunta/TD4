@@ -1,21 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SceneManager : MonoBehaviour
+public class SceneSwitcher : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public string nextSceneName; // InspectorÇ≈ê›íËÇ≈Ç´ÇÈÇÊÇ§Ç…Ç∑ÇÈ
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
     }
-
 }
-
