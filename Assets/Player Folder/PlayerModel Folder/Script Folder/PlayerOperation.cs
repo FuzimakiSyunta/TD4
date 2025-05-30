@@ -7,7 +7,7 @@ public class PlayerOperation : MonoBehaviour
     public RearWheelRotatorScript rearWheelRotator;
 
     float playerSpeed = 0f;
-    float acceleration = 500f;
+    float acceleration = 50f;
     float deceleration = 50f;
     float maxSpeed = 500f;
     float brakePower = 50f;
@@ -82,9 +82,16 @@ public class PlayerOperation : MonoBehaviour
     void HandleBankRotation()
     {
         float turn = 0f;
-        if (Input.GetKey(KeyCode.A)) turn = -1f;
-        else if (Input.GetKey(KeyCode.D)) turn = 1f;
-
+      
+            if (Input.GetKey(KeyCode.A))
+            {
+                turn = -1f;
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                turn = 1f;
+            }
+      
         targetBank = -turn * bankAngle;
         currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
 
