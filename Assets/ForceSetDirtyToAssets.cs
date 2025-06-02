@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 
-/// <summary>
-/// 選択中のアセットに対してDirtyフラグを強制的に設定するスクリプト
-/// </summary>
+
 public class ForceSetDirtyToAssets
 {
     [MenuItem("Assets/Set Assets as Dirty", false)]
