@@ -29,6 +29,15 @@ public class PlayerOperation : MonoBehaviour
 
     void Update()
     {
+        Vector3 pos = transform.position;
+
+        //座標制御
+        // X軸の制限（-5 ～ 5）
+        pos.x = Mathf.Clamp(pos.x, -2990f, 2934f);
+        // Y軸の制限（0 ～ 10）
+        pos.z = Mathf.Clamp(pos.z, -2918f, 2954f);
+
+        transform.position = pos;
 
         HandleInput();
         HandleMovement();
