@@ -7,7 +7,6 @@ public class JoyConTiltController : MonoBehaviour
 
     void Start()
     {
-        // JoyconManagerのリストから左か右のJoy-Conを取得
         foreach (var jc in JoyconManager.Instance.j)
         {
             if (jc.isLeft == isLeftJoyCon)
@@ -27,11 +26,17 @@ public class JoyConTiltController : MonoBehaviour
     {
         if (joycon == null) return;
 
-        // Joy-Conの角度（クォータニオン）を取得
-        Quaternion targetRotation = Quaternion.Euler(-roll, 0, pitch);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+        // Joy-Conの加速度データを取得
+        Vector3 accel = joycon.GetAccel();
 
-        // オブジェクトの回転に反映（必要に応じて調整）
-        transform.rotation = joyconRotation;
+        // ピッチとロールの計算（加速度から算出）
+        float pitch = Mathf.Atan2(accel.y, accel.z) * Mathf.Rad2Deg;
+        float roll = Mathf.Atan2(accel.x, accel.z) * Mathf.Rad2Deg;
+
+        // クォータニオン回転として変換
+        Quaternion joyconRotation = Quaternion.Euler(-pitch, 0f, roll);
+
+        // 回転を滑らかに反映
+        transform.rotation = Quaternion.Slerp(transform.rotation, joyconRotation, Time.deltaTime * 5f);
     }
 }
