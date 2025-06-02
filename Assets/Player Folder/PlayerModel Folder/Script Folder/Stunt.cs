@@ -63,8 +63,8 @@ public class Stunt : MonoBehaviour
         }
         // 空中のスタント可能
         if (!isGrounded)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 SetActionState(PlayerActionState.SmallPose1);
             }
