@@ -35,4 +35,9 @@ public class ImageSelector : MonoBehaviour
             images[i].color = (i == currentIndex) ? highlightColor : normalColor;
         }
     }
+
+    public int Imageindex()
+    {
+        return currentIndex;
+    }
 }
