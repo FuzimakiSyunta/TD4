@@ -13,6 +13,7 @@ public class GravityScript : MonoBehaviour
     {
         verticalVelocity -= gravity * Time.deltaTime;
         transform.position += Vector3.up * verticalVelocity * Time.deltaTime;
+
     }
 
     bool IsWheelTouchingGround()

@@ -22,8 +22,8 @@ public class Stunt : MonoBehaviour
         animator.SetBool("FallRight", Input.GetKey(KeyCode.D));
 
         // 攻撃
-        animator.SetBool("HitLeft", Input.GetKeyDown(KeyCode.E));
-        animator.SetBool("HitRight", Input.GetKeyDown(KeyCode.Q));
+        animator.SetBool("HitLeft", Input.GetKeyDown(KeyCode.Q));
+        animator.SetBool("HitRight", Input.GetKeyDown(KeyCode.E));
 
         // 空中ならスタント可能
         if (!isGrounded)

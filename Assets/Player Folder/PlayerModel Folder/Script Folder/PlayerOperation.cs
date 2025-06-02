@@ -9,7 +9,7 @@ public class PlayerOperation : MonoBehaviour
     float playerSpeed = 0f;
     float acceleration = 50f;
     float deceleration = 50f;
-    float maxSpeed = 500f;
+    float maxSpeed = 200f;
     float brakePower = 50f;
 
     float turnSpeed = 100f;
@@ -29,6 +29,7 @@ public class PlayerOperation : MonoBehaviour
 
     void Update()
     {
+
         HandleInput();
         HandleMovement();
         HandleBankRotation();
@@ -38,9 +39,11 @@ public class PlayerOperation : MonoBehaviour
     void HandleInput()
     {
         float turn = 0f;
-        if (Input.GetKey(KeyCode.A)) turn = -1f;
-        else if (Input.GetKey(KeyCode.D)) turn = 1f;
-
+        if (playerSpeed > 100)
+        {
+            if (Input.GetKey(KeyCode.A)) turn = -1f;
+            else if (Input.GetKey(KeyCode.D)) turn = 1f;
+        }
         rotationY += turn * turnSpeed * Time.deltaTime;
 
         transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
@@ -82,7 +85,8 @@ public class PlayerOperation : MonoBehaviour
     void HandleBankRotation()
     {
         float turn = 0f;
-      
+        if (playerSpeed >=10000) 
+        {
             if (Input.GetKey(KeyCode.A))
             {
                 turn = -1f;
@@ -91,14 +95,15 @@ public class PlayerOperation : MonoBehaviour
             {
                 turn = 1f;
             }
-      
-        targetBank = -turn * bankAngle;
-        currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
-
-        if (modelTransform != null)
-        {
-            modelTransform.localRotation = Quaternion.Euler(0f, 0f, currentBank);
+            targetBank = -turn * bankAngle;
+            currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
+            if (modelTransform != null)
+            {
+                modelTransform.localRotation = Quaternion.Euler(0f, 0f, currentBank);
+            }
         }
+
+       
     }
 
     void HandleWheelAnimation()
