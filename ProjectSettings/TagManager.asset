@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Slope
   - Ground
+  - Checkpoint1
+  - Checkpoint2
+  - Checkpoint3
+  - Goal
   layers:
   - Default
   - TransparentFX
