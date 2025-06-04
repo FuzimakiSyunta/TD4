@@ -20,60 +20,71 @@ public class PlayerOperation : MonoBehaviour
     float currentBank = 0f;
     float targetBank = 0f;
 
+    GoalScript goalScript;
   
     void Start()
     {
-       // stunt = GetComponent<Stunt>();
+        // stunt = GetComponent<Stunt>();
 
+        goalScript = GameObject.Find("bike body 1").GetComponent<GoalScript>();
     }
 
     void Update()
     {
         Vector3 pos = transform.position;
 
+
+
         //座標制御
         // X軸の制限（-5 ～ 5）
-        pos.x = Mathf.Clamp(pos.x, -2990f, 2934f);
+        pos.x = Mathf.Clamp(pos.x, -2538f,13699f);
         // Y軸の制限（0 ～ 10）
-        pos.z = Mathf.Clamp(pos.z, -2918f, 2954f);
+        pos.z = Mathf.Clamp(pos.z, -3270f, 3663f);
 
         transform.position = pos;
 
-        HandleInput();
+        if (goalScript.IsGoal() == false)
+        {
+            HandleInput();
+           
+            HandleBankRotation();
+            HandleWheelAnimation();
+        }
+
         HandleMovement();
-        HandleBankRotation();
-        HandleWheelAnimation();
     }
 
     void HandleInput()
     {
         float turn = 0f;
-        if (playerSpeed > 100)
+
+        if (Mathf.Abs(playerSpeed) > 0.1f)
         {
             if (Input.GetKey(KeyCode.A)) turn = -1f;
             else if (Input.GetKey(KeyCode.D)) turn = 1f;
         }
-        rotationY += turn * turnSpeed * Time.deltaTime;
 
+        rotationY += turn * turnSpeed * Time.deltaTime;
         transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
 
+        // 前進
         if (Input.GetKey(KeyCode.W))
             playerSpeed += acceleration * Time.deltaTime;
+
+        // 後退
+        else if (Input.GetKey(KeyCode.S))
+            playerSpeed -= acceleration * Time.deltaTime;
+
+        // 何も押してないときに自然減速
         else
-            playerSpeed -= deceleration * Time.deltaTime;
+            playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
 
-        if (Input.GetKey(KeyCode.S))
-            playerSpeed -= brakePower * Time.deltaTime;
-
-        playerSpeed = Mathf.Clamp(playerSpeed, 0f, maxSpeed);
-
-        //アニメーションの処理
-       // stunt.PlayerAnimation();
+        // プレイヤーの速度をクランプ（後退も許可）
+        playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
     }
 
     void HandleMovement()
     {
-        // 地形に沿った移動方向
         Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
         Ray ray = new Ray(rayOrigin, Vector3.down);
         Vector3 moveDir = transform.forward;
@@ -88,8 +99,23 @@ public class PlayerOperation : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 5f);
         }
 
+        // ★移動方向にWallタグのオブジェクトがあるかチェック
+        Vector3 checkDir = playerSpeed >= 0 ? moveDir : -moveDir;
+        float checkDistance = Mathf.Abs(playerSpeed) * Time.deltaTime + 0.1f;
+
+        if (Physics.Raycast(transform.position, checkDir, out RaycastHit wallHit, checkDistance))
+        {
+            if (wallHit.collider.CompareTag("Wall"))
+            {
+                playerSpeed = 0f; // スピードも止める
+                return; // 移動しない
+            }
+        }
+
+        // 壁がないので移動実行
         transform.position += moveDir * playerSpeed * Time.deltaTime;
     }
+
 
     void HandleBankRotation()
     {

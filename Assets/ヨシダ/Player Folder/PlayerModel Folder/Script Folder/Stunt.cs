@@ -9,48 +9,77 @@ public class Stunt : MonoBehaviour
 
     private bool isGrounded = false;
 
+    private enum PlayerActionState
+    {
+        None = 0,
+        FallLeft = 1,
+        FallRight = 2,
+        HitLeft = 3,
+        HitRight = 4,
+        SmallPose1 = 5,
+        SmallPose2 = 6,
+        SmallPose3 = 7
+    }
+
+    PlayerActionState nextState = PlayerActionState.None;
+
     void Start()
     {
         animator = GetComponent<Animator>();
     }
- 
-    
+
+
     void Update()
     {
-        // 左右回避
-        animator.SetBool("FallLeft", Input.GetKey(KeyCode.A));
-        animator.SetBool("FallRight", Input.GetKey(KeyCode.D));
+        PlayerActionState currentPressedState = PlayerActionState.None;
 
-        // 攻撃
-        animator.SetBool("HitLeft", Input.GetKeyDown(KeyCode.Q));
-        animator.SetBool("HitRight", Input.GetKeyDown(KeyCode.E));
+        SetActionState(currentPressedState);
 
-        // 空中ならスタント可能
         if (!isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                animator.SetBool("SmallPose1", true);
-            else
-                animator.SetBool("SmallPose1", false);
-
+            // 左右回避
+            if (Input.GetKey(KeyCode.A))
+            {
+                SetActionState(PlayerActionState.FallLeft);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                SetActionState(PlayerActionState.FallRight);
+            }
+            // 攻撃
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                SetActionState(PlayerActionState.HitLeft);
+            }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                SetActionState(PlayerActionState.HitRight);
+            }
+            //何も押してない
+            if (currentPressedState != PlayerActionState.None)
+            {
+                SetActionState(PlayerActionState.None);
+            }
+        }
+        // 空中のスタント可能
+        if (!isGrounded)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                SetActionState(PlayerActionState.SmallPose1);
+            }
             if (Input.GetKeyDown(KeyCode.Alpha2))
-                animator.SetBool("SmallPose2", true);
-            else
-                animator.SetBool("SmallPose2", false);
-
+            {
+                SetActionState(PlayerActionState.SmallPose2);
+            }
             if (Input.GetKeyDown(KeyCode.Alpha3))
-                animator.SetBool("SmallPose3", true);
-            else
-                animator.SetBool("SmallPose3", false);
+            {
+                SetActionState(PlayerActionState.SmallPose3);
+            }
         }
-        else
-        {
-            // 地面にいるときはスタントをすべてオフ
-            animator.SetBool("SmallPose1", false);
-            animator.SetBool("SmallPose2", false);
-            animator.SetBool("SmallPose3", false);
-        }
+
     }
+
 
     void OnCollisionStay(Collision collision)
     {
@@ -69,5 +98,16 @@ public class Stunt : MonoBehaviour
             Debug.Log("地面から離れた");
         }
     }
+
+    void SetActionState(PlayerActionState state)
+    {
+        if (nextState != state)
+        {
+            nextState = state;
+            animator.SetInteger("ActionState", (int)nextState);
+            Debug.Log($"State Changed to: {nextState}");
+        }
+    }
+
 
 }
