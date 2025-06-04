@@ -2,6 +2,11 @@
 
 public class PlayerOperation : MonoBehaviour
 {
+    //ゲームマネージャーの参照
+    private GameManager gameManagerScript; // ゲームマネージャーのスクリプト参照
+    public GameObject gameManager; // ゲームマネージャーのオブジェクト
+
+
     public Transform modelTransform; // モデル（見た目）だけを傾ける
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
@@ -23,8 +28,17 @@ public class PlayerOperation : MonoBehaviour
   
     void Start()
     {
-       // stunt = GetComponent<Stunt>();
+        // stunt = GetComponent<Stunt>();
 
+        // ゲームマネージャーの参照を取得
+        if (gameManager != null)
+        {
+            gameManagerScript = gameManager.GetComponent<GameManager>();
+        }
+        else
+        {
+            Debug.LogError("GameManagerが設定されていません。");
+        }
     }
 
     void Update()
@@ -38,11 +52,13 @@ public class PlayerOperation : MonoBehaviour
         pos.z = Mathf.Clamp(pos.z, -2918f, 2954f);
 
         transform.position = pos;
-
-        HandleInput();
-        HandleMovement();
-        HandleBankRotation();
-        HandleWheelAnimation();
+        if(gameManagerScript.IsGameStarted())
+        {
+            HandleInput();
+            HandleMovement();
+            HandleBankRotation();
+            HandleWheelAnimation();
+        }
     }
 
     void HandleInput()
