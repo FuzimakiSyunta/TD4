@@ -7,7 +7,7 @@ public class GoalScript : MonoBehaviour
     //現在のラップ数
     int lap = 0;
     //必要なラップ数
-    int needLap = 2;
+    int needLap = 1;
     //ゴールフラグ
     bool goal = false;
     //チェックポイントフラグ
