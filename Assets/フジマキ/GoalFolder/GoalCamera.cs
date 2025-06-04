@@ -8,14 +8,17 @@ public class GoalCamera : MonoBehaviour
     public GameObject goal;
 
     public Camera gameCamera;
-    public Camera goalCame;
+    public Camera goalCamera;
 
     private bool wasGoal = false;
+
+    //次のシーン指定
+    public string nextSceneName;
 
     private void Start()
     {
         gameCamera.enabled = true;
-        goalCame.enabled = false;
+        goalCamera.enabled = false;
 
         if (goal != null)
         {
@@ -36,16 +39,26 @@ public class GoalCamera : MonoBehaviour
             {
                 // ゴール時：ゲームカメラOFF、ゴールカメラON
                 gameCamera.enabled = false;
-                goalCame.enabled = true;
+                goalCamera.enabled = true;
             }
             else
             {
                 // ゴール前：ゲームカメラON、ゴールカメラOFF
                 gameCamera.enabled = true;
-                goalCame.enabled = false;
+                goalCamera.enabled = false;
             }
 
             wasGoal = isGoal;
         }
+
+        if(goalCamera.enabled)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                // スペースキーが押されたら次のシーンへ遷移
+                UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);
+            }
+        }
+
     }
 }

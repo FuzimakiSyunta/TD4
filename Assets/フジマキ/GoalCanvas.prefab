@@ -217,7 +217,6 @@ MonoBehaviour:
   goal: {fileID: 0}
   result: {fileID: 11898971642448920}
   titleButton: {fileID: 3640845453416211479}
-  nextSceneName: Title Scene
 --- !u!114 &1860175070263143157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,7 +231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goal: {fileID: 0}
   gameCamera: {fileID: 0}
-  goalCame: {fileID: 0}
+  goalCamera: {fileID: 0}
+  nextSceneName: Title Scene
 --- !u!1 &3640845453416211479
 GameObject:
   m_ObjectHideFlags: 0

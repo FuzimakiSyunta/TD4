@@ -1963,6 +1963,14 @@ PrefabInstance:
       propertyPath: gameCamera
       value: 
       objectReference: {fileID: 1370035388}
+    - target: {fileID: 1860175070263143157, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
+      propertyPath: goalCamera
+      value: 
+      objectReference: {fileID: 1631356970}
+    - target: {fileID: 1860175070263143157, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
+      propertyPath: nextSceneName
+      value: Title Scene
+      objectReference: {fileID: 0}
     - target: {fileID: 2120820161416534511, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
       propertyPath: m_Pivot.x
       value: 0

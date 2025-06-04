@@ -12,9 +12,6 @@ public class GoalManager : MonoBehaviour
     public GameObject result;
     public GameObject titleButton;
 
-    //次のシーン指定
-    public string nextSceneName;
-
     // 前のゴール状態を保存
     private bool wasGoal = false;
 
@@ -46,11 +43,7 @@ public class GoalManager : MonoBehaviour
             {
                 result.SetActive(isGoal);
                 titleButton.SetActive(isGoal);
-                if(Input.GetKeyDown(KeyCode.Space))
-                {
-                    // スペースキーが押されたら次のシーンへ遷移
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);
-                }
+                
                 Debug.Log("Result SetActive: " + isGoal);
             }
 
