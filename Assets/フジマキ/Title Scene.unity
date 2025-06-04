@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f6eeedf74386043885adc0b832c637, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: SampleScene
+  nextSceneName: Fujimaki
   movingObjects:
   - {fileID: 483696441}
   - {fileID: 430803399}
