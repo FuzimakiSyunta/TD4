@@ -9,7 +9,8 @@ public class GoalManager : MonoBehaviour
     public GameObject goal;
 
     // リザルト画面のUIなど
-    public GameObject Result;
+    public GameObject result;
+    public GameObject titleButton;
 
     //次のシーン指定
     public string nextSceneName;
@@ -25,9 +26,10 @@ public class GoalManager : MonoBehaviour
             goalScript = goal.GetComponent<GoalScript>();
         }
 
-        if (Result != null)
+        if (result != null)
         {
-            Result.SetActive(false); // 初期状態で非表示に
+            result.SetActive(false); // 初期状態で非表示に
+            titleButton.SetActive(false); // タイトルボタンも非表示に
         }
     }
 
@@ -40,9 +42,15 @@ public class GoalManager : MonoBehaviour
 
         if (isGoal != wasGoal)
         {
-            if (Result != null)
+            if (result != null)
             {
-                Result.SetActive(isGoal);
+                result.SetActive(isGoal);
+                titleButton.SetActive(isGoal);
+                if(Input.GetKeyDown(KeyCode.Space))
+                {
+                    // スペースキーが押されたら次のシーンへ遷移
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);
+                }
                 Debug.Log("Result SetActive: " + isGoal);
             }
 
