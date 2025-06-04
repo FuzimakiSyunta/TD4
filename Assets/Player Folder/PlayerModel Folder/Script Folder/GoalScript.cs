@@ -63,4 +63,9 @@ public class GoalScript : MonoBehaviour
 
     }
 
+    public bool IsGoal()
+    {
+        return goal;
+    }
+
 }
