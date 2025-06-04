@@ -1,41 +1,76 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+
+[System.Serializable]
+public class ObjectData
+{
+    public Vector3 position;
+    public Vector3 rotation;
+}
+
+[System.Serializable]
+public class ObjectSaveData
+{
+    public List<ObjectData> objects = new List<ObjectData>();
+}
+
 
 public class JumpingSpawner : MonoBehaviour
 {
-    public GameObject prefab; // 生成するオブジェクト
-    public int spawnCount = 10; // 生成数
-    private MeshCollider meshCollider;
 
+    public GameObject prefab; //生成するプレハブ
+    [SerializeField]
+    private Camera mainCamera;
+    private string path;
     void Start()
     {
-        meshCollider = GetComponent<MeshCollider>(); // MeshColliderを取得
+        path = Application.dataPath + "/SavedData/objectSaveData.json"; // プロジェクトフォルダー内に保存
 
-        for (int i = 0; i < spawnCount; i++)
+        ObjectSaveData saveData;
+        if (File.Exists(path))
         {
-            SpawnInsideMesh();
+            string json = File.ReadAllText(path);
+            saveData = JsonUtility.FromJson<ObjectSaveData>(json);
+
+            foreach(ObjectData data in saveData.objects)
+            {
+                Instantiate(prefab, data.position, Quaternion.Euler(data.rotation));
+            }
         }
     }
 
     void Update()
     {
+        //クリックしたらオブジェクト生成&保存
+        if(Input.GetMouseButtonDown(0))
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if(Physics.Raycast(ray,out RaycastHit hit))
+            {
+                GameObject obj = Instantiate(prefab, hit.point, Quaternion.identity);
 
+                //データ保存用リストを作成
+                ObjectSaveData saveData = new ObjectSaveData();
+
+                if(File.Exists(path))
+                {
+                    string json = File.ReadAllText(path);
+                    saveData = JsonUtility.FromJson<ObjectSaveData>(json);
+                }
+
+                ObjectData newData = new ObjectData();
+                newData.position = obj.transform.position;
+                newData.rotation = obj.transform.rotation.eulerAngles;
+                saveData.objects.Add(newData);
+
+                //JSONに変換して保存
+                Directory.CreateDirectory(Application.dataPath + "/SavedData"); // フォルダーがなければ作成
+                string newJson = JsonUtility.ToJson(saveData);
+                File.WriteAllText(path,newJson);
+                
+            }
+        }
     }
-
-    void SpawnInsideMesh()
-    {
-        // MeshColliderの範囲からランダムな位置を取得
-        Vector3 randomPosition = new Vector3(
-            Random.Range(meshCollider.bounds.min.x, meshCollider.bounds.max.x),
-            Random.Range(meshCollider.bounds.min.y, meshCollider.bounds.max.y),
-            Random.Range(meshCollider.bounds.min.z, meshCollider.bounds.max.z)
-        );
-
-        // 生成するオブジェクトを MeshCollider の子に設定
-        GameObject newObj = Instantiate(prefab, randomPosition, Quaternion.identity);
-        newObj.transform.parent = transform;
-    }
-
-
 }

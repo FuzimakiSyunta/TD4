@@ -856,13 +856,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1008291060}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43288e5f62f872846b3054da21dba50c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6949019745538910183, guid: 05a52f857a0361c4181b5900526e6dd8, type: 3}
-  spawnCount: 10
+  mainCamera: {fileID: 1370035388}
 --- !u!1 &1370035385
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,13 +1130,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1492593193}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43288e5f62f872846b3054da21dba50c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6949019745538910183, guid: 05a52f857a0361c4181b5900526e6dd8, type: 3}
-  spawnCount: 10
+  mainCamera: {fileID: 1370035388}
 --- !u!1 &1625612737
 GameObject:
   m_ObjectHideFlags: 0
