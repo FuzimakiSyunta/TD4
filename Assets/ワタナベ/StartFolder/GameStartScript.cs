@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 // ゲーム開始演出のためのスクリプト
 public class GameStartScript : MonoBehaviour
@@ -10,9 +13,14 @@ public class GameStartScript : MonoBehaviour
     private GameManager gameManagerScript;
     public GameObject gameManager;
 
+
     // 実行フレームによるタイミングのズレを抑えるため、
     // デルタタイムを使用する
     private float deltaTime = 0.0f;
+
+    ///
+    /// ゲーム開始時の演出を行うための変数
+    ///
 
     // カウントダウンを行うかどうか
     private bool isStartCountDown = false;
@@ -21,7 +29,7 @@ public class GameStartScript : MonoBehaviour
     // カウント回数 * 下記のカウント発生時間だけカウントダウンが行われる
     [Header("カウントダウン回数")]
     public int countDownTime = 3;
-
+    
     // 1カウントの時間を定義 
     [Header("1カウントあたりの表示時間")]
     public float oneSecond = 1.0f;
@@ -30,10 +38,7 @@ public class GameStartScript : MonoBehaviour
 
     // カウントダウン用のテキスト・UI配列
     [Header("カウントダウンテキスト")]
-    public Text countDownText = null;
-
-    //[Header("カウントダウン用のUI配列")]
-    //public GameObject[] countDownUIArray = new GameObject[3];
+    public TextMeshProUGUI countDownText = null;
 
     // カウントダウンが終了したか
     private bool endCountDown = false;
@@ -56,7 +61,6 @@ public class GameStartScript : MonoBehaviour
         currenOneSecond = oneSecond;
 
         isStartCountDown = false; // カウントダウンを開始するためのフラグを初期化
-
     }
 
     // Update is called once per frame
@@ -66,7 +70,8 @@ public class GameStartScript : MonoBehaviour
         if (!game)
         {
             isStartCountDown = true; // カウントダウンを開始するフラグを立てる
-        }else
+        }
+        else
         {
             // ゲームが開始されている場合はカウントダウンを無効にする
             isStartCountDown = false;
@@ -117,7 +122,6 @@ public class GameStartScript : MonoBehaviour
             // テキストの回転をリセット
             countDownText.transform.rotation = Quaternion.identity;
 
-            // (ToDo)UIの表示を行い、更新を有効にする
             // カウントダウンの残り秒数の値に合わせて表示を更新
             countDownText.text = countDownTime.ToString();
 
@@ -182,7 +186,10 @@ public class GameStartScript : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         // カウントダウンのテキストを無効化
         countDownText.gameObject.SetActive(false);
-
+        // カウントダウン終了フラグをリセット
+        endCountDown = false;
 
     }
+
+
 }
