@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: a87ba75faff85ab4eae0a7cfa78d9ef9
-  - enabled: 1
+  - enabled: 0
     path: "Assets/\u30D5\u30B8\u30DE\u30AD/Fujimaki.unity"
-    guid: 42252a71039513b4fb66680ac1b22059
+    guid: f8afde483abc7df42874728ca8d573bf
   m_configObjects: {}

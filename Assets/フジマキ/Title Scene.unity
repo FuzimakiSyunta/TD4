@@ -496,6 +496,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 508630222862896548, guid: 89da5cd41cc6b2f44b4727fb78bc2ca3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 508630222862896548, guid: 89da5cd41cc6b2f44b4727fb78bc2ca3, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 1918405863268873744, guid: 89da5cd41cc6b2f44b4727fb78bc2ca3, type: 3}
       propertyPath: field of view
       value: 49.8
@@ -548,6 +556,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6508529229041574542, guid: 89da5cd41cc6b2f44b4727fb78bc2ca3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6823996445268657139, guid: 89da5cd41cc6b2f44b4727fb78bc2ca3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -579,6 +591,10 @@ PrefabInstance:
     - target: {fileID: 6823996445268657139, guid: 89da5cd41cc6b2f44b4727fb78bc2ca3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108549648170380938, guid: 89da5cd41cc6b2f44b4727fb78bc2ca3, type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7987635738830000062, guid: 89da5cd41cc6b2f44b4727fb78bc2ca3, type: 3}

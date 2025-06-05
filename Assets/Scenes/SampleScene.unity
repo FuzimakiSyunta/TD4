@@ -1621,15 +1621,15 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5495902117074765545, guid: 24903b6be7a6ee34d8abc88c9cdb3f68, type: 3}
---- !u!114 &1218209721 stripped
+--- !u!114 &1268016990 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6521594928720312571, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4029010594756307349, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
   m_PrefabInstance: {fileID: 1799911327}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1334690879
@@ -1929,7 +1929,7 @@ PrefabInstance:
     - target: {fileID: 5215785432867971586, guid: e3ccf4fb9d5fc4f499eb86768d41e2a4, type: 3}
       propertyPath: countDownText
       value: 
-      objectReference: {fileID: 1218209721}
+      objectReference: {fileID: 1268016990}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
