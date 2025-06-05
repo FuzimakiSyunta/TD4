@@ -2,6 +2,11 @@
 
 public class PlayerOperation : MonoBehaviour
 {
+    //ゲームマネージャーの参照
+    private GameManager gameManagerScript; // ゲームマネージャーのスクリプト参照
+    public GameObject gameManager; // ゲームマネージャーのオブジェクト
+
+
     public Transform modelTransform; // モデル（見た目）だけを傾ける
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
@@ -25,9 +30,18 @@ public class PlayerOperation : MonoBehaviour
     void Start()
     {
         // stunt = GetComponent<Stunt>();
-
         goalScript = GameObject.Find("bike body 1").GetComponent<GoalScript>();
+        // ゲームマネージャーの参照を取得
+        if (gameManager != null)
+        {
+            gameManagerScript = gameManager.GetComponent<GameManager>();
+        }
+        else
+        {
+            Debug.LogError("GameManagerが設定されていません。");
+        }
     }
+        
 
     void Update()
     {
@@ -42,16 +56,13 @@ public class PlayerOperation : MonoBehaviour
         pos.z = Mathf.Clamp(pos.z, -3270f, 3663f);
 
         transform.position = pos;
-
-        if (goalScript.IsGoal() == false)
+        if(gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
         {
             HandleInput();
-           
+            HandleMovement();
             HandleBankRotation();
             HandleWheelAnimation();
         }
-
-        HandleMovement();
     }
 
     void HandleInput()

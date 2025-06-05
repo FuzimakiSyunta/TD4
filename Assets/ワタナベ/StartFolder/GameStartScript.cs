@@ -6,22 +6,22 @@ using UnityEngine.UI;
 // ゲーム開始演出のためのスクリプト
 public class GameStartScript : MonoBehaviour
 {
+    //ゲームマネージャーの参照
+    private GameManager gameManagerScript;
+    public GameObject gameManager;
+
     // 実行フレームによるタイミングのズレを抑えるため、
     // デルタタイムを使用する
     private float deltaTime = 0.0f;
 
-    ///
-    /// ゲーム開始時の演出を行うための変数
-    ///
-
     // カウントダウンを行うかどうか
-    public bool isStartCountDown = false;
+    private bool isStartCountDown = false;
 
     // カウントダウンの回数
     // カウント回数 * 下記のカウント発生時間だけカウントダウンが行われる
     [Header("カウントダウン回数")]
     public int countDownTime = 3;
-    
+
     // 1カウントの時間を定義 
     [Header("1カウントあたりの表示時間")]
     public float oneSecond = 1.0f;
@@ -41,16 +41,37 @@ public class GameStartScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // ゲームマネージャーの参照を取得
+        if (gameManager != null)
+        {
+            gameManagerScript = gameManager.GetComponent<GameManager>();
+        }
+        else
+        {
+            Debug.LogError("GameManagerが設定されていません。");
+        }
+
         // 経過時間の初期化
         // 変数に合わせる(外部で設定可能)
         currenOneSecond = oneSecond;
 
+        isStartCountDown = false; // カウントダウンを開始するためのフラグを初期化
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        bool game = gameManagerScript.IsGameStarted(); // ゲームが開始されているかどうかを取得
+        if (!game)
+        {
+            isStartCountDown = true; // カウントダウンを開始するフラグを立てる
+        }else
+        {
+            // ゲームが開始されている場合はカウントダウンを無効にする
+            isStartCountDown = false;
+        }
+
         // デルタタイムを更新
         deltaTime = Time.deltaTime;
 
@@ -147,7 +168,7 @@ public class GameStartScript : MonoBehaviour
             // カウントダウンが終了したフラグを立てる
             endCountDown = true;
             // ゲーム開始の処理を行う
-            //StartGame();
+            gameManagerScript.StartGame();
         }
 
 
@@ -164,5 +185,4 @@ public class GameStartScript : MonoBehaviour
 
 
     }
-
 }
