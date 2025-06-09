@@ -301,7 +301,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 540930281}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aa7ea5b730178447b970c62df7da246, type: 3}
+  m_Script: {fileID: 11500000, guid: 5001019d41aaa424387e40007659d7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isLeftJoyCon: 0
@@ -538,7 +538,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 943451791}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aa7ea5b730178447b970c62df7da246, type: 3}
+  m_Script: {fileID: 11500000, guid: 5001019d41aaa424387e40007659d7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isLeftJoyCon: 0
@@ -569,7 +569,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1780345525}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 358cb390e2b7c7c4e9cf0811a70a9848, type: 3}
+  m_Script: {fileID: 11500000, guid: c805233c56d1c994f906f52f731c3bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   EnableIMU: 1
