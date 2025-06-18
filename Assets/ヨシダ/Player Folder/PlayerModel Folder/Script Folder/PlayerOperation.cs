@@ -13,7 +13,7 @@ public class PlayerOperation : MonoBehaviour
     float acceleration = 35f;
     float deceleration = 50f;
     float maxSpeed = 600f;
-    float brakePower = 50f;
+    float brakePower = 300f;
 
     float turnSpeed = 100f;
     float rotationY = 0f;
