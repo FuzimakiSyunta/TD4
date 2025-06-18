@@ -168,4 +168,10 @@ public class PlayerOperation : MonoBehaviour
         if (rearWheelRotator != null)
             rearWheelRotator.Rotate(playerSpeed);
     }
+
+    public float GetPlayerSpeed()
+    {
+        return playerSpeed;
+    }
+
 }

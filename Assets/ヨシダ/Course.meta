@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/ヨシダ/Course.meta
 guid: d1cdbc3de32feb141afcb05ca09bcab5
+========
+guid: 2db9bd73ea988ae4ca58ac230a87dc29
+>>>>>>>> 1898e987d9967e959f4467395c3b674145b8c0cf:Assets/オグラ/Cont.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
