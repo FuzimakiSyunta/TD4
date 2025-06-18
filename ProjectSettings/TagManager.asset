@@ -10,6 +10,7 @@ TagManager:
   - Checkpoint2
   - Checkpoint3
   - Goal
+  - Savable
   layers:
   - Default
   - TransparentFX

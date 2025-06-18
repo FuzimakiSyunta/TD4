@@ -33,9 +33,9 @@ public class PlayerOperation : MonoBehaviour
 
         //座標制御
         // X軸の制限（-5 ～ 5）
-        pos.x = Mathf.Clamp(pos.x, -2990f, 2934f);
-        // Y軸の制限（0 ～ 10）
-        pos.z = Mathf.Clamp(pos.z, -2918f, 2954f);
+        //pos.x = Mathf.Clamp(pos.x, -2990f, 2934f);
+        //// Y軸の制限（0 ～ 10）
+        //pos.z = Mathf.Clamp(pos.z, -2918f, 2954f);
 
         transform.position = pos;
 

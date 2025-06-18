@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2907343237751468029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8039031902436143754}
+  - component: {fileID: 2647158697032259175}
+  m_Layer: 0
+  m_Name: JumpingCollider3
+  m_TagString: Savable
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8039031902436143754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2907343237751468029}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11, y: 0, z: 80.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7720348474364263773}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2647158697032259175
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2907343237751468029}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 100, z: 200}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4298372956566795127
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,7 +65,7 @@ GameObject:
   - component: {fileID: 3818988291050867966}
   m_Layer: 0
   m_Name: JumpingCollider2
-  m_TagString: Untagged
+  m_TagString: Savable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,7 +118,7 @@ GameObject:
   - component: {fileID: 77629928077761952}
   m_Layer: 0
   m_Name: JumpingCollider
-  m_TagString: Untagged
+  m_TagString: Savable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,6 +158,59 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 120, y: 1, z: 100}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &6060814567872728815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3929981670715232868}
+  - component: {fileID: 5068822780981648164}
+  m_Layer: 0
+  m_Name: JumpingCollider4
+  m_TagString: Savable
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3929981670715232868
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6060814567872728815}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -106.1, y: 0, z: 80.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7720348474364263773}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5068822780981648164
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6060814567872728815}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 100, z: 200}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &5670994452388346723
 PrefabInstance:
@@ -166,9 +272,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2995317689068278705, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
+      propertyPath: m_TagString
+      value: Savable
+      objectReference: {fileID: 0}
     - target: {fileID: 3376727531592146052, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
       propertyPath: m_Name
       value: SmallJumpingPlatform Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 3376727531592146052, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
+      propertyPath: m_TagString
+      value: Savable
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -179,6 +293,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2708734168852104766, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4297445735740144745}
+    - targetCorrespondingSourceObject: {fileID: 2708734168852104766, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8039031902436143754}
+    - targetCorrespondingSourceObject: {fileID: 2708734168852104766, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3929981670715232868}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
 --- !u!4 &7720348474364263773 stripped

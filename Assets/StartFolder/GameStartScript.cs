@@ -3,46 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// ƒQ[ƒ€ŠJŽn‰‰o‚Ì‚½‚ß‚ÌƒXƒNƒŠƒvƒg
+// ï¿½Qï¿½[ï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½oï¿½Ì‚ï¿½ï¿½ß‚ÌƒXï¿½Nï¿½ï¿½ï¿½vï¿½g
 public class GameStartScript : MonoBehaviour
 {
-    // ŽÀsƒtƒŒ[ƒ€‚É‚æ‚éƒ^ƒCƒ~ƒ“ƒO‚ÌƒYƒŒ‚ð—}‚¦‚é‚½‚ßA
-    // ƒfƒ‹ƒ^ƒ^ƒCƒ€‚ðŽg—p‚·‚é
+    // ï¿½ï¿½ï¿½sï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½É‚ï¿½ï¿½^ï¿½Cï¿½~ï¿½ï¿½ï¿½Oï¿½ÌƒYï¿½ï¿½ï¿½ï¿½}ï¿½ï¿½ï¿½é‚½ï¿½ßA
+    // ï¿½fï¿½ï¿½ï¿½^ï¿½^ï¿½Cï¿½ï¿½ï¿½ï¿½gï¿½pï¿½ï¿½ï¿½ï¿½
     private float deltaTime = 0.0f;
 
     ///
-    /// ƒQ[ƒ€ŠJŽnŽž‚Ì‰‰o‚ðs‚¤‚½‚ß‚Ì•Ï”
+    /// ï¿½Qï¿½[ï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½Ì‰ï¿½ï¿½oï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ß‚Ì•Ïï¿½
     ///
 
-    // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ðs‚¤‚©‚Ç‚¤‚©
+    // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½
     public bool isStartCountDown = false;
 
-    // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚Ì‰ñ”
-    // ƒJƒEƒ“ƒg‰ñ” * ‰º‹L‚ÌƒJƒEƒ“ƒg”­¶ŽžŠÔ‚¾‚¯ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ªs‚í‚ê‚é
-    [Header("ƒJƒEƒ“ƒgƒ_ƒEƒ“‰ñ”")]
+    // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½Ì‰ï¿½
+    // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½ * ï¿½ï¿½ï¿½Lï¿½ÌƒJï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½ï¿½ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½
+    [Header("ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½")]
     public int countDownTime = 3;
     
-    // 1ƒJƒEƒ“ƒg‚ÌŽžŠÔ‚ð’è‹` 
-    [Header("1ƒJƒEƒ“ƒg‚ ‚½‚è‚Ì•\Ž¦ŽžŠÔ")]
+    // 1ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½ÌŽï¿½ï¿½Ô‚ï¿½ï¿½` 
+   // [Header("1ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì•\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public float oneSecond = 1.0f;
-    // Œ»Ý‚ÌƒJƒEƒ“ƒg‚ÌŒo‰ßŽžŠÔ‚ð’è‹`
+    // ï¿½ï¿½ï¿½Ý‚ÌƒJï¿½Eï¿½ï¿½ï¿½gï¿½ÌŒoï¿½ßŽï¿½ï¿½Ô‚ï¿½ï¿½`
     private float currenOneSecond = 0.0f;
 
-    // ƒJƒEƒ“ƒgƒ_ƒEƒ“—p‚ÌƒeƒLƒXƒgEUI”z—ñ
-    [Header("ƒJƒEƒ“ƒgƒ_ƒEƒ“ƒeƒLƒXƒg")]
+    // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½pï¿½Ìƒeï¿½Lï¿½Xï¿½gï¿½EUIï¿½zï¿½ï¿½
+    [Header("ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½eï¿½Lï¿½Xï¿½g")]
     public Text countDownText = null;
 
-    //[Header("ƒJƒEƒ“ƒgƒ_ƒEƒ“—p‚ÌUI”z—ñ")]
+    //[Header("ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½pï¿½ï¿½UIï¿½zï¿½ï¿½")]
     //public GameObject[] countDownUIArray = new GameObject[3];
 
-    // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ªI—¹‚µ‚½‚©
+    // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private bool endCountDown = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Œo‰ßŽžŠÔ‚Ì‰Šú‰»
-        // •Ï”‚É‡‚í‚¹‚é(ŠO•”‚ÅÝ’è‰Â”\)
+        // ï¿½oï¿½ßŽï¿½ï¿½Ô‚Ìï¿½ï¿½ï¿½ï¿½ï¿½
+        // ï¿½Ïï¿½ï¿½Éï¿½ï¿½í‚¹ï¿½ï¿½(ï¿½Oï¿½ï¿½ï¿½ÅÝ’ï¿½Â”\)
         currenOneSecond = oneSecond;
 
 
@@ -51,102 +51,102 @@ public class GameStartScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // ƒfƒ‹ƒ^ƒ^ƒCƒ€‚ðXV
+        // ï¿½fï¿½ï¿½ï¿½^ï¿½^ï¿½Cï¿½ï¿½ï¿½ï¿½Xï¿½V
         deltaTime = Time.deltaTime;
 
-        // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ª—LŒø‚Èê‡
+        // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½Èê‡
         if (isStartCountDown)
         {
-            // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ÌŽÀs
+            // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ÌŽï¿½ï¿½s
             UpdateCountDown();
         }
 
         if (endCountDown)
         {
 
-            // ƒeƒLƒXƒg‚ÌŠg‘å—¦‚ðã¸
+            // ï¿½eï¿½Lï¿½Xï¿½gï¿½ÌŠgï¿½å—¦ï¿½ï¿½ã¸
             countDownText.transform.localScale = new Vector3(
                 countDownText.transform.localScale.x + (deltaTime * 24.0f),
                 countDownText.transform.localScale.y + (deltaTime * 24.0f),
                 countDownText.transform.localScale.z
                 );
 
-            // ƒeƒLƒXƒg‚ðˆÚ“®
+            // ï¿½eï¿½Lï¿½Xï¿½gï¿½ï¿½Ú“ï¿½
             countDownText.transform.Translate(new Vector3(0.0f, deltaTime * 600.0f, 0.0f));
 
 
-            // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ªI—¹‚µ‚½ê‡‚Ìˆ—
-            // ƒRƒ‹[ƒ`ƒ“‚ðŽg—p‚µA0.5•bŒã‚ÉƒJƒEƒ“ƒgƒ_ƒEƒ“‚ÌƒeƒLƒXƒg‚ð”ñ•\Ž¦‚É‚·‚é
+            // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½Ìï¿½ï¿½ï¿½
+            // ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½gï¿½pï¿½ï¿½ï¿½A0.5ï¿½bï¿½ï¿½ÉƒJï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½Ìƒeï¿½Lï¿½Xï¿½gï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½
             StartCoroutine(EndCountDoun());
         }
 
     }
 
-    // ƒJƒEƒ“ƒgƒ_ƒEƒ“ˆ—
+    // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void UpdateCountDown()
     {
-        // ƒJƒEƒ“ƒg‚ªÅ‘å’l‚Æ“¯’l‚Ìê‡(ƒJƒEƒ“ƒgŠJŽnŽž‚âŒ¸­Žž)
-        // ƒJƒEƒ“ƒgUI(‚Ü‚½‚ÍƒƒO)‚Ì•\Ž¦‚ðs‚¤
+        // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Å‘ï¿½lï¿½Æ“ï¿½ï¿½lï¿½Ìê‡(ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½Jï¿½nï¿½ï¿½ï¿½âŒ¸ï¿½ï¿½ï¿½ï¿½)
+        // ï¿½Jï¿½Eï¿½ï¿½ï¿½gUI(ï¿½Ü‚ï¿½ï¿½Íƒï¿½ï¿½O)ï¿½Ì•\ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
         if (currenOneSecond == oneSecond)
         {
-            // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ÌƒeƒLƒXƒg‚ð—LŒø‰»
+            // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½Ìƒeï¿½Lï¿½Xï¿½gï¿½ï¿½Lï¿½ï¿½ï¿½ï¿½
             countDownText.gameObject.SetActive(true);
-            // ƒeƒLƒXƒg‚ÌŠg‘å—¦‚ðƒŠƒZƒbƒg
+            // ï¿½eï¿½Lï¿½Xï¿½gï¿½ÌŠgï¿½å—¦ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
             countDownText.transform.localScale = Vector3.one;
-            // ƒeƒLƒXƒg‚Ì‰ñ“]‚ðƒŠƒZƒbƒg
+            // ï¿½eï¿½Lï¿½Xï¿½gï¿½Ì‰ï¿½]ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
             countDownText.transform.rotation = Quaternion.identity;
 
-            // (ToDo)UI‚Ì•\Ž¦‚ðs‚¢AXV‚ð—LŒø‚É‚·‚é
-            // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ÌŽc‚è•b”‚Ì’l‚É‡‚í‚¹‚Ä•\Ž¦‚ðXV
+            // (ToDo)UIï¿½Ì•\ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Aï¿½Xï¿½Vï¿½ï¿½Lï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½
+            // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ÌŽcï¿½ï¿½bï¿½ï¿½ï¿½Ì’lï¿½Éï¿½ï¿½í‚¹ï¿½Ä•\ï¿½ï¿½ï¿½ï¿½Xï¿½V
             countDownText.text = countDownTime.ToString();
 
-            // ƒfƒoƒbƒO—p‚ÌƒƒOo—Í
-            Debug.Log("ƒJƒEƒ“ƒgƒ_ƒEƒ“: " + countDownTime + "•b");
+            // ï¿½fï¿½oï¿½bï¿½Oï¿½pï¿½Ìƒï¿½ï¿½Oï¿½oï¿½ï¿½
+            Debug.Log("ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½: " + countDownTime + "ï¿½b");
         }
 
-        // ƒeƒLƒXƒg‚ÌŠg‘å—¦‚ðŒ¸­
+        // ï¿½eï¿½Lï¿½Xï¿½gï¿½ÌŠgï¿½å—¦ï¿½ï¿½ï¿½ï¿½ï¿½
         countDownText.transform.localScale = new Vector3(
             countDownText.transform.localScale.x - (deltaTime * 1.0f),
             countDownText.transform.localScale.y - (deltaTime * 1.0f),
             countDownText.transform.localScale.z
             );
-        // ƒeƒLƒXƒg‚ð‰ñ“]
+        // ï¿½eï¿½Lï¿½Xï¿½gï¿½ï¿½ï¿½]
         countDownText.transform.Rotate(new Vector3(0.0f, 0.0f, deltaTime * 360.0f));
 
-        // Œo‰ßŽžŠÔ‚ðXV
+        // ï¿½oï¿½ßŽï¿½ï¿½Ô‚ï¿½Xï¿½V
         currenOneSecond -= deltaTime;
 
-        // 1•bŒo‰ß‚µ‚½‚çƒJƒEƒ“ƒgƒ_ƒEƒ“‚ði‚ß‚é
+        // 1ï¿½bï¿½oï¿½ß‚ï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½iï¿½ß‚ï¿½
         if (currenOneSecond > 0.0f)
         {
-            // Œo‰ß‚µ‚Ä‚¢‚È‚¢ê‡‚Í‘ŠúƒŠƒ^[ƒ“
+            // ï¿½oï¿½ß‚ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½ê‡ï¿½Í‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½[ï¿½ï¿½
             return;
         }
 
-        // ƒJƒEƒ“ƒgƒ_ƒEƒ“ŽžŠÔ‚ðŒ¸‚ç‚·
+        // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½ï¿½ç‚·
         countDownTime--;
-        // ŽŸ‚Ì1•b‚ÌŽžŠÔ‚ðÝ’è
+        // ï¿½ï¿½ï¿½ï¿½1ï¿½bï¿½ÌŽï¿½ï¿½Ô‚ï¿½Ý’ï¿½
         currenOneSecond = oneSecond;
 
 
-        // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ªI—¹‚µ‚½ê‡
+        // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡
         if (countDownTime <= 0)
         {
-            // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ÌƒeƒLƒXƒg‚ðXV
+            // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½Ìƒeï¿½Lï¿½Xï¿½gï¿½ï¿½Xï¿½V
             countDownText.text = "GO!";
-            // ƒeƒLƒXƒg‚ÌŠg‘å—¦‚ðƒŠƒZƒbƒg
+            // ï¿½eï¿½Lï¿½Xï¿½gï¿½ÌŠgï¿½å—¦ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
             countDownText.transform.localScale = Vector3.one;
-            // ƒeƒLƒXƒg‚Ì‰ñ“]‚ðƒŠƒZƒbƒg
+            // ï¿½eï¿½Lï¿½Xï¿½gï¿½Ì‰ï¿½]ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
             countDownText.transform.rotation = Quaternion.identity;
 
-            // ƒfƒoƒbƒO—p‚ÌƒƒOo—Í
-            Debug.Log("s‚«‚Ü‚µ‚å‚¤");
+            // ï¿½fï¿½oï¿½bï¿½Oï¿½pï¿½Ìƒï¿½ï¿½Oï¿½oï¿½ï¿½
+            Debug.Log("ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½ï¿½å‚¤");
 
-            // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ð–³Œø‚É‚·‚é
+            // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ð–³Œï¿½ï¿½É‚ï¿½ï¿½ï¿½
             isStartCountDown = false;
-            // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ªI—¹‚µ‚½ƒtƒ‰ƒO‚ð—§‚Ä‚é
+            // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½Oï¿½ð—§‚Ä‚ï¿½
             endCountDown = true;
-            // ƒQ[ƒ€ŠJŽn‚Ìˆ—‚ðs‚¤
+            // ï¿½Qï¿½[ï¿½ï¿½ï¿½Jï¿½nï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
             //StartGame();
         }
 
@@ -156,10 +156,10 @@ public class GameStartScript : MonoBehaviour
     IEnumerator EndCountDoun()
     {
 
-        // ƒJƒEƒ“ƒgI—¹Œã‚ÌŒãˆ—
-        // 0.5•bŒã‚ÉƒJƒEƒ“ƒgƒ_ƒEƒ“‚ÌƒeƒLƒXƒg‚ð”ñ•\Ž¦‚É‚·‚é
+        // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½Iï¿½ï¿½ï¿½ï¿½ÌŒãˆï¿½ï¿½
+        // 0.5ï¿½bï¿½ï¿½ÉƒJï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½Ìƒeï¿½Lï¿½Xï¿½gï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½
         yield return new WaitForSeconds(0.5f);
-        // ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ÌƒeƒLƒXƒg‚ð–³Œø‰»
+        // ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½_ï¿½Eï¿½ï¿½ï¿½Ìƒeï¿½Lï¿½Xï¿½gï¿½ð–³Œï¿½ï¿½ï¿½
         countDownText.gameObject.SetActive(false);
 
 
