@@ -2,61 +2,49 @@
 
 public class PlayerOperation : MonoBehaviour
 {
-    //ゲームマネージャーの参照
-    private GameManager gameManagerScript; // ゲームマネージャーのスクリプト参照
-    public GameObject gameManager; // ゲームマネージャーのオブジェクト
+    private GameManager gameManagerScript;
+    public GameObject gameManager;
 
-
-    public Transform modelTransform; // モデル（見た目）だけを傾ける
+    public Transform modelTransform;
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
 
     float playerSpeed = 0f;
-    float acceleration = 50f;
+    float acceleration = 35f;
     float deceleration = 50f;
-    float maxSpeed = 200f;
+    float maxSpeed = 600f;
     float brakePower = 50f;
 
     float turnSpeed = 100f;
     float rotationY = 0f;
 
-    float bankAngle = 20f;
+    float bankAngle = 10f;
     float bankLerpSpeed = 5f;
     float currentBank = 0f;
     float targetBank = 0f;
 
     GoalScript goalScript;
-  
+
+    bool wasGrounded = true;
+
     void Start()
     {
-        // stunt = GetComponent<Stunt>();
         goalScript = GameObject.Find("bike body 1").GetComponent<GoalScript>();
-        // ゲームマネージャーの参照を取得
+
         if (gameManager != null)
-        {
             gameManagerScript = gameManager.GetComponent<GameManager>();
-        }
         else
-        {
             Debug.LogError("GameManagerが設定されていません。");
-        }
     }
-        
 
     void Update()
     {
         Vector3 pos = transform.position;
-
-
-
-        //座標制御
-        // X軸の制限（-5 ～ 5）
-        pos.x = Mathf.Clamp(pos.x, -2538f,13699f);
-        // Y軸の制限（0 ～ 10）
+        pos.x = Mathf.Clamp(pos.x, -2538f, 1369f);
         pos.z = Mathf.Clamp(pos.z, -3270f, 3663f);
-
         transform.position = pos;
-        if(gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
+
+        if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
         {
             HandleInput();
             HandleMovement();
@@ -78,19 +66,13 @@ public class PlayerOperation : MonoBehaviour
         rotationY += turn * turnSpeed * Time.deltaTime;
         transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
 
-        // 前進
         if (Input.GetKey(KeyCode.W))
             playerSpeed += acceleration * Time.deltaTime;
-
-        // 後退
         else if (Input.GetKey(KeyCode.S))
             playerSpeed -= acceleration * Time.deltaTime;
-
-        // 何も押してないときに自然減速
         else
             playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
 
-        // プレイヤーの速度をクランプ（後退も許可）
         playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
     }
 
@@ -101,16 +83,44 @@ public class PlayerOperation : MonoBehaviour
         Vector3 moveDir = transform.forward;
         Vector3 groundNormal = Vector3.up;
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 2f))
-        {
-            groundNormal = hit.normal;
-            moveDir = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
+        bool isGrounded = false;
 
-            Quaternion targetRot = Quaternion.LookRotation(moveDir, groundNormal);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 5f);
+        if (Physics.Raycast(ray, out RaycastHit hit, 5f))
+        {
+            isGrounded = true;
+
+            groundNormal = hit.normal;
+            float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
+            float slopeLimit = 50f;
+
+            if (slopeAngle <= slopeLimit)
+            {
+                moveDir = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
+
+                Quaternion targetRot = Quaternion.LookRotation(moveDir, groundNormal);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 3f);
+
+                Vector3 targetPos = new Vector3(transform.position.x, hit.point.y, transform.position.z);
+                transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 5f);
+
+                float slopeFactor = Vector3.Dot(groundNormal, moveDir);
+                float slopeEffect = 1f - Mathf.Clamp01(-slopeFactor);
+                playerSpeed *= Mathf.Lerp(1f, 0.95f, 1f - slopeEffect);
+            }
+            else
+            {
+                playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, Time.deltaTime * 50f);
+            }
         }
 
-        // ★移動方向にWallタグのオブジェクトがあるかチェック
+        // 坂の終わり（地面がなくなった）瞬間にジャンプ
+        if (!isGrounded && wasGrounded)
+        {
+            Jump();
+        }
+
+        wasGrounded = isGrounded;
+
         Vector3 checkDir = playerSpeed >= 0 ? moveDir : -moveDir;
         float checkDistance = Mathf.Abs(playerSpeed) * Time.deltaTime + 0.1f;
 
@@ -118,38 +128,36 @@ public class PlayerOperation : MonoBehaviour
         {
             if (wallHit.collider.CompareTag("Wall"))
             {
-                playerSpeed = 0f; // スピードも止める
-                return; // 移動しない
+                playerSpeed = 0f;
+                return;
             }
         }
 
-        // 壁がないので移動実行
         transform.position += moveDir * playerSpeed * Time.deltaTime;
     }
 
+    void Jump()
+    {
+        // 上方向に3ユニットジャンプ（演出に合わせて調整可能）
+        transform.position += Vector3.up * 3f;
+        Debug.Log("ジャンプ！");
+    }
 
     void HandleBankRotation()
     {
         float turn = 0f;
-        if (playerSpeed >=10000) 
+
+        if (Mathf.Abs(playerSpeed) > 5f)
         {
-            if (Input.GetKey(KeyCode.A))
-            {
-                turn = -1f;
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                turn = 1f;
-            }
-            targetBank = -turn * bankAngle;
-            currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
-            if (modelTransform != null)
-            {
-                modelTransform.localRotation = Quaternion.Euler(0f, 0f, currentBank);
-            }
+            if (Input.GetKey(KeyCode.A)) turn = -1f;
+            else if (Input.GetKey(KeyCode.D)) turn = 1f;
         }
 
-       
+        targetBank = -turn * bankAngle;
+        currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
+
+        if (modelTransform != null)
+            modelTransform.localRotation = Quaternion.Euler(0f, 0f, currentBank);
     }
 
     void HandleWheelAnimation()
