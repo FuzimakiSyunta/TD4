@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMaterialSwitcher : MonoBehaviour
+public class BikeMaterialSwitcher : MonoBehaviour
 {
     [Header("êÿÇËë÷Ç¶ëŒè€ÇÃRenderer")]
     [SerializeField] private Renderer targetRenderer;
@@ -25,12 +25,12 @@ public class PlayerMaterialSwitcher : MonoBehaviour
         //{
         //    SwitchToNextMaterial();
         //}
-        
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             SwitchToNextMaterial();
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             SwitchToBackMaterial();
         }
