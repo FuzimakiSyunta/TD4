@@ -29,7 +29,7 @@ public class PlayerOperation : MonoBehaviour
 
     void Start()
     {
-        goalScript = GameObject.Find("bike body 1").GetComponent<GoalScript>();
+        goalScript = GameObject.Find("Bike").GetComponent<GoalScript>();
 
         if (gameManager != null)
             gameManagerScript = gameManager.GetComponent<GameManager>();
@@ -44,13 +44,13 @@ public class PlayerOperation : MonoBehaviour
         pos.z = Mathf.Clamp(pos.z, -3270f, 3663f);
         transform.position = pos;
 
-        if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
-        {
+        //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
+        //{
             HandleInput();
             HandleMovement();
             HandleBankRotation();
             HandleWheelAnimation();
-        }
+       // }
     }
 
     void HandleInput()
