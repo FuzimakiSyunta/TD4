@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections.Generic; // Joyconクラスを使用するために必要
+using System.Collections.Generic;
 
 public class JCPlayerOperation : MonoBehaviour
 {
@@ -28,7 +28,7 @@ public class JCPlayerOperation : MonoBehaviour
 
     bool wasGrounded = true;
 
-    // 新JoyCon: Joyconインスタンスを保持するリストと左右のJoy-Con参照
+    //JoyCon
     private List<Joycon> joycons;
     private Joycon R_joycon;
     private Joycon L_joycon;
@@ -42,7 +42,7 @@ public class JCPlayerOperation : MonoBehaviour
         else
             Debug.LogError("GameManagerが設定されていません。");
 
-        // 新JoyCon: Joy-Conを初期化
+        // JoyCon初期化
         if (JoyconManager.Instance != null)
         {
             joycons = JoyconManager.Instance.j;
@@ -57,12 +57,12 @@ public class JCPlayerOperation : MonoBehaviour
                     R_joycon = jc;
                 }
             }
-            if (L_joycon == null) Debug.LogWarning("新JoyCon: 左Joy-Conが見つかりません。操作に影響が出る可能性があります。");
-            if (R_joycon == null) Debug.LogWarning("新JoyCon: 右Joy-Conが見つかりません。操作に影響が出る可能性があります。");
+            if (L_joycon == null) Debug.LogWarning("左Joy-Conが見つかりません。操作に影響が出る可能性があります。");
+            if (R_joycon == null) Debug.LogWarning("右Joy-Conが見つかりません。操作に影響が出る可能性があります。");
         }
         else
         {
-            Debug.LogError("新JoyCon: JoyconManager.Instance が見つかりません。Joy-Con操作は無効になります。");
+            Debug.LogError("JoyconManager.Instance が見つかりません。Joy-Con操作は無効になります。");
         }
     }
 
@@ -75,8 +75,7 @@ public class JCPlayerOperation : MonoBehaviour
 
         if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
         {
-            // 新JoyCon: ここで入力処理を直接行う
-            HandlePlayerInput(); // 新しい入力処理メソッドを呼び出し
+            HandlePlayerInput();
 
             HandleMovement();
             HandleBankRotation();
@@ -84,7 +83,6 @@ public class JCPlayerOperation : MonoBehaviour
         }
     }
 
-    // 新JoyCon: プレイヤーの入力処理を一元化する新しいメソッド
     void HandlePlayerInput()
     {
         float currentTurnInput = 0f;
@@ -102,29 +100,29 @@ public class JCPlayerOperation : MonoBehaviour
         else if (Input.GetKey(KeyCode.S))
             currentSpeedInput = -1f;
 
-        // 新JoyCon: Joy-Con入力
+        //Joy-Con入力
         if (L_joycon != null)
         {
             float[] stick = L_joycon.GetStick();
-            // 新JoyCon: スティックのX軸入力が検出されたら、キーボードの旋回入力を上書きする（または追加する）
-            if (Mathf.Abs(stick[0]) > 0.1f) // デッドゾーンを設定
+            //スティックのX軸入力が検出されたら、キーボードの旋回入力を上書きする
+            if (Mathf.Abs(stick[0]) > 0.1f) //デッドゾーンを設定
             {
-                currentTurnInput = stick[0]; // スティック入力が検出されたら、スティックの値を優先
+                currentTurnInput = stick[0];
             }
         }
 
-        // 新JoyCon: 右Joy-ConのZRボタンによる加速
+        //右Joy-ConのZRボタンによる加速
         if (R_joycon != null && R_joycon.GetButton(Joycon.Button.SHOULDER_2))
         {
             currentSpeedInput = 1f; // ZRボタンが押されたら加速を優先
         }
 
 
-        // 旋回の適用
+        //旋回の適用
         rotationY += currentTurnInput * turnSpeed * Time.deltaTime;
         transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
 
-        // 加速・減速の適用
+        //加速・減速の適用
         if (currentSpeedInput > 0)
             playerSpeed += acceleration * Time.deltaTime;
         else if (currentSpeedInput < 0)
