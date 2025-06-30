@@ -22,14 +22,14 @@ public class PlayerOperation : MonoBehaviour
     float bankLerpSpeed = 5f;
     float currentBank = 0f;
     float targetBank = 0f;
-
-    GoalScript goalScript;
+    [SerializeField]
+    GoalScript2 goalScript;
 
     bool wasGrounded = true;
 
     void Start()
     {
-        goalScript = GameObject.Find("Bike").GetComponent<GoalScript>();
+        goalScript = GameObject.Find("bike body 1").GetComponent<GoalScript2>();
 
         if (gameManager != null)
             gameManagerScript = gameManager.GetComponent<GameManager>();
@@ -40,8 +40,8 @@ public class PlayerOperation : MonoBehaviour
     void Update()
     {
         Vector3 pos = transform.position;
-        pos.x = Mathf.Clamp(pos.x, -2538f, 1369f);
-        pos.z = Mathf.Clamp(pos.z, -3270f, 3663f);
+        pos.x = Mathf.Clamp(pos.x, -15601f, -11667f);
+        pos.z = Mathf.Clamp(pos.z, -10979f, 6673f);
         transform.position = pos;
 
         //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
