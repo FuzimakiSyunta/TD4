@@ -28,10 +28,6 @@ public class JCPlayerOperation : MonoBehaviour
 
     bool wasGrounded = true;
 
-    //JoyCon
-    private List<Joycon> joycons;
-    private Joycon R_joycon;
-    private Joycon L_joycon;
 
     void Start()
     {
@@ -42,27 +38,10 @@ public class JCPlayerOperation : MonoBehaviour
         else
             Debug.LogError("GameManagerが設定されていません。");
 
-        // JoyCon初期化
-        if (JoyconManager.Instance != null)
+        //JoyCon初期化
+        if (JCScript.Instance == null)
         {
-            joycons = JoyconManager.Instance.j;
-            foreach (var jc in joycons)
-            {
-                if (jc.isLeft)
-                {
-                    L_joycon = jc;
-                }
-                else
-                {
-                    R_joycon = jc;
-                }
-            }
-            if (L_joycon == null) Debug.LogWarning("左Joy-Conが見つかりません。操作に影響が出る可能性があります。");
-            if (R_joycon == null) Debug.LogWarning("右Joy-Conが見つかりません。操作に影響が出る可能性があります。");
-        }
-        else
-        {
-            Debug.LogError("JoyconManager.Instance が見つかりません。Joy-Con操作は無効になります。");
+            Debug.LogError("JCScript.Instance が見つかりません。Joy-Con操作は無効になります。プロジェクトにJCScriptをアタッチしたGameObjectを配置しているか確認してください。");
         }
     }
 
@@ -88,7 +67,7 @@ public class JCPlayerOperation : MonoBehaviour
         float currentTurnInput = 0f;
         float currentSpeedInput = 0f;
 
-        // キーボード入力
+        //キーボード入力
         if (Mathf.Abs(playerSpeed) > 0.1f)
         {
             if (Input.GetKey(KeyCode.A)) currentTurnInput = -1f;
@@ -101,20 +80,18 @@ public class JCPlayerOperation : MonoBehaviour
             currentSpeedInput = -1f;
 
         //Joy-Con入力
-        if (L_joycon != null)
+        if (JCScript.Instance != null)
         {
-            float[] stick = L_joycon.GetStick();
-            //スティックのX軸入力が検出されたら、キーボードの旋回入力を上書きする
-            if (Mathf.Abs(stick[0]) > 0.1f) //デッドゾーンを設定
+            //左Joy-ConスティックのX軸で旋回
+            if (Mathf.Abs(JCScript.Instance.LeftStick.x) > 0.05f)
             {
-                currentTurnInput = stick[0];
+                currentTurnInput = JCScript.Instance.LeftStick.x;
             }
-        }
-
-        //右Joy-ConのZRボタンによる加速
-        if (R_joycon != null && R_joycon.GetButton(Joycon.Button.SHOULDER_2))
-        {
-            currentSpeedInput = 1f; // ZRボタンが押されたら加速を優先
+            //右Joy-ConのZRボタンで加速
+            if (JCScript.Instance.RightZRButton)
+            {
+                currentSpeedInput = 1f;//ZRボタンが押されたら加速を優先
+            }
         }
 
 
@@ -208,13 +185,12 @@ public class JCPlayerOperation : MonoBehaviour
             else if (Input.GetKey(KeyCode.D)) bankTurnInput = 1f;
         }
 
-        // 新JoyCon: 左Joy-Conスティックによるバンク入力
-        if (L_joycon != null)
+        //左Joy-ConスティックのX軸によるバンク入力
+        if (JCScript.Instance != null)
         {
-            float[] stick = L_joycon.GetStick();
-            if (Mathf.Abs(stick[0]) > 0.1f)
+            if (Mathf.Abs(JCScript.Instance.LeftStick.x) > 0.05f)
             {
-                bankTurnInput = stick[0]; // スティック入力が検出されたら、スティックの値を優先
+                bankTurnInput = JCScript.Instance.LeftStick.x;
             }
         }
 
