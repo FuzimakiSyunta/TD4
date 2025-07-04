@@ -10,10 +10,10 @@ public class PlayerOperation : MonoBehaviour
     public RearWheelRotatorScript rearWheelRotator;
 
     float playerSpeed = 0f;
-    float acceleration = 35f;
-    float deceleration = 50f;
-    float maxSpeed = 600f;
-    float brakePower = 300f;
+    public float acceleration = 35f;
+    public float deceleration = 50f;
+    public float maxSpeed = 600f;
+    public float brakePower = 300f;
 
     float turnSpeed = 100f;
     float rotationY = 0f;
@@ -29,7 +29,7 @@ public class PlayerOperation : MonoBehaviour
 
     void Start()
     {
-        goalScript = GameObject.Find("bike body 1").GetComponent<GoalScript2>();
+        goalScript = GameObject.Find("Player").GetComponent<GoalScript2>();
 
         if (gameManager != null)
             gameManagerScript = gameManager.GetComponent<GameManager>();
@@ -40,8 +40,8 @@ public class PlayerOperation : MonoBehaviour
     void Update()
     {
         Vector3 pos = transform.position;
-        pos.x = Mathf.Clamp(pos.x, -15601f, -11667f);
-        pos.z = Mathf.Clamp(pos.z, -10979f, 6673f);
+        //pos.x = Mathf.Clamp(pos.x, -15601f, -11667f);
+        //pos.z = Mathf.Clamp(pos.z, -10979f, 6673f);
         transform.position = pos;
 
         //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
@@ -116,7 +116,7 @@ public class PlayerOperation : MonoBehaviour
         // 坂の終わり（地面がなくなった）瞬間にジャンプ
         if (!isGrounded && wasGrounded)
         {
-            Jump();
+            //Jump();
         }
 
         wasGrounded = isGrounded;
