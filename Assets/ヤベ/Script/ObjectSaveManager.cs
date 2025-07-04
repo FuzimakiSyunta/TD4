@@ -93,9 +93,20 @@ public class ObjectSaveManager : MonoBehaviour
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Savable"))
         {
-            // 復元済みは保存対象から除外
-            if (obj.GetComponent<AlreadyLoadedFlag>() != null)
-                continue;
+            if (Application.isPlaying)
+            {
+                // プレイ中：ロードされたものを除外
+                if (obj.GetComponent<AlreadyLoadedFlag>() != null)
+                    continue;
+            }
+            else
+            {
+                // エディタ時：フラグが無い＝新規配置ではないので除外
+                if (obj.GetComponent<AlreadyLoadedFlag>() == null)
+                    continue;
+            }
+
+
 
             // ObjectData 情報構築（名前やID付き）
             ObjectData data = new ObjectData
