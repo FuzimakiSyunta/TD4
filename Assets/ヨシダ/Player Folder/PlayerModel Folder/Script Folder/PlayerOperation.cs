@@ -29,7 +29,7 @@ public class PlayerOperation : MonoBehaviour
 
     void Start()
     {
-        goalScript = GameObject.Find("bike body 1").GetComponent<GoalScript2>();
+        goalScript = GameObject.Find("Player").GetComponent<GoalScript2>();
 
         if (gameManager != null)
             gameManagerScript = gameManager.GetComponent<GameManager>();
