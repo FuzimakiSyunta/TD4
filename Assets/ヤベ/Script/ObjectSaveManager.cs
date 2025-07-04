@@ -4,6 +4,10 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEditor;
+using static ObjectsData;
+using static ObjectsSaveData;
+using System;
+using System.Linq;
 
 public static class ObjectSaveManagerBridge
 {
@@ -73,7 +77,7 @@ public class ObjectSaveManager : MonoBehaviour
             }
         }
 
-        if (Application.isPlaying && Input.GetKeyDown(KeyCode.S))
+        if (Application.isPlaying && Input.GetKeyDown(KeyCode.P))
         {
             SaveData(); // プレイ中に手動セーブ
             Debug.Log("手動セーブしました！");
@@ -85,25 +89,25 @@ public class ObjectSaveManager : MonoBehaviour
 
     void SaveData()
     {
-
-
         ObjectSaveData saveData = new ObjectSaveData();
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Savable"))
         {
-            // この行が "復元済み" を保存対象から除外するポイント！
+            // 復元済みは保存対象から除外
             if (obj.GetComponent<AlreadyLoadedFlag>() != null)
                 continue;
 
-
+            // ObjectData 情報構築（名前やID付き）
             ObjectData data = new ObjectData
             {
+                id = Guid.NewGuid().ToString(),
+                prefabName = obj.name.Replace("(Clone)", "").Trim(), // プレハブ名を推定（任意）
                 position = obj.transform.position,
                 rotation = obj.transform.rotation
             };
 
-            // 重複チェック（ほぼ同じ位置と回転がすでにあるなら除外）
-            if (!saveData.objects.Exists(o =>
+            // 既に同一の位置＆回転のデータがあるかチェック（重複保存防止）
+            if (!saveData.objects.Any(o =>
                 Vector3.Distance(o.position, data.position) < 0.01f &&
                 Quaternion.Angle(o.rotation, data.rotation) < 1f))
             {
@@ -114,10 +118,11 @@ public class ObjectSaveManager : MonoBehaviour
         Directory.CreateDirectory(Path.GetDirectoryName(path));
         string json = JsonUtility.ToJson(saveData, true);
         File.WriteAllText(path, json);
-        Debug.Log("保存されました（重複排除あり）: " + json);
-
+        Debug.Log("保存されました（ID・プレハブ名つき）: " + json);
     }
 
 
 
-    }
+
+
+}
