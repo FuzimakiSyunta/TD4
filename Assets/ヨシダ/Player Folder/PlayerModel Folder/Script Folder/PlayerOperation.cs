@@ -9,10 +9,15 @@ public class PlayerOperation : MonoBehaviour
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
 
-    float playerSpeed = 0f;
+    // プレイヤーの現在速度
+    public float playerSpeed = 0f;
+    //加速
     public float acceleration = 35f;
+    //減速
     public float deceleration = 50f;
+    //最大速度
     public float maxSpeed = 600f;
+    //ブレーキ時の原則
     public float brakePower = 300f;
 
     float turnSpeed = 100f;
@@ -22,9 +27,10 @@ public class PlayerOperation : MonoBehaviour
     float bankLerpSpeed = 5f;
     float currentBank = 0f;
     float targetBank = 0f;
-    [SerializeField]
+    float slopeAngle =0f;
+   [SerializeField]
     GoalScript2 goalScript;
-
+   
     bool wasGrounded = true;
 
     void Start()
@@ -40,32 +46,53 @@ public class PlayerOperation : MonoBehaviour
     void Update()
     {
         Vector3 pos = transform.position;
-        //pos.x = Mathf.Clamp(pos.x, -15601f, -11667f);
-        //pos.z = Mathf.Clamp(pos.z, -10979f, 6673f);
+        
         transform.position = pos;
 
         //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
         //{
             HandleInput();
-            HandleMovement();
+         
             HandleBankRotation();
             HandleWheelAnimation();
-       // }
+            HandleMovement();
+        // }
     }
 
     void HandleInput()
     {
+        // 入力によるY回転更新
         float turn = 0f;
-
         if (Mathf.Abs(playerSpeed) > 0.1f)
         {
             if (Input.GetKey(KeyCode.A)) turn = -1f;
             else if (Input.GetKey(KeyCode.D)) turn = 1f;
         }
-
         rotationY += turn * turnSpeed * Time.deltaTime;
-        transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
 
+        // ベースのY回転
+        Quaternion baseRotation = Quaternion.Euler(0f, rotationY, 0f);
+
+        // Terrainがある前提で法線取得
+        Terrain terrain = Terrain.activeTerrain;
+        Vector3 groundNormal = Vector3.up;
+        if (terrain != null)
+        {
+            float normX = transform.position.x / terrain.terrainData.size.x;
+            float normZ = transform.position.z / terrain.terrainData.size.z;
+            groundNormal = terrain.terrainData.GetInterpolatedNormal(normX, normZ);
+        }
+
+        // 地形法線に沿った前方向に補正
+        Vector3 moveDir = Vector3.ProjectOnPlane(baseRotation * Vector3.forward, groundNormal).normalized;
+
+        // 傾斜に沿った回転を作る
+        Quaternion slopeRotation = Quaternion.LookRotation(moveDir, groundNormal);
+
+        // 回転を反映
+        transform.rotation = slopeRotation;
+
+        // 移動入力
         if (Input.GetKey(KeyCode.W))
             playerSpeed += acceleration * Time.deltaTime;
         else if (Input.GetKey(KeyCode.S))
@@ -74,75 +101,45 @@ public class PlayerOperation : MonoBehaviour
             playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
 
         playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
+
+        // 傾斜に沿った方向で移動
+        transform.position += moveDir * playerSpeed * Time.deltaTime;
+
     }
 
     void HandleMovement()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
         Ray ray = new Ray(rayOrigin, Vector3.down);
-        Vector3 moveDir = transform.forward;
-        Vector3 groundNormal = Vector3.up;
+        RaycastHit hit;
 
-        bool isGrounded = false;
+        float slopeThreshold = 5f;
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 5f))
+        if (Physics.Raycast(ray, out hit, 2f))
         {
-            isGrounded = true;
+            Vector3 groundNormal = hit.normal;
+            slopeAngle = Vector3.Angle(groundNormal, Vector3.up);
 
-            groundNormal = hit.normal;
-            float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
-            float slopeLimit = 50f;
-
-            if (slopeAngle <= slopeLimit)
+            if (slopeAngle > slopeThreshold)
             {
-                moveDir = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
+                Debug.Log("坂です！ 傾き: " + slopeAngle);
+              
 
-                Quaternion targetRot = Quaternion.LookRotation(moveDir, groundNormal);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 3f);
 
-                Vector3 targetPos = new Vector3(transform.position.x, hit.point.y, transform.position.z);
-                transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 5f);
 
-                float slopeFactor = Vector3.Dot(groundNormal, moveDir);
-                float slopeEffect = 1f - Mathf.Clamp01(-slopeFactor);
-                playerSpeed *= Mathf.Lerp(1f, 0.95f, 1f - slopeEffect);
             }
             else
             {
-                playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, Time.deltaTime * 50f);
+                Debug.Log("平坦な地面です");
+
+                // 平地なのでX軸の傾きだけを0に戻す
+                Vector3 currentEuler = transform.rotation.eulerAngles;
+                Quaternion targetRotation = Quaternion.Euler(0f, currentEuler.y, currentEuler.z);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
             }
         }
-
-        // 坂の終わり（地面がなくなった）瞬間にジャンプ
-        if (!isGrounded && wasGrounded)
-        {
-            //Jump();
-        }
-
-        wasGrounded = isGrounded;
-
-        Vector3 checkDir = playerSpeed >= 0 ? moveDir : -moveDir;
-        float checkDistance = Mathf.Abs(playerSpeed) * Time.deltaTime + 0.1f;
-
-        if (Physics.Raycast(transform.position, checkDir, out RaycastHit wallHit, checkDistance))
-        {
-            if (wallHit.collider.CompareTag("Wall"))
-            {
-                playerSpeed = 0f;
-                return;
-            }
-        }
-
-        transform.position += moveDir * playerSpeed * Time.deltaTime;
+      
     }
-
-    void Jump()
-    {
-        // 上方向に3ユニットジャンプ（演出に合わせて調整可能）
-        transform.position += Vector3.up * 3f;
-        Debug.Log("ジャンプ！");
-    }
-
     void HandleBankRotation()
     {
         float turn = 0f;
@@ -157,7 +154,7 @@ public class PlayerOperation : MonoBehaviour
         currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
 
         if (modelTransform != null)
-            modelTransform.localRotation = Quaternion.Euler(0f, 0f, currentBank);
+            modelTransform.localRotation = Quaternion.Euler(0, 0f, currentBank);
     }
 
     void HandleWheelAnimation()
