@@ -40,8 +40,8 @@ public class PlayerOperation : MonoBehaviour
     void Update()
     {
         Vector3 pos = transform.position;
-        pos.x = Mathf.Clamp(pos.x, -15601f, -10000f);
-        pos.z = Mathf.Clamp(pos.z, -10979f, 3000f);
+        pos.x = Mathf.Clamp(pos.x, -500f, 2800f);
+        pos.z = Mathf.Clamp(pos.z, -10300f, 2800f);
         transform.position = pos;
 
         if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
