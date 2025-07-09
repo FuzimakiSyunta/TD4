@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: EnemyData03
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  initialPosition: {x: 0, y: 0, z: 0}
+  prefab: {fileID: 3530207719835496420, guid: 4f6550cb7a8f62d4c9cbf90b7bdfeaaa, type: 3}
+  initialPosition: {x: -1750, y: 0, z: 1700}
   health: 0
   speed: 0
   behaviorType: 
