@@ -39,7 +39,7 @@ public class PlayerOperation : MonoBehaviour
 
     void Start()
     {
-        goalScript = GameObject.Find("Player").GetComponent<GoalScript2>();
+        goalScript = GameObject.Find("Player").GetComponent<GoalScript>();
 
         if (gameManager != null)
             gameManagerScript = gameManager.GetComponent<GameManager>();
@@ -57,9 +57,11 @@ public class PlayerOperation : MonoBehaviour
 
         //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
         //{
-        HandleInput();
-        HandleWheelAnimation();
-        HandleMovement();
+              HandleInput();
+         
+             
+              HandleWheelAnimation();
+             HandleMovement();
         // }
     }
 

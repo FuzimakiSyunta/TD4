@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoalScript2 : MonoBehaviour
+public class GoalScript : MonoBehaviour
 {
     //現在のラップ数
     int lap = 0;
@@ -26,10 +26,10 @@ public class GoalScript2 : MonoBehaviour
         {
             goal = true;
             //ここにシーン切り替えを入れる
-            Debug.Log("ゴールした");
+            //Debug.Log("ゴールした");
         }
     }
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("Checkpoint1"))
         {
@@ -56,8 +56,7 @@ public class GoalScript2 : MonoBehaviour
             checkpoint[2] = false;
 
             lap += 1;
-
-            Debug.Log("ゴール");
+            //Debug.Log("ゴール");
 
         }
 
