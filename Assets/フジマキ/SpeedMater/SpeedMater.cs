@@ -17,7 +17,7 @@ public class SpeedMater : MonoBehaviour
     private float currentAngle = -120f;
     private const float minAngle = 90f;
     private const float maxAngle = -145f;
-    private const float maxSpeed = 160f;
+    private const float maxSpeed = 3f;
 
     // Start is called before the first frame update
     void Start()

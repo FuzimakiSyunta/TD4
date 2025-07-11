@@ -40,12 +40,14 @@ public class GoalCamera : MonoBehaviour
                 // ゴール時：ゲームカメラOFF、ゴールカメラON
                 gameCamera.enabled = false;
                 goalCamera.enabled = true;
+                Debug.Log("カメラが切り替わりました。");
             }
             else
             {
                 // ゴール前：ゲームカメラON、ゴールカメラOFF
                 gameCamera.enabled = true;
                 goalCamera.enabled = false;
+                Debug.Log("ゲームカメラです");
             }
 
             wasGoal = isGoal;

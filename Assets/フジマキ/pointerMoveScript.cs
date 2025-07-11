@@ -1,54 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class pointerMoveScript : MonoBehaviour
 {
-    private GameManager gameManagerScript;
-    public GameObject gameManager;
+    public Transform player; // プレイヤーのTransform
+    public float fixedY = 50f; // 固定するY座標
 
-    private PlayerOperation playerOperationScript;
-    public GameObject playerOperation;
-
-    public float moveSpeed = 0;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        playerOperationScript = playerOperation.GetComponent<PlayerOperation>();
-        if (gameManager == null)
-        {
-            gameManager = GameObject.Find("GameManager"); // 名前に注意！
-        }
-
-        if (gameManager != null)
-        {
-            gameManagerScript = gameManager.GetComponent<GameManager>();
-        }
-        else
-        {
-            Debug.LogError("GameManager オブジェクトが見つかりませんでした！");
-        }
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (playerOperationScript == null)
-        {
-            Debug.LogWarning("playerOperationScript が null です");
-            return;
-        }
+        if (player == null) return;
 
-        moveSpeed= playerOperationScript.GetPlayerSpeed();
+        // プレイヤーの位置に追従
+        transform.position = player.position;
 
-        // 移動入力
-        if (Input.GetKey(KeyCode.W))
-            moveSpeed -= Time.deltaTime;
-        else if (Input.GetKey(KeyCode.S))
-            moveSpeed += Time.deltaTime;
+        Vector3 pos = transform.position;
+        pos.y = fixedY;
+        transform.position = pos;
 
-        // 実際に移動する処理を追加（Z軸に移動する場合）
-        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+        // Y軸の回転だけ180度に設定（X,Zはそのまま）
+        Vector3 rot = transform.eulerAngles;
+        rot.y = 180f;
+        transform.eulerAngles = rot;
+
+        // Y軸の回転だけ合わせる（X/Z回転は固定）
+        transform.rotation = Quaternion.Euler(0, player.eulerAngles.y, 0);
     }
+    void LateUpdate()
+    {
+        if (player == null) return;
+
+        // プレイヤーのY軸回転に180度を加える（360度に収める）
+        float yRotation = (player.eulerAngles.y + 180f) % 360f;
+
+        // オブジェクトのY回転だけ設定（X,Zは保持）
+        Vector3 rot = transform.eulerAngles;
+        rot.y = yRotation;
+        transform.eulerAngles = rot;
+    }
+
 }
