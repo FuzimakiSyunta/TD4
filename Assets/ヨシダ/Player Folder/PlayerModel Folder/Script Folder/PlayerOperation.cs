@@ -55,6 +55,9 @@ public class PlayerOperation : MonoBehaviour
     {
         // 現在のプレイヤーの位置を取得
         Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, -4000f, 530f);
+        pos.z = Mathf.Clamp(pos.z, -17090f, 19585f);
+        transform.position = pos;
 
 
         //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
