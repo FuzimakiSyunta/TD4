@@ -188,8 +188,6 @@ GameObject:
   - component: {fileID: 7599083893397449452}
   - component: {fileID: 8974515062529976569}
   - component: {fileID: 4521447806038436451}
-  - component: {fileID: 5639811823116792297}
-  - component: {fileID: 1860175070263143157}
   m_Layer: 5
   m_Name: GoalCanvas
   m_TagString: Untagged
@@ -283,37 +281,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5639811823116792297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2249242865879871793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ea2785b3b715be48acb7864c479cb31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  goal: {fileID: 0}
-  result: {fileID: 11898971642448920}
-  titleButton: {fileID: 3640845453416211479}
---- !u!114 &1860175070263143157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2249242865879871793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3081bda0c0942204f80165e779c0fbdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  goal: {fileID: 0}
-  gameCamera: {fileID: 0}
-  goalCamera: {fileID: 0}
-  nextSceneName: Title Scene
 --- !u!1 &3599697343069956497
 GameObject:
   m_ObjectHideFlags: 0
