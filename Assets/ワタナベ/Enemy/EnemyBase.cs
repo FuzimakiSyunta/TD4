@@ -20,12 +20,16 @@ public class EnemyBase : MonoBehaviour
 
     // 敵のアニメーション管理(敵のアニメーションを制御する)
 
-
+    [Header("移動量")]
+    public Vector3 moveVec = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
         // 各項目のリセット処理
+
+        // ランダムルートで初期化
+        routeController.InitWithRandomRoute();
 
 
 
@@ -35,17 +39,13 @@ public class EnemyBase : MonoBehaviour
     void Update()
     {
         // ルート制御スクリプトが設定されている場合は、ルート制御の更新を行う
-        if (routeController != null) {
-            // ルート制御の更新処理を呼び出す
-            routeController.Invoke("Update", Time.deltaTime);
-            // ルート制御スクリプトから移動量を取得して、敵の位置を更新する
-            Vector3 moveDirection = routeController.transform.forward; // 仮の移動方向を取得
-            float moveSpeed = 30f; // 仮の移動速度を設定
-            transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
-        }
+        if (routeController != null)
+        {
+            routeController.Advance(Time.deltaTime);
 
-        // 仮で  自身を前方に移動する
-        transform.Translate(Vector3.forward * Time.deltaTime * 30f);
+            moveVec = routeController.GetVelocity();
+            transform.Translate(moveVec * Time.deltaTime, Space.World);
+        }
 
     }
 }
