@@ -31,7 +31,7 @@ public class JCPlayerOperation : MonoBehaviour
 
     void Start()
     {
-        goalScript = GameObject.Find("bike body 1").GetComponent<GoalScript>();
+        goalScript = GameObject.Find("Player").GetComponent<GoalScript>();
 
         if (gameManager != null)
             gameManagerScript = gameManager.GetComponent<GameManager>();
