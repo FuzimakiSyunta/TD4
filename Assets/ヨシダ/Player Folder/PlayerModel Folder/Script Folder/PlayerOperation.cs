@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.CompilerServices;
+using UnityEngine;
 
 public class PlayerOperation : MonoBehaviour
 {
@@ -30,38 +31,38 @@ public class PlayerOperation : MonoBehaviour
     float slopeAngle = 10f;
     [SerializeField]
     GoalScript goalScript;
+    JumpScript jumpScript;
 
     bool wasGrounded = true;
-    float rotationX = 0f; // ← X軸回転角を保持
-    public float jumpForce = 20f; // ジャンプの強さ
+   
 
-    private Rigidbody rb;
+  
 
     void Start()
     {
         goalScript = GameObject.Find("Player").GetComponent<GoalScript>();
+        jumpScript = GameObject.Find("Player").GetComponent<JumpScript>();
 
         if (gameManager != null)
             gameManagerScript = gameManager.GetComponent<GameManager>();
         else
             Debug.LogError("GameManagerが設定されていません。");
 
-        rb = GetComponent<Rigidbody>(); // Rigidbodyを取得
+        
     }
 
     void Update()
     {
+        // 現在のプレイヤーの位置を取得
         Vector3 pos = transform.position;
 
-        transform.position = pos;
 
         //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
         //{
+              // プレイヤーの入力処理
               HandleInput();
-         
-             
-              HandleWheelAnimation();
-             HandleMovement();
+              // ホイールの回転アニメーション処理（走行演出）
+              HandleWheelAnimation();       
         // }
     }
 
@@ -76,15 +77,8 @@ public class PlayerOperation : MonoBehaviour
         }
         rotationY += turnY * turnSpeed * Time.deltaTime;
 
-        // 回転入力（上下/X軸）
-        float turnX = 0f;
-        if (Input.GetKey(KeyCode.UpArrow)) turnX = 1f;
-        else if (Input.GetKey(KeyCode.DownArrow)) turnX = -1f;
-        rotationX += turnX * 50f * Time.deltaTime; // ピッチ速度
-        rotationX = Mathf.Clamp(rotationX, -30f, 30f); // ピッチ制限
-
         // X/Y軸を含んだ回転を作成
-        Quaternion baseRotation = Quaternion.Euler(rotationX, rotationY, 0f);
+        Quaternion baseRotation = Quaternion.Euler(jumpScript.rotationX, rotationY, 0f);
 
         // 地面の法線を取得（Terrain前提）
         Terrain terrain = Terrain.activeTerrain;
@@ -120,40 +114,7 @@ public class PlayerOperation : MonoBehaviour
         transform.position += moveDir * playerSpeed * Time.deltaTime;
     }
 
-    void HandleMovement()
-    {
-        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
-        Ray ray = new Ray(rayOrigin, Vector3.down);
-        RaycastHit hit;
-
-        float slopeThreshold = 5f;
-
-        if (Physics.Raycast(ray, out hit, 2f))
-        {
-            Vector3 groundNormal = hit.normal;
-            slopeAngle = Vector3.Angle(groundNormal, Vector3.up);
-
-            if (slopeAngle > slopeThreshold)
-            {
-                Debug.Log("坂です！ 傾き: " + slopeAngle);
-
-
-
-            }
-            else
-            {
-                //Debug.Log("平坦な地面です");
-
-                //// 平地なのでX軸の傾きだけを0に戻す
-                //Vector3 currentEuler = transform.rotation.eulerAngles;
-                //Quaternion targetRotation = Quaternion.Euler(0f, currentEuler.y, currentEuler.z);
-                //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-                //rotationX = 0f;
-            }
-        }
-
-    }
-
+    
     void HandleWheelAnimation()
     {
         if (frontWheelRotator != null)
@@ -168,28 +129,5 @@ public class PlayerOperation : MonoBehaviour
         return playerSpeed;
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Slope"))
-        {
-            rotationX = -18f;
-            Debug.Log("坂です");
-        }
-
-        if (collision.gameObject.CompareTag("Jump"))
-        {
-
-            Debug.Log("ジャンプ");
-
-            // ジャンプ前に縦の速度をリセット
-            Vector3 velocity = rb.velocity;
-            velocity.y = 0f;
-            rb.velocity = velocity;
-
-            // 上＋前方向にジャンプ力を加える
-            Vector3 jumpDirection = (Vector3.up + transform.forward * 0.3f).normalized;
-            rb.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
-        }
-
-    }
+    
 }
