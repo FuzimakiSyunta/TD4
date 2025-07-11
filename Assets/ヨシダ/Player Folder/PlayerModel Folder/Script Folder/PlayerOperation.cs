@@ -27,12 +27,15 @@ public class PlayerOperation : MonoBehaviour
     float bankLerpSpeed = 5f;
     float currentBank = 0f;
     float targetBank = 0f;
-    float slopeAngle =0f;
-   [SerializeField]
+    float slopeAngle = 10f;
+    [SerializeField]
     GoalScript2 goalScript;
-   
+
     bool wasGrounded = true;
     float rotationX = 0f; // ← X軸回転角を保持
+    public float jumpForce = 20f; // ジャンプの強さ
+
+    private Rigidbody rb;
 
     void Start()
     {
@@ -42,21 +45,21 @@ public class PlayerOperation : MonoBehaviour
             gameManagerScript = gameManager.GetComponent<GameManager>();
         else
             Debug.LogError("GameManagerが設定されていません。");
+
+        rb = GetComponent<Rigidbody>(); // Rigidbodyを取得
     }
 
     void Update()
     {
         Vector3 pos = transform.position;
-        
+
         transform.position = pos;
 
         //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
         //{
-              HandleInput();
-         
-             
-              HandleWheelAnimation();
-             HandleMovement();
+        HandleInput();
+        HandleWheelAnimation();
+        HandleMovement();
         // }
     }
 
@@ -133,23 +136,22 @@ public class PlayerOperation : MonoBehaviour
                 Debug.Log("坂です！ 傾き: " + slopeAngle);
 
 
-                rotationX = -18f;
 
             }
             else
             {
-                Debug.Log("平坦な地面です");
+                //Debug.Log("平坦な地面です");
 
-                // 平地なのでX軸の傾きだけを0に戻す
-                Vector3 currentEuler = transform.rotation.eulerAngles;
-                Quaternion targetRotation = Quaternion.Euler(0f, currentEuler.y, currentEuler.z);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-                rotationX = 0f;
+                //// 平地なのでX軸の傾きだけを0に戻す
+                //Vector3 currentEuler = transform.rotation.eulerAngles;
+                //Quaternion targetRotation = Quaternion.Euler(0f, currentEuler.y, currentEuler.z);
+                //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+                //rotationX = 0f;
             }
         }
 
     }
-   
+
     void HandleWheelAnimation()
     {
         if (frontWheelRotator != null)
@@ -164,4 +166,28 @@ public class PlayerOperation : MonoBehaviour
         return playerSpeed;
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Slope"))
+        {
+            rotationX = -18f;
+            Debug.Log("坂です");
+        }
+
+        if (collision.gameObject.CompareTag("Jump"))
+        {
+
+            Debug.Log("ジャンプ");
+
+            // ジャンプ前に縦の速度をリセット
+            Vector3 velocity = rb.velocity;
+            velocity.y = 0f;
+            rb.velocity = velocity;
+
+            // 上＋前方向にジャンプ力を加える
+            Vector3 jumpDirection = (Vector3.up + transform.forward * 0.3f).normalized;
+            rb.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
+        }
+
+    }
 }
