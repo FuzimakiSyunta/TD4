@@ -29,7 +29,7 @@ public class PlayerOperation : MonoBehaviour
     float targetBank = 0f;
     float slopeAngle = 10f;
     [SerializeField]
-    GoalScript2 goalScript;
+    GoalScript goalScript;
 
     bool wasGrounded = true;
     float rotationX = 0f; // ← X軸回転角を保持
