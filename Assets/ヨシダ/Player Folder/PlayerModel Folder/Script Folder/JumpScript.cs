@@ -24,26 +24,26 @@ public class JumpScript : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Slope"))
-        {
-            rotationX = -18f;
-            Debug.Log("坂です");
-        }
+    //    if (collision.gameObject.CompareTag("Slope"))
+    //    {
+    //        rotationX = -18f;
+    //        Debug.Log("坂です");
+    //    }
 
-        if (collision.gameObject.CompareTag("Jump"))
-        {
+    //    if (collision.gameObject.CompareTag("Jump"))
+    //    {
 
-            Debug.Log("ジャンプ");
+    //        Debug.Log("ジャンプ");
 
-            // ジャンプ前に縦の速度をリセット
-            Vector3 velocity = rb.velocity;
-            velocity.y = 0f;
-            rb.velocity = velocity;
+    //        // ジャンプ前に縦の速度をリセット
+    //        Vector3 velocity = rb.velocity;
+    //        velocity.y = 0f;
+    //        rb.velocity = velocity;
 
-            // 上＋前方向にジャンプ力を加える
-            Vector3 jumpDirection = (Vector3.up + transform.forward * 0.3f).normalized;
-            rb.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
-        }
+    //        // 上＋前方向にジャンプ力を加える
+    //        Vector3 jumpDirection = (Vector3.up + transform.forward * 0.3f).normalized;
+    //        rb.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
+    //    }
 
     }
 

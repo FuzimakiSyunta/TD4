@@ -802,7 +802,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356319812}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9304d7257e1dfe48b1b45cd9371d2a7, type: 3}
   m_Name: 
@@ -815,7 +815,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356319812}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 429b45a783298a2449a7c01301ca29ab, type: 3}
   m_Name: 
@@ -2413,7 +2413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3909644277157914998, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
       propertyPath: m_Name
-      value: bike body 1
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 3909644277157914998, guid: 3f75704f0c953a94199abd14350dc5c1, type: 3}
       propertyPath: m_Layer
@@ -2612,9 +2612,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1937752473}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21a9f134d930aa246a142ea0af805482, type: 3}
+  m_Script: {fileID: 11500000, guid: ff9a53889dafdea4ea56ce444145ee31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationX: 0
 --- !u!114 &1937752489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2622,7 +2623,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1937752473}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b0d871a9a77c904898df86d472b46b6, type: 3}
   m_Name: 
@@ -2638,7 +2639,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1937752473}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42103341d3e7c0c4487417611df863be, type: 3}
   m_Name: 
@@ -2647,6 +2648,11 @@ MonoBehaviour:
   modelTransform: {fileID: 463811047}
   frontWheelRotator: {fileID: 1937752479}
   rearWheelRotator: {fileID: 1937752478}
+  acceleration: 35
+  deceleration: 50
+  maxSpeed: 600
+  brakePower: 300
+  goalScript: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

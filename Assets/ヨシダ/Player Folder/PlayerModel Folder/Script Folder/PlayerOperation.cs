@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerOperation : MonoBehaviour
 {
@@ -48,7 +49,11 @@ public class PlayerOperation : MonoBehaviour
         else
             Debug.LogError("GameManagerが設定されていません。");
 
-        
+        //Joy-Con初期化
+        if (JCScript.Instance == null)
+        {
+            Debug.LogError("JCScript.Instance が見つかりません。Joy-Con操作は無効になります。プロジェクトにJCScriptをアタッチしたGameObjectを配置しているか確認してください。");
+        }
     }
 
     void Update()
@@ -75,10 +80,19 @@ public class PlayerOperation : MonoBehaviour
             if (Input.GetKey(KeyCode.A)) turnY = -1f;
             else if (Input.GetKey(KeyCode.D)) turnY = 1f;
         }
+        //Joy-Con入力
+        if (JCScript.Instance != null)
+        {
+            //左Joy-ConスティックのX軸で旋回
+            if (Mathf.Abs(JCScript.Instance.LeftStick.x) > 0.05f)
+            {
+                turnY = JCScript.Instance.LeftStick.x;
+            }
+        }
         rotationY += turnY * turnSpeed * Time.deltaTime;
 
         // X/Y軸を含んだ回転を作成
-        Quaternion baseRotation = Quaternion.Euler(jumpScript.rotationX, rotationY, 0f);
+        Quaternion baseRotation = Quaternion.Euler(0.0f, rotationY, 0f);
 
         // 地面の法線を取得（Terrain前提）
         Terrain terrain = Terrain.activeTerrain;
@@ -108,6 +122,23 @@ public class PlayerOperation : MonoBehaviour
         else
             playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
 
+        if (JCScript.Instance != null)
+        {
+            //右Joy-ConのZRボタンで加速
+            if (JCScript.Instance.RightZRButton)
+            {
+                playerSpeed += acceleration * Time.deltaTime;
+            }
+            //Joy-ConのSLボタン下がる
+            else if (JCScript.Instance.LeftZLButton)
+            {
+                playerSpeed -= acceleration * Time.deltaTime;
+            }
+            else
+            {
+                playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
+            }
+        }
         playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
 
         // 移動反映
