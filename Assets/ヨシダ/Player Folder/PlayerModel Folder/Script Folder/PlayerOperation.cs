@@ -29,14 +29,14 @@ public class PlayerOperation : MonoBehaviour
     float targetBank = 0f;
     float slopeAngle =0f;
    [SerializeField]
-    GoalScript2 goalScript;
+    GoalScript goalScript;
    
     bool wasGrounded = true;
     float rotationX = 0f; // ← X軸回転角を保持
 
     void Start()
     {
-        goalScript = GameObject.Find("Player").GetComponent<GoalScript2>();
+        goalScript = GameObject.Find("Player").GetComponent<GoalScript>();
 
         if (gameManager != null)
             gameManagerScript = gameManager.GetComponent<GameManager>();
@@ -50,14 +50,14 @@ public class PlayerOperation : MonoBehaviour
         
         transform.position = pos;
 
-        //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
-        //{
-              HandleInput();
-         
-             
-              HandleWheelAnimation();
-             HandleMovement();
-        // }
+        if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
+        {
+            HandleInput();
+
+
+            HandleWheelAnimation();
+            HandleMovement();
+        }
     }
 
     void HandleInput()
@@ -138,7 +138,7 @@ public class PlayerOperation : MonoBehaviour
             }
             else
             {
-                Debug.Log("平坦な地面です");
+                //Debug.Log("平坦な地面です");
 
                 // 平地なのでX軸の傾きだけを0に戻す
                 Vector3 currentEuler = transform.rotation.eulerAngles;
