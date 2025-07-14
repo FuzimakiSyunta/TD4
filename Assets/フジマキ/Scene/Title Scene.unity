@@ -158,6 +158,7 @@ MonoBehaviour:
   - {fileID: 1985779534}
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
   normalColor: {r: 1, g: 1, b: 1, a: 0.3}
+  currentIndex: 0
 --- !u!4 &171901633
 Transform:
   m_ObjectHideFlags: 0
@@ -185,11 +186,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f6eeedf74386043885adc0b832c637, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: SampleScene
+  nextSceneName:
+  - F_CheckPoint
+  - ColorChengeScene
   movingObjects:
   - {fileID: 483696441}
   - {fileID: 430803399}
   - {fileID: 2044989353}
+  GameStartFlag: 0
+  ColorChengeFlag: 0
   fadeImage: {fileID: 2033987334}
   ImageSelector: {fileID: 171901631}
   selectBand: {fileID: 915455968}
@@ -841,7 +846,8 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8955878436431376254, guid: 7f8b8c3c16b24ab4db69f789e9092491, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

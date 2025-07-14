@@ -9,12 +9,9 @@ EditorBuildSettings:
     path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/Title Scene.unity"
     guid: a2da7434b7c1ce54a9b3519684e07f08
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: a87ba75faff85ab4eae0a7cfa78d9ef9
-  - enabled: 0
-    path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/Fujimaki.unity"
-    guid: f8afde483abc7df42874728ca8d573bf
+    path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/F_CheckPoint.unity"
+    guid: 00f2e34edf35b51468c156a02a3815c2
   - enabled: 1
-    path: Assets/Scenes/CourseScene.unity
-    guid: 7f20db8e9d2de1f409b9e2a95f0bf8b8
+    path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/ColorChengeScene.unity"
+    guid: 1510d2941effb12469ff9cd0d69e98e0
   m_configObjects: {}
