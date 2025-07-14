@@ -6,17 +6,45 @@ public class RouteController : MonoBehaviour
     [Header("ルートマネージャー参照")]
     public RouteManager routeManager;
 
-    [Header("移動設定")]
-    public float speed = 5f;
+    [Header("移動速度")]
+    public float speed = 20f;
 
+    // ルートの制御点リスト
     private List<Vector3> controlPoints;
+    // サンプリングされたポイントと累積距離のリスト
     private List<Vector3> sampledPoints = new();
+    // 累積距離のリスト
     private List<float> cumulativeDistances = new();
 
     private float currentDistance = 0f;
     private int samplesPerSegment = 20;
     private bool initialized = false;
 
+    private int currentRouteIndex = 0;
+
+    // 現在のルートインデックスを取得
+    public int GetCurrentRouteIndex() => currentRouteIndex;
+
+
+
+    // 次のルートに切り替え
+    public void SwitchToNextRoute()
+    {
+        if (routeManager == null || routeManager.routeDatas.Count == 0) return;
+        currentRouteIndex = (currentRouteIndex + 1) % routeManager.routeDatas.Count;
+        ChangeRoute(currentRouteIndex);
+    }
+
+    // 前のルートに切り替え
+    public void SwitchToPreviousRoute()
+    {
+        if (routeManager == null || routeManager.routeDatas.Count == 0) return;
+        currentRouteIndex = (currentRouteIndex - 1 + routeManager.routeDatas.Count) % routeManager.routeDatas.Count;
+        ChangeRoute(currentRouteIndex);
+    }
+
+
+    // 初期化時にルートを設定する
     public void InitWithRoute(int routeIndex)
     {
         controlPoints = routeManager.GetRoutePoints(routeIndex);
@@ -29,6 +57,7 @@ public class RouteController : MonoBehaviour
         initialized = true;
     }
 
+    // 初期化時にランダムなルートを設定する
     public void InitWithRandomRoute()
     {
         controlPoints = routeManager.GetRandomRoutePoints();
@@ -75,7 +104,7 @@ public class RouteController : MonoBehaviour
 
         currentDistance += speed * deltaTime;
         Vector3 pos = GetPositionByDistance(currentDistance);
-        transform.position = pos;
+        //transform.position = pos;
 
         Vector3 next = GetPositionByDistance(currentDistance + 1f);
         transform.forward = (next - pos).normalized;
@@ -91,6 +120,7 @@ public class RouteController : MonoBehaviour
 
     public void ChangeRoute(int newRouteIndex)
     {
+        currentRouteIndex = newRouteIndex;
         InitWithRoute(newRouteIndex);
         currentDistance = 0f; // 進行距離リセット（継続したい場合は工夫可能）
     }
