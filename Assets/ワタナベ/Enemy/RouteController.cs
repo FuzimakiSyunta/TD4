@@ -104,12 +104,11 @@ public class RouteController : MonoBehaviour
 
         currentDistance += speed * deltaTime;
         Vector3 pos = GetPositionByDistance(currentDistance);
-        //transform.position = pos;
-
         Vector3 next = GetPositionByDistance(currentDistance + 1f);
         transform.forward = (next - pos).normalized;
     }
 
+    // 移動量の取得
     public Vector3 GetVelocity()
     {
         if (!initialized) return Vector3.zero;
@@ -118,6 +117,7 @@ public class RouteController : MonoBehaviour
         return (posNext - posNow).normalized * speed;
     }
 
+    // ルートを変更する関数
     public void ChangeRoute(int newRouteIndex)
     {
         currentRouteIndex = newRouteIndex;
@@ -125,6 +125,7 @@ public class RouteController : MonoBehaviour
         currentDistance = 0f; // 進行距離リセット（継続したい場合は工夫可能）
     }
 
+    // 進行距離に基づいて位置を取得する関数
     private Vector3 GetPositionByDistance(float distance)
     {
         if (sampledPoints.Count == 0) return Vector3.zero;

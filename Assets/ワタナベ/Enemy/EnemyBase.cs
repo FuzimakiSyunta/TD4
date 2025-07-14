@@ -41,9 +41,11 @@ public class EnemyBase : MonoBehaviour
         // ルート制御スクリプトが設定されている場合は、ルート制御の更新を行う
         if (routeController != null)
         {
+            // ルート・移動量の更新
             routeController.Advance(Time.deltaTime);
-
+            // ルートに沿った移動量を取得
             moveVec = routeController.GetVelocity();
+            // 移動量を適用して敵を移動させる
             transform.Translate(moveVec * Time.deltaTime, Space.World);
         }
 
