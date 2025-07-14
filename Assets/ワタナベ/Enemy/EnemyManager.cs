@@ -29,6 +29,9 @@ public class EnemyData : ScriptableObject
 public class EnemyManager : MonoBehaviour
 {
 
+    [Header("ルート管理スクリプト")]
+    public RouteManager routeManager;
+
     [Header("敵キャラのデータ一覧")]
     public EnemyData[] enemyDatas;
 
