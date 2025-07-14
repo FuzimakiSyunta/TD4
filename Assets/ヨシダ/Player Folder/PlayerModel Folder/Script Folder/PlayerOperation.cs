@@ -1,157 +1,123 @@
-﻿using UnityEngine;
+﻿using System.Runtime.CompilerServices;
+using UnityEngine;
 
 public class PlayerOperation : MonoBehaviour
 {
-    //ゲームマネージャーの参照
-    private GameManager gameManagerScript; // ゲームマネージャーのスクリプト参照
-    public GameObject gameManager; // ゲームマネージャーのオブジェクト
+    private GameManager gameManagerScript;
+    public GameObject gameManager;
 
-
-    public Transform modelTransform; // モデル（見た目）だけを傾ける
+    public Transform modelTransform;
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
 
+    // プレイヤーの現在速度
     float playerSpeed = 0f;
-    float acceleration = 50f;
-    float deceleration = 50f;
-    float maxSpeed = 200f;
-    float brakePower = 50f;
+    //加速
+    public float acceleration = 35f;
+    //減速
+    public float deceleration = 50f;
+    //最大速度
+    public float maxSpeed = 600f;
+    //ブレーキ時の原則
+    public float brakePower = 300f;
 
     float turnSpeed = 100f;
     float rotationY = 0f;
 
-    float bankAngle = 20f;
+    float bankAngle = 10f;
     float bankLerpSpeed = 5f;
     float currentBank = 0f;
     float targetBank = 0f;
-
+    float slopeAngle = 10f;
+    [SerializeField]
     GoalScript goalScript;
+    JumpScript jumpScript;
+
+    bool wasGrounded = true;
+   
+
   
+
     void Start()
     {
-        // stunt = GetComponent<Stunt>();
-        goalScript = GameObject.Find("bike body 1").GetComponent<GoalScript>();
-        // ゲームマネージャーの参照を取得
+        goalScript = GameObject.Find("Player").GetComponent<GoalScript>();
+        jumpScript = GameObject.Find("Player").GetComponent<JumpScript>();
+
         if (gameManager != null)
-        {
             gameManagerScript = gameManager.GetComponent<GameManager>();
-        }
         else
-        {
             Debug.LogError("GameManagerが設定されていません。");
-        }
-    }
+
         
+    }
 
     void Update()
     {
+        // 現在のプレイヤーの位置を取得
         Vector3 pos = transform.position;
-
-
-
-        //座標制御
-        // X軸の制限（-5 ～ 5）
-        pos.x = Mathf.Clamp(pos.x, -2538f,13699f);
-        // Y軸の制限（0 ～ 10）
-        pos.z = Mathf.Clamp(pos.z, -3270f, 3663f);
-
+        pos.x = Mathf.Clamp(pos.x, -4000f, 530f);
+        pos.z = Mathf.Clamp(pos.z, -17090f, 19585f);
         transform.position = pos;
-        if(gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
-        {
-            HandleInput();
-            HandleMovement();
-            HandleBankRotation();
-            HandleWheelAnimation();
-        }
+
+
+        //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
+        //{
+              // プレイヤーの入力処理
+              HandleInput();
+              // ホイールの回転アニメーション処理（走行演出）
+              HandleWheelAnimation();       
+        // }
     }
 
     void HandleInput()
     {
-        float turn = 0f;
-
+        // 回転入力（左右/Y軸）
+        float turnY = 0f;
         if (Mathf.Abs(playerSpeed) > 0.1f)
         {
-            if (Input.GetKey(KeyCode.A)) turn = -1f;
-            else if (Input.GetKey(KeyCode.D)) turn = 1f;
+            if (Input.GetKey(KeyCode.A)) turnY = -1f;
+            else if (Input.GetKey(KeyCode.D)) turnY = 1f;
+        }
+        rotationY += turnY * turnSpeed * Time.deltaTime;
+
+        // X/Y軸を含んだ回転を作成
+        Quaternion baseRotation = Quaternion.Euler(jumpScript.rotationX, rotationY, 0f);
+
+        // 地面の法線を取得（Terrain前提）
+        Terrain terrain = Terrain.activeTerrain;
+        Vector3 groundNormal = Vector3.up;
+        if (terrain != null)
+        {
+            float normX = transform.position.x / terrain.terrainData.size.x;
+            float normZ = transform.position.z / terrain.terrainData.size.z;
+            groundNormal = terrain.terrainData.GetInterpolatedNormal(normX, normZ);
         }
 
-        rotationY += turn * turnSpeed * Time.deltaTime;
-        transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+        // 上下の傾きを含んだ forward 方向
+        Vector3 forward = baseRotation * Vector3.forward;
 
-        // 前進
+        // 地形の傾斜に沿って補正（上下移動を許すなら ProjectOnPlane は使わない）
+        Vector3 moveDir = forward.normalized;
+
+        // 回転反映（地形に合わせる）
+        Quaternion slopeRotation = Quaternion.LookRotation(forward, groundNormal);
+        transform.rotation = slopeRotation;
+
+        // 移動入力（W/S）
         if (Input.GetKey(KeyCode.W))
             playerSpeed += acceleration * Time.deltaTime;
-
-        // 後退
         else if (Input.GetKey(KeyCode.S))
             playerSpeed -= acceleration * Time.deltaTime;
-
-        // 何も押してないときに自然減速
         else
             playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
 
-        // プレイヤーの速度をクランプ（後退も許可）
         playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
-    }
 
-    void HandleMovement()
-    {
-        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
-        Ray ray = new Ray(rayOrigin, Vector3.down);
-        Vector3 moveDir = transform.forward;
-        Vector3 groundNormal = Vector3.up;
-
-        if (Physics.Raycast(ray, out RaycastHit hit, 2f))
-        {
-            groundNormal = hit.normal;
-            moveDir = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
-
-            Quaternion targetRot = Quaternion.LookRotation(moveDir, groundNormal);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 5f);
-        }
-
-        // ★移動方向にWallタグのオブジェクトがあるかチェック
-        Vector3 checkDir = playerSpeed >= 0 ? moveDir : -moveDir;
-        float checkDistance = Mathf.Abs(playerSpeed) * Time.deltaTime + 0.1f;
-
-        if (Physics.Raycast(transform.position, checkDir, out RaycastHit wallHit, checkDistance))
-        {
-            if (wallHit.collider.CompareTag("Wall"))
-            {
-                playerSpeed = 0f; // スピードも止める
-                return; // 移動しない
-            }
-        }
-
-        // 壁がないので移動実行
+        // 移動反映
         transform.position += moveDir * playerSpeed * Time.deltaTime;
     }
 
-
-    void HandleBankRotation()
-    {
-        float turn = 0f;
-        if (playerSpeed >=10000) 
-        {
-            if (Input.GetKey(KeyCode.A))
-            {
-                turn = -1f;
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                turn = 1f;
-            }
-            targetBank = -turn * bankAngle;
-            currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
-            if (modelTransform != null)
-            {
-                modelTransform.localRotation = Quaternion.Euler(0f, 0f, currentBank);
-            }
-        }
-
-       
-    }
-
+    
     void HandleWheelAnimation()
     {
         if (frontWheelRotator != null)
@@ -166,4 +132,5 @@ public class PlayerOperation : MonoBehaviour
         return playerSpeed;
     }
 
+    
 }

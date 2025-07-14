@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3818988291050867966}
   m_Layer: 0
   m_Name: JumpingCollider2
-  m_TagString: Untagged
+  m_TagString: Savable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 4298372956566795127}
   serializedVersion: 2
   m_LocalRotation: {x: -0.35914996, y: 0, z: 0, w: 0.9332799}
-  m_LocalPosition: {x: -48.4, y: -3.1, z: 23.1}
+  m_LocalPosition: {x: -48.4, y: -7.6, z: 27.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51,7 +51,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 120, y: 1, z: 100}
+  m_Size: {x: 120, y: 10, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4330212624868354015
 GameObject:
@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 77629928077761952}
   m_Layer: 0
   m_Name: JumpingCollider
-  m_TagString: Untagged
+  m_TagString: Savable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,7 +79,7 @@ Transform:
   m_GameObject: {fileID: 4330212624868354015}
   serializedVersion: 2
   m_LocalRotation: {x: 0.35915077, y: -0, z: -0, w: 0.9332795}
-  m_LocalPosition: {x: -48.4, y: 0.8, z: 143.7}
+  m_LocalPosition: {x: -48.4, y: -2, z: 141.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -104,7 +104,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 120, y: 1, z: 100}
+  m_Size: {x: 120, y: 10, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &5670994452388346723
 PrefabInstance:
@@ -166,9 +166,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2995317689068278705, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
+      propertyPath: m_TagString
+      value: Savable
+      objectReference: {fileID: 0}
     - target: {fileID: 3376727531592146052, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
       propertyPath: m_Name
       value: SmallJumpingPlatform Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 3376727531592146052, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
+      propertyPath: m_TagString
+      value: Savable
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -179,8 +187,38 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2708734168852104766, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4297445735740144745}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2995317689068278705, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6990953289782868863}
   m_SourcePrefab: {fileID: 100100000, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
+--- !u!1 &7431760694569773266 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2995317689068278705, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}
+  m_PrefabInstance: {fileID: 5670994452388346723}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &6990953289782868863
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431760694569773266}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5495902117074765545, guid: fc6397bfae8804a49a228ee700fc55cc, type: 3}
 --- !u!4 &7720348474364263773 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2708734168852104766, guid: 0600da75df55b414a97f5c57a62d2658, type: 3}

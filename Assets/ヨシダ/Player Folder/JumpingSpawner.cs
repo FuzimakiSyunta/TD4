@@ -1,41 +1,157 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using System.Collections.Generic;
+using System.IO;
+using System;
+using System.Linq;
+using static ObjectsData;
+using static ObjectsSaveData;
 public class JumpingSpawner : MonoBehaviour
 {
-    public GameObject prefab; // ç”Ÿæˆã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-    public int spawnCount = 10; // ç”Ÿæˆæ•°
-    private MeshCollider meshCollider;
+    [Header("ƒWƒƒƒ“ƒv‘äƒvƒŒƒnƒu‚Ì“o˜^")] public GameObject smallJumpPadPrefab; public GameObject bigJumpPadPrefab;
+
+
+    [SerializeField]
+    private Camera mainCamera;
+    private string path;
+    private string currentPrefabName = "¬ƒWƒƒƒ“ƒv‘ä";
+
+    private Dictionary<string, GameObject> prefabDict;
 
     void Start()
     {
-        meshCollider = GetComponent<MeshCollider>(); // MeshColliderã‚’å–å¾—
+        path = Application.dataPath + "/SavedData/objectSaveData.json";
 
-        for (int i = 0; i < spawnCount; i++)
+        //ƒvƒŒƒnƒu«‘‚É“o˜^
+        prefabDict = new Dictionary<string, GameObject>
+    {
+        { "¬ƒWƒƒƒ“ƒv‘ä", smallJumpPadPrefab },
+        { "‘åƒWƒƒƒ“ƒv‘ä", bigJumpPadPrefab }
+    };
+
+        if (File.Exists(path))
         {
-            SpawnInsideMesh();
+            string json = File.ReadAllText(path);
+            ObjectSaveData saveData = JsonUtility.FromJson<ObjectSaveData>(json);
+
+            foreach (ObjectData data in saveData.objects)
+            {
+                if (prefabDict.TryGetValue(data.prefabName, out GameObject prefab))
+                {
+                    GameObject obj = Instantiate(prefab, data.position, data.rotation);
+                    obj.tag = "Savable";
+                    obj.AddComponent<AlreadyLoadedFlag>();
+
+                    var identifier = obj.AddComponent<ObjectIdentifier>();
+                    identifier.id = data.id;
+
+
+                }
+                else
+                {
+                    Debug.LogWarning($"–¢“o˜^‚ÌƒvƒŒƒnƒu–¼‚Å‚·: {data.prefabName}");
+                }
+            }
         }
     }
 
     void Update()
     {
+        //ƒL[‚ÅƒWƒƒƒ“ƒv‘ä‚Ìí—Ş‚ğØ‚è‘Ö‚¦
+        if (Input.GetKeyDown(KeyCode.Alpha5)) currentPrefabName = "¬ƒWƒƒƒ“ƒv‘ä";
+        if (Input.GetKeyDown(KeyCode.Alpha6)) currentPrefabName = "‘åƒWƒƒƒ“ƒv‘ä";
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                CreateObject(hit.point);
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                GameObject clicked = hit.collider.gameObject;
+                if (clicked.CompareTag("Savable"))
+                {
+                    DeleteObject(clicked.transform.root.gameObject);
+                }
+            }
+        }
     }
 
-    void SpawnInsideMesh()
+    void CreateObject(Vector3 position)
     {
-        // MeshColliderã®ç¯„å›²ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ãªä½ç½®ã‚’å–å¾—
-        Vector3 randomPosition = new Vector3(
-            Random.Range(meshCollider.bounds.min.x, meshCollider.bounds.max.x),
-            Random.Range(meshCollider.bounds.min.y, meshCollider.bounds.max.y),
-            Random.Range(meshCollider.bounds.min.z, meshCollider.bounds.max.z)
-        );
+        if (!prefabDict.ContainsKey(currentPrefabName)) return;
+        GameObject obj = Instantiate(prefabDict[currentPrefabName], position, Quaternion.identity);
+        obj.tag = "Savable";
 
-        // ç”Ÿæˆã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ MeshCollider ã®å­ã«è¨­å®š
-        GameObject newObj = Instantiate(prefab, randomPosition, Quaternion.identity);
-        newObj.transform.parent = transform;
+        // ObjectIdentifier ‚ğ’Ç‰Á‚µ‚ÄˆêˆÓ‚ÈID‚ğŠ„‚è“–‚Ä‚é
+        var identifier = obj.AddComponent<ObjectIdentifier>();
+        identifier.id = Guid.NewGuid().ToString();
+
+        ObjectSaveData saveData = LoadData();
+        ObjectData data = new ObjectData
+        {
+            id = Guid.NewGuid().ToString(),
+            prefabName = currentPrefabName,
+            position = obj.transform.position,
+            rotation = obj.transform.rotation
+        };
+
+        saveData.objects.Add(data);
+        SaveJson(saveData);
+    }
+
+    //void DeleteObject(GameObject target)
+    //{
+    //    ObjectSaveData saveData = LoadData();
+
+    //    saveData.objects.RemoveAll(o =>
+    //        Vector3.Distance(o.position, target.transform.position) < 0.01f &&
+    //        Quaternion.Angle(o.rotation, target.transform.rotation) < 1f);
+
+    //    Destroy(target);
+    //    SaveJson(saveData);
+    //}
+
+    void DeleteObject(GameObject target)
+    {
+        ObjectSaveData saveData = LoadData();
+
+        var identifier = target.GetComponent<ObjectIdentifier>();
+        if (identifier == null)
+        {
+            Debug.LogWarning("íœ‘ÎÛ‚ÉID‚ª‚ ‚è‚Ü‚¹‚ñi–¢•Û‘¶‚©–³Œøj");
+            return;
+        }
+
+        saveData.objects.RemoveAll(o => o.id == identifier.id);
+
+        Destroy(target);
+        SaveJson(saveData);
+        Debug.Log($"íœ•Û‘¶‚³‚ê‚Ü‚µ‚½: {identifier.id}");
     }
 
 
+
+    ObjectSaveData LoadData()
+    {
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            return JsonUtility.FromJson<ObjectSaveData>(json);
+        }
+        return new ObjectSaveData();
+    }
+
+    void SaveJson(ObjectSaveData saveData)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(path));
+        string json = JsonUtility.ToJson(saveData, true);
+        File.WriteAllText(path, json);
+    }
 }

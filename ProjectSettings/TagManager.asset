@@ -11,6 +11,8 @@ TagManager:
   - Checkpoint3
   - Goal
   - Wall
+  - Savable
+  - Jump
   layers:
   - Default
   - TransparentFX
