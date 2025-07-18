@@ -106,18 +106,6 @@ public class JumpingSpawner : MonoBehaviour
         SaveJson(saveData);
     }
 
-    //void DeleteObject(GameObject target)
-    //{
-    //    ObjectSaveData saveData = LoadData();
-
-    //    saveData.objects.RemoveAll(o =>
-    //        Vector3.Distance(o.position, target.transform.position) < 0.01f &&
-    //        Quaternion.Angle(o.rotation, target.transform.rotation) < 1f);
-
-    //    Destroy(target);
-    //    SaveJson(saveData);
-    //}
-
     void DeleteObject(GameObject target)
     {
         ObjectSaveData saveData = LoadData();
