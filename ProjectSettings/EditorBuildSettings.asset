@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CourseScene.unity
     guid: 7f20db8e9d2de1f409b9e2a95f0bf8b8
+  - enabled: 1
+    path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/F_CheckPoint.unity"
+    guid: 75e2fdecd3d783e4c8e18b238eb7217c
   m_configObjects: {}
