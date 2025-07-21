@@ -124,6 +124,8 @@ public class EnemyBase : MonoBehaviour
 
     }
 
+        //HandleWheelAnimation();
+
         //// 移動系の処理(アニメーション含む)
 
         //// 回転入力（左右/Y軸）
