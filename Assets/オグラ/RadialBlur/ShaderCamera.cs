@@ -18,25 +18,20 @@ public class ShaderCamera : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("Updateならできてるよ");
     
     }
 
     void OnEnable()
     {
-        // この条件がtrueになると、スクリプトが無効になります
+        //この条件がtrueになると、スクリプトが無効になります
         if (blurMaterial == null || blurMaterial.shader == null || !blurMaterial.shader.isSupported)
         {
-            Debug.LogError("OnEnableもできた");
-            enabled = true; // ★この行がスクリプトを無効にしています
+            enabled = true;
         }
     }
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        // ここにデバッグログを追加
-        Debug.Log("これできてんの？");
-
         if (blurMaterial == null)
         {
             Graphics.Blit(source, destination);
