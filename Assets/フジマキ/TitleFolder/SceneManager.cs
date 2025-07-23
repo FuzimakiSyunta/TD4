@@ -99,6 +99,7 @@ public class SceneSwitcher : MonoBehaviour
             {
                 fadeImage.gameObject.SetActive(true);
             }
+            PlayerPrefs.Save();
         }
 
         if (isSequenceStarted)

@@ -885,6 +885,22 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 171901631}
+    - target: {fileID: 7176599283396213463, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: colorIndex
+      value: 
+      objectReference: {fileID: 11400000, guid: 03727ca513f16a848a4578fa175fa189, type: 2}
+    - target: {fileID: 7176599283396213463, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: materialList
+      value: 
+      objectReference: {fileID: 11400000, guid: 21fc1b88583385d4d93b3a6180c51e01, type: 2}
+    - target: {fileID: 8263396741317995169, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: colorIndex
+      value: 
+      objectReference: {fileID: 11400000, guid: 03727ca513f16a848a4578fa175fa189, type: 2}
+    - target: {fileID: 8263396741317995169, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: materialList
+      value: 
+      objectReference: {fileID: 11400000, guid: d6e6c0fa7dec5824e8cb7fc6b47ca226, type: 2}
     - target: {fileID: 9109231886190324215, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       propertyPath: m_Name
       value: flont wheel
