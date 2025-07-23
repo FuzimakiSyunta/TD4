@@ -24,11 +24,7 @@ public class PlayerOperation : MonoBehaviour
     float turnSpeed = 100f;
     float rotationY = 0f;
 
-    float bankAngle = 10f;
-    float bankLerpSpeed = 5f;
-    float currentBank = 0f;
-    float targetBank = 0f;
-    float slopeAngle = 10f;
+
     [SerializeField]
     GoalScript goalScript;
     JumpScript jumpScript;
