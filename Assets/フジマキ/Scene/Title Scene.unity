@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSceneName:
-  - F_CheckPoint
+  - Yabe_CheckPoint
   - ColorChengeScene
   - 
   - 

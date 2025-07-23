@@ -1815,7 +1815,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201787302}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -4638,7 +4638,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 311937044}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -6651,10 +6651,18 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2646048566673648640, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime1
+      value: 35209
+      objectReference: {fileID: 0}
     - target: {fileID: 6874903352487586762, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
       propertyPath: m_Name
       value: CheckPoint2Particle
       objectReference: {fileID: 0}
+    - target: {fileID: 8649418708241925326, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4e14bea75b24bb64f9e22884cf33e327, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10510,10 +10518,18 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2646048566673648640, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime1
+      value: 35209
+      objectReference: {fileID: 0}
     - target: {fileID: 6874903352487586762, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
       propertyPath: m_Name
       value: CheckPoint1Particle
       objectReference: {fileID: 0}
+    - target: {fileID: 8649418708241925326, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4e14bea75b24bb64f9e22884cf33e327, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11334,7 +11350,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033441939}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -13757,10 +13773,18 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2646048566673648640, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime1
+      value: 35209
+      objectReference: {fileID: 0}
     - target: {fileID: 6874903352487586762, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
       propertyPath: m_Name
       value: CheckPoint3Particle
       objectReference: {fileID: 0}
+    - target: {fileID: 8649418708241925326, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4e14bea75b24bb64f9e22884cf33e327, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14056,7 +14080,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335581932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -17497,11 +17521,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8335226098903153046, guid: 791a2f2df7caa954aaeaf9a05fc00a3d, type: 3}
   m_PrefabInstance: {fileID: 291910242}
   m_PrefabAsset: {fileID: 0}
---- !u!20 &1737968911 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 915058578863215997, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-  m_PrefabInstance: {fileID: 6151012393912962905}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1740625434 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: de75c6a7d27beb64b96b3ef565c266c4, type: 3}
@@ -17907,10 +17926,18 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2646048566673648640, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime1
+      value: 35209
+      objectReference: {fileID: 0}
     - target: {fileID: 6874903352487586762, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
       propertyPath: m_Name
       value: CheckPoint3Particle
       objectReference: {fileID: 0}
+    - target: {fileID: 8649418708241925326, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4e14bea75b24bb64f9e22884cf33e327, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18046,7 +18073,7 @@ PrefabInstance:
     - target: {fileID: 1860175070263143157, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
       propertyPath: goalCamera
       value: 
-      objectReference: {fileID: 1737968911}
+      objectReference: {fileID: 0}
     - target: {fileID: 2120820161416534511, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -19102,10 +19129,18 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2646048566673648640, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime1
+      value: 35209
+      objectReference: {fileID: 0}
     - target: {fileID: 6874903352487586762, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
       propertyPath: m_Name
       value: CheckPoint2Particle
       objectReference: {fileID: 0}
+    - target: {fileID: 8649418708241925326, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4e14bea75b24bb64f9e22884cf33e327, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20875,6 +20910,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5433320611376603201, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: maxSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433320611376603201, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: brakePower
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433320611376603201, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: acceleration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433320611376603201, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: deceleration
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5772410527799040526, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -21011,10 +21062,18 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2646048566673648640, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime1
+      value: 35209
+      objectReference: {fileID: 0}
     - target: {fileID: 6874903352487586762, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
       propertyPath: m_Name
       value: CheckPoint1Particle
       objectReference: {fileID: 0}
+    - target: {fileID: 8649418708241925326, guid: 56e3a7157cace8f4c88b2bec6a2bf92e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4e14bea75b24bb64f9e22884cf33e327, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
