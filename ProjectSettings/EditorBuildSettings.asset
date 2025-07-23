@@ -9,9 +9,9 @@ EditorBuildSettings:
     path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/Title Scene.unity"
     guid: a2da7434b7c1ce54a9b3519684e07f08
   - enabled: 1
-    path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/F_CheckPoint.unity"
-    guid: 00f2e34edf35b51468c156a02a3815c2
-  - enabled: 1
     path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/ColorChengeScene.unity"
     guid: 1510d2941effb12469ff9cd0d69e98e0
+  - enabled: 1
+    path: "Assets/\u30E4\u30D9/Yabe_CheckPoint.unity"
+    guid: e4e9aef76237d844b82ff2bae513fb32
   m_configObjects: {}
