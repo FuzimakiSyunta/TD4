@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Linq;
-
-[System.Serializable]
-public class ObjectData
-{
-    public string id; 
-    public Vector3 position;
-    public Quaternion rotation;
-}
-
-[System.Serializable]
-public class ObjectSaveData
-{
-    public List<ObjectData> objects = new List<ObjectData>();
-}
-
+using static ObjectsData;
+using static ObjectsSaveData;
 public class JumpingSpawner : MonoBehaviour
 {
-    public GameObject prefab; // プレハブ
-    [SerializeField] private Camera mainCamera;
+    [Header("ジャンプ台プレハブの登録")] public GameObject smallJumpPadPrefab; public GameObject bigJumpPadPrefab;
+
+
+    [SerializeField]
+    private Camera mainCamera;
     private string path;
+    private string currentPrefabName = "小ジャンプ台";
+
+    private Dictionary<string, GameObject> prefabDict;
 
     void Start()
     {
         path = Application.dataPath + "/SavedData/objectSaveData.json";
+
+        //プレハブ辞書に登録
+        prefabDict = new Dictionary<string, GameObject>
+    {
+        { "小ジャンプ台", smallJumpPadPrefab },
+        { "大ジャンプ台", bigJumpPadPrefab }
+    };
 
         if (File.Exists(path))
         {
@@ -35,29 +35,49 @@ public class JumpingSpawner : MonoBehaviour
 
             foreach (ObjectData data in saveData.objects)
             {
-                GameObject obj = Instantiate(prefab, data.position,data.rotation);
-                obj.tag = "Savable"; // 忘れずにタグを設定
-                obj.AddComponent<AlreadyLoadedFlag>(); 
+                if (prefabDict.TryGetValue(data.prefabName, out GameObject prefab))
+                {
+                    GameObject obj = Instantiate(prefab, data.position, data.rotation);
+                    obj.tag = "Savable";
+                    obj.AddComponent<AlreadyLoadedFlag>();
+
+                    var identifier = obj.AddComponent<ObjectIdentifier>();
+                    identifier.id = data.id;
+
+
+                }
+                else
+                {
+                    Debug.LogWarning($"未登録のプレハブ名です: {data.prefabName}");
+                }
             }
         }
     }
 
     void Update()
     {
+        //キーでジャンプ台の種類を切り替え
+        if (Input.GetKeyDown(KeyCode.Alpha5)) currentPrefabName = "小ジャンプ台";
+        if (Input.GetKeyDown(KeyCode.Alpha6)) currentPrefabName = "大ジャンプ台";
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                GameObject clicked = hit.collider.gameObject;
+                CreateObject(hit.point);
+            }
+        }
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                GameObject clicked = hit.collider.gameObject;
                 if (clicked.CompareTag("Savable"))
                 {
                     DeleteObject(clicked.transform.root.gameObject);
-                }
-                else
-                {
-                    CreateObject(hit.point);
                 }
             }
         }
@@ -65,44 +85,46 @@ public class JumpingSpawner : MonoBehaviour
 
     void CreateObject(Vector3 position)
     {
-        GameObject obj = Instantiate(prefab, position, Quaternion.identity);
+        if (!prefabDict.ContainsKey(currentPrefabName)) return;
+        GameObject obj = Instantiate(prefabDict[currentPrefabName], position, Quaternion.identity);
         obj.tag = "Savable";
 
+        // ObjectIdentifier を追加して一意なIDを割り当てる
+        var identifier = obj.AddComponent<ObjectIdentifier>();
+        identifier.id = Guid.NewGuid().ToString();
+
         ObjectSaveData saveData = LoadData();
-        ObjectData newData = new ObjectData
+        ObjectData data = new ObjectData
         {
             id = Guid.NewGuid().ToString(),
+            prefabName = currentPrefabName,
             position = obj.transform.position,
             rotation = obj.transform.rotation
         };
-      
 
-        // IDがまだない場合だけ追加
-        if (!saveData.objects.Any(o => o.id == newData.id))
-        {
-            saveData.objects.Add(newData);
-            SaveJson(saveData); // ← 追加したときだけ保存
-        }
-
-
+        saveData.objects.Add(data);
+        SaveJson(saveData);
     }
 
     void DeleteObject(GameObject target)
     {
         ObjectSaveData saveData = LoadData();
 
-        // 削除処理：位置と回転がほぼ一致するデータを除去
-        saveData.objects.RemoveAll(o =>
-            Vector3.Distance(o.position, target.transform.position) < 0.01f &&
-            Quaternion.Angle(o.rotation, target.transform.rotation) < 1f);
+        var identifier = target.GetComponent<ObjectIdentifier>();
+        if (identifier == null)
+        {
+            Debug.LogWarning("削除対象にIDがありません（未保存か無効）");
+            return;
+        }
+
+        saveData.objects.RemoveAll(o => o.id == identifier.id);
 
         Destroy(target);
-
-        // 削除済みデータを保存
         SaveJson(saveData);
-
-
+        Debug.Log($"削除保存されました: {identifier.id}");
     }
+
+
 
     ObjectSaveData LoadData()
     {
@@ -117,8 +139,7 @@ public class JumpingSpawner : MonoBehaviour
     void SaveJson(ObjectSaveData saveData)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(path));
-        string json = JsonUtility.ToJson(saveData,true);
+        string json = JsonUtility.ToJson(saveData, true);
         File.WriteAllText(path, json);
     }
 }
-

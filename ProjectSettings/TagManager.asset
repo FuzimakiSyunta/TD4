@@ -12,6 +12,7 @@ TagManager:
   - Goal
   - Wall
   - Savable
+  - Jump
   layers:
   - Default
   - TransparentFX

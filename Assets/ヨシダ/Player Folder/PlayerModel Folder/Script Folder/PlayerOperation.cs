@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.CompilerServices;
+using UnityEngine;
 
 public class PlayerOperation : MonoBehaviour
 {
@@ -9,63 +10,96 @@ public class PlayerOperation : MonoBehaviour
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
 
+    // プレイヤーの現在速度
     float playerSpeed = 0f;
-    float acceleration = 35f;
-    float deceleration = 50f;
-    float maxSpeed = 600f;
-    float brakePower = 300f;
+    //加速
+    public float acceleration = 35f;
+    //減速
+    public float deceleration = 50f;
+    //最大速度
+    public float maxSpeed = 600f;
+    //ブレーキ時の原則
+    public float brakePower = 300f;
 
     float turnSpeed = 100f;
     float rotationY = 0f;
 
-    float bankAngle = 10f;
-    float bankLerpSpeed = 5f;
-    float currentBank = 0f;
-    float targetBank = 0f;
+
     [SerializeField]
-    GoalScript2 goalScript;
+    GoalScript goalScript;
+    JumpScript jumpScript;
 
     bool wasGrounded = true;
+   
+
+  
 
     void Start()
     {
-        goalScript = GameObject.Find("Player").GetComponent<GoalScript2>();
+        goalScript = GameObject.Find("Player").GetComponent<GoalScript>();
+        jumpScript = GameObject.Find("Player").GetComponent<JumpScript>();
 
         if (gameManager != null)
             gameManagerScript = gameManager.GetComponent<GameManager>();
         else
             Debug.LogError("GameManagerが設定されていません。");
+
+        
     }
 
     void Update()
     {
+        // 現在のプレイヤーの位置を取得
         Vector3 pos = transform.position;
-        pos.x = Mathf.Clamp(pos.x, -15601f, -11667f);
-        pos.z = Mathf.Clamp(pos.z, -10979f, 6673f);
+        pos.x = Mathf.Clamp(pos.x, -4000f, 530f);
+        pos.z = Mathf.Clamp(pos.z, -17090f, 19585f);
         transform.position = pos;
+
 
         //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
         //{
-            HandleInput();
-            HandleMovement();
-            HandleBankRotation();
-            HandleWheelAnimation();
-       // }
+              // プレイヤーの入力処理
+              HandleInput();
+              // ホイールの回転アニメーション処理（走行演出）
+              HandleWheelAnimation();       
+        // }
     }
 
     void HandleInput()
     {
-        float turn = 0f;
-
+        // 回転入力（左右/Y軸）
+        float turnY = 0f;
         if (Mathf.Abs(playerSpeed) > 0.1f)
         {
-            if (Input.GetKey(KeyCode.A)) turn = -1f;
-            else if (Input.GetKey(KeyCode.D)) turn = 1f;
+            if (Input.GetKey(KeyCode.A)) turnY = -1f;
+            else if (Input.GetKey(KeyCode.D)) turnY = 1f;
+        }
+        rotationY += turnY * turnSpeed * Time.deltaTime;
+
+        // X/Y軸を含んだ回転を作成
+        Quaternion baseRotation = Quaternion.Euler(jumpScript.rotationX, rotationY, 0f);
+
+        // 地面の法線を取得（Terrain前提）
+        Terrain terrain = Terrain.activeTerrain;
+        Vector3 groundNormal = Vector3.up;
+        if (terrain != null)
+        {
+            float normX = transform.position.x / terrain.terrainData.size.x;
+            float normZ = transform.position.z / terrain.terrainData.size.z;
+            groundNormal = terrain.terrainData.GetInterpolatedNormal(normX, normZ);
         }
 
-        rotationY += turn * turnSpeed * Time.deltaTime;
-        transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+        // 上下の傾きを含んだ forward 方向
+        Vector3 forward = baseRotation * Vector3.forward;
 
+        // 地形の傾斜に沿って補正（上下移動を許すなら ProjectOnPlane は使わない）
+        Vector3 moveDir = forward.normalized;
+
+        // 回転反映（地形に合わせる）
+        Quaternion slopeRotation = Quaternion.LookRotation(forward, groundNormal);
+        transform.rotation = slopeRotation;
+
+        // 移動入力（W/S）
         if (Input.GetKey(KeyCode.W))
             playerSpeed += acceleration * Time.deltaTime;
         else if (Input.GetKey(KeyCode.S))
@@ -74,92 +108,12 @@ public class PlayerOperation : MonoBehaviour
             playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
 
         playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
-    }
 
-    void HandleMovement()
-    {
-        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
-        Ray ray = new Ray(rayOrigin, Vector3.down);
-        Vector3 moveDir = transform.forward;
-        Vector3 groundNormal = Vector3.up;
-
-        bool isGrounded = false;
-
-        if (Physics.Raycast(ray, out RaycastHit hit, 5f))
-        {
-            isGrounded = true;
-
-            groundNormal = hit.normal;
-            float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
-            float slopeLimit = 50f;
-
-            if (slopeAngle <= slopeLimit)
-            {
-                moveDir = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
-
-                Quaternion targetRot = Quaternion.LookRotation(moveDir, groundNormal);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 3f);
-
-                Vector3 targetPos = new Vector3(transform.position.x, hit.point.y, transform.position.z);
-                transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 5f);
-
-                float slopeFactor = Vector3.Dot(groundNormal, moveDir);
-                float slopeEffect = 1f - Mathf.Clamp01(-slopeFactor);
-                playerSpeed *= Mathf.Lerp(1f, 0.95f, 1f - slopeEffect);
-            }
-            else
-            {
-                playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, Time.deltaTime * 50f);
-            }
-        }
-
-        // 坂の終わり（地面がなくなった）瞬間にジャンプ
-        if (!isGrounded && wasGrounded)
-        {
-            Jump();
-        }
-
-        wasGrounded = isGrounded;
-
-        Vector3 checkDir = playerSpeed >= 0 ? moveDir : -moveDir;
-        float checkDistance = Mathf.Abs(playerSpeed) * Time.deltaTime + 0.1f;
-
-        if (Physics.Raycast(transform.position, checkDir, out RaycastHit wallHit, checkDistance))
-        {
-            if (wallHit.collider.CompareTag("Wall"))
-            {
-                playerSpeed = 0f;
-                return;
-            }
-        }
-
+        // 移動反映
         transform.position += moveDir * playerSpeed * Time.deltaTime;
     }
 
-    void Jump()
-    {
-        // 上方向に3ユニットジャンプ（演出に合わせて調整可能）
-        transform.position += Vector3.up * 3f;
-        Debug.Log("ジャンプ！");
-    }
-
-    void HandleBankRotation()
-    {
-        float turn = 0f;
-
-        if (Mathf.Abs(playerSpeed) > 5f)
-        {
-            if (Input.GetKey(KeyCode.A)) turn = -1f;
-            else if (Input.GetKey(KeyCode.D)) turn = 1f;
-        }
-
-        targetBank = -turn * bankAngle;
-        currentBank = Mathf.Lerp(currentBank, targetBank, Time.deltaTime * bankLerpSpeed);
-
-        if (modelTransform != null)
-            modelTransform.localRotation = Quaternion.Euler(0f, 0f, currentBank);
-    }
-
+    
     void HandleWheelAnimation()
     {
         if (frontWheelRotator != null)
@@ -174,4 +128,5 @@ public class PlayerOperation : MonoBehaviour
         return playerSpeed;
     }
 
+    
 }

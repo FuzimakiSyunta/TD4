@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 3363229059620901464}
   serializedVersion: 2
   m_LocalRotation: {x: 0.2851776, y: -0, z: -0, w: 0.9584747}
-  m_LocalPosition: {x: -58.2, y: 0.8, z: 133.2}
+  m_LocalPosition: {x: -58.2, y: -5.9, z: 136.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51,7 +51,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 120, y: 10, z: 100}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6600449040429922731
 GameObject:
@@ -104,7 +104,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 120, y: 10, z: 100}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &228833193109651246
 PrefabInstance:
@@ -159,6 +159,22 @@ PrefabInstance:
       value: SmallJumpingPlatform
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e64c1d2a637c35242b9e3f9495c9bb87, type: 3}
+      propertyPath: m_TagString
+      value: Savable
+      objectReference: {fileID: 0}
+    - target: {fileID: 1199601315987497298, guid: e64c1d2a637c35242b9e3f9495c9bb87, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1199601315987497298, guid: e64c1d2a637c35242b9e3f9495c9bb87, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1199601315987497298, guid: e64c1d2a637c35242b9e3f9495c9bb87, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204925349720078976, guid: e64c1d2a637c35242b9e3f9495c9bb87, type: 3}
       propertyPath: m_TagString
       value: Savable
       objectReference: {fileID: 0}
