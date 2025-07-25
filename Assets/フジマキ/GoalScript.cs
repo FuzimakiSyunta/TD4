@@ -56,7 +56,7 @@ public class GoalScript : MonoBehaviour
             checkpoint[2] = false;
 
             lap += 1;
-            //Debug.Log("ÉSÅ[Éã");
+            Debug.Log("ÉSÅ[Éã");
 
         }
 

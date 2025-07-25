@@ -30,9 +30,6 @@ public class PlayerOperation : MonoBehaviour
     JumpScript jumpScript;
 
     bool wasGrounded = true;
-   
-
-  
 
     void Start()
     {
@@ -99,13 +96,16 @@ public class PlayerOperation : MonoBehaviour
         Quaternion slopeRotation = Quaternion.LookRotation(forward, groundNormal);
         transform.rotation = slopeRotation;
 
-        // 移動入力（W/S）
-        if (Input.GetKey(KeyCode.W))
-            playerSpeed += acceleration * Time.deltaTime;
-        else if (Input.GetKey(KeyCode.S))
-            playerSpeed -= acceleration * Time.deltaTime;
-        else
-            playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
+        if (!goalScript.IsGoal())
+        {
+            // 移動入力（W/S）
+            if (Input.GetKey(KeyCode.W))
+                playerSpeed += acceleration * Time.deltaTime;
+            else if (Input.GetKey(KeyCode.S))
+                playerSpeed -= acceleration * Time.deltaTime;
+            else
+                playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
+        }
 
         playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
 

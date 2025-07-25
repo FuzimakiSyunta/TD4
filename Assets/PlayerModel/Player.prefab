@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 8926279600647647321}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 482.8, z: 0}
+  m_LocalPosition: {x: 0, y: -412, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -234,27 +234,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0.015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.59
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 150
+      value: 0.179
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2377.96
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       propertyPath: m_LocalRotation.w
@@ -360,9 +360,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fbc0f5ffca811047af2abdecde1d3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialList: {fileID: 0}
-  colorIndex: {fileID: 0}
+  materialList: {fileID: 11400000, guid: 21fc1b88583385d4d93b3a6180c51e01, type: 2}
+  colorIndex: {fileID: 11400000, guid: 03727ca513f16a848a4578fa175fa189, type: 2}
   targetRenderer: {fileID: 5772410527799040526}
+  allowedScenes:
+  - ColorChengeScene
 --- !u!4 &4726837344603469448 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
@@ -636,9 +638,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8fef79a0235fdd41ba72db13d873265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialList: {fileID: 0}
-  colorIndex: {fileID: 0}
+  materialList: {fileID: 11400000, guid: d6e6c0fa7dec5824e8cb7fc6b47ca226, type: 2}
+  colorIndex: {fileID: 11400000, guid: 03727ca513f16a848a4578fa175fa189, type: 2}
   targetRenderer: {fileID: 60605287606792732}
+  allowedScenes:
+  - ColorChengeScene
 --- !u!4 &5247449155362744338 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 181672137174939881, guid: a5235ee865af4a64a9b1f352214780e1, type: 3}
