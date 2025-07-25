@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: EnemyData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  prefab: {fileID: 0}
+  prefab: {fileID: 5391592886117837874, guid: 37cb0b962ec7b874e82ca177d8021ee6, type: 3}
   initialPosition: {x: 0, y: 0, z: 0}
   health: 0
   speed: 0
