@@ -47,9 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   routeManager: {fileID: 3168719498172223467}
   enemyDatas:
-  - {fileID: 11400000, guid: 6ca6a383391ecbb4496870a077477b04, type: 2}
-  - {fileID: 11400000, guid: 93c452a20a9130048948980dc567ea20, type: 2}
-  - {fileID: 11400000, guid: 9933b2c272e1f7d4bb498c9ee36ce0f0, type: 2}
+  - {fileID: 11400000, guid: f7df2ef9e4a0c034ab0372eb87f68bac, type: 2}
+  - {fileID: 11400000, guid: 1ee053c78e9ecb841ab8b1e55cfa400c, type: 2}
+  - {fileID: 11400000, guid: b98a56de608ec2442b3d9d2e5c85961b, type: 2}
   spawnedEnemies: []
   isSpawnEnemy: 0
 --- !u!114 &3168719498172223467
