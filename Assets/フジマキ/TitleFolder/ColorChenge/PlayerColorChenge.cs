@@ -12,6 +12,9 @@ public class PlayerMaterialSwitcher : MonoBehaviour
     [Header("切り替え対象のRenderer")]
     [SerializeField] private Renderer targetRenderer;
 
+    [Header("カラーチェンジを許可するシーン名（カンマ区切り）")]
+    public string[] allowedScenes = { "ColorChengeScene" };
+
     void Start()
     {
         if (targetRenderer == null)
@@ -26,18 +29,22 @@ public class PlayerMaterialSwitcher : MonoBehaviour
 
     void Update()
     {
-        // 特定のシーン名でのみ切り替えを許可
-        if (SceneManager.GetActiveScene().name != "ColorChengeScene") return;
+        if (!IsSceneAllowed()) return; // ← 現在のシーンが対象外なら入力を無視
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            SwitchToNextMaterial();
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            SwitchToBackMaterial();
-        }
+        if (Input.GetKeyDown(KeyCode.RightArrow)) SwitchToNextMaterial();
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) SwitchToBackMaterial();
     }
+
+    bool IsSceneAllowed() // ← 追加: シーン名が許可されているか確認
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        foreach (string scene in allowedScenes)
+        {
+            if (scene == currentScene) return true;
+        }
+        return false;
+    }
+
 
     /// <summary>次のマテリアルに切り替え</summary>
     public void SwitchToNextMaterial()
