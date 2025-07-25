@@ -30808,6 +30808,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GoalCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2249242865879871793, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2730898965395114408, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 598
