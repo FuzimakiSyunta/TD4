@@ -65,8 +65,6 @@ public class EnemyBase : MonoBehaviour
         // ランダムルートで初期化
         routeController.InitWithRandomRoute();
 
-
-
     }
 
     // Update is called once per frame
@@ -76,43 +74,55 @@ public class EnemyBase : MonoBehaviour
         if (routeController != null)
         {
             // -- 加速処理 -- //
+            
             // 目標速度に向けて加速（今は常時加速）
             moveSpeed += acceleration * Time.deltaTime;
             moveSpeed = Mathf.Clamp(moveSpeed, 0f, maxSpeed);
 
 
             // -- ルート計算処理 -- //
+
             // ルート・移動量の更新
             routeController.Advance(moveSpeed, Time.deltaTime);
             // ルートに沿った移動方向を取得
-            moveVec = routeController.GetDirection();
+            moveVec = routeController.GetDirection().normalized;
 
 
+            // -- 移動処理 -- //
+            
             // 実際の移動（速度ベース）
             Vector3 move = moveVec * moveSpeed * Time.deltaTime;
             transform.position += move;
 
 
-            // -- 向き補正（徐々に回す）-- //
-            Vector3 currentForward = transform.forward;
+            // -- 回転処理 -- //
 
-            // 地形法線
-            Terrain terrain = Terrain.activeTerrain;
-            Vector3 groundNormal = Vector3.up;
-            if (terrain != null)
-            {
-                float normX = transform.position.x / terrain.terrainData.size.x;
-                float normZ = transform.position.z / terrain.terrainData.size.z;
-                groundNormal = terrain.terrainData.GetInterpolatedNormal(normX, normZ);
-            }
+            // 方向を移動量から計算
+            Quaternion targetRotation = Quaternion.LookRotation(moveVec, Vector3.up);
+            // 回転をスムーズに行う
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed / 100f);
 
-            // スムーズな回転（角速度制限あり）
-            float rotationSpeed = 3.0f; // ラジアン/秒
-            Vector3 newForward = Vector3.RotateTowards(currentForward, moveVec, rotationSpeed * Time.deltaTime, 0f);
 
-            // 地形に沿った回転を適用
-            Quaternion slopeRotation = Quaternion.LookRotation(newForward, groundNormal);
-            transform.rotation = slopeRotation;
+            //// -- 向き補正（徐々に回す）-- //
+            //Vector3 currentForward = transform.forward;
+
+            //// 地形法線
+            //Terrain terrain = Terrain.activeTerrain;
+            //Vector3 groundNormal = Vector3.up;
+            //if (terrain != null)
+            //{
+            //    float normX = transform.position.x / terrain.terrainData.size.x;
+            //    float normZ = transform.position.z / terrain.terrainData.size.z;
+            //    groundNormal = terrain.terrainData.GetInterpolatedNormal(normX, normZ);
+            //}
+
+            //// スムーズな回転（角速度制限あり）
+            //float rotationSpeed = 3.0f; // ラジアン/秒
+            //Vector3 newForward = Vector3.RotateTowards(currentForward, moveVec, rotationSpeed * Time.deltaTime, 0f);
+
+            //// 地形に沿った回転を適用
+            //Quaternion slopeRotation = Quaternion.LookRotation(newForward, groundNormal);
+            //transform.rotation = slopeRotation;
 
             // --- 見た目の処理 ---
             if (frontWheelRotator != null)
@@ -124,41 +134,6 @@ public class EnemyBase : MonoBehaviour
 
     }
 
-        //HandleWheelAnimation();
-
-        //// 移動系の処理(アニメーション含む)
-
-        //// 回転入力（左右/Y軸）
-        //float turnY = 0f;
-        //if (Mathf.Abs(moveSpeed) > 0.1f)
-        //{
-        //    if (Input.GetKey(KeyCode.A)) turnY = -1f;
-        //    else if (Input.GetKey(KeyCode.D)) turnY = 1f;
-        //}
-        //rotationY += turnY * turnSpeed * Time.deltaTime;
-
-        //// X/Y軸を含んだ回転を作成
-        //Quaternion baseRotation = Quaternion.Euler(jumpScript.rotationX, rotationY, 0f);
-
-        //// 地面の法線を取得（Terrain前提）
-        //Terrain terrain = Terrain.activeTerrain;
-        //Vector3 groundNormal = Vector3.up;
-        //if (terrain != null)
-        //{
-        //    float normX = transform.position.x / terrain.terrainData.size.x;
-        //    float normZ = transform.position.z / terrain.terrainData.size.z;
-        //    groundNormal = terrain.terrainData.GetInterpolatedNormal(normX, normZ);
-        //}
-
-        //// 上下の傾きを含んだ forward 方向
-        //Vector3 forward = baseRotation * Vector3.forward;
-
-        //// 地形の傾斜に沿って補正（上下移動を許すなら ProjectOnPlane は使わない）
-        //Vector3 moveDir = forward.normalized;
-
-        //// 回転反映（地形に合わせる）
-        //Quaternion slopeRotation = Quaternion.LookRotation(forward, groundNormal);
-        //transform.rotation = slopeRotation;
 
     }
 
