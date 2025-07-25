@@ -11,6 +11,8 @@ public class GoalManager : MonoBehaviour
     // リザルト画面のUIなど
     public GameObject result;
     public GameObject titleButton;
+    //カメラ
+    public GameObject GoalCamera;
 
     // 前のゴール状態を保存
     private bool wasGoal = false;
@@ -27,6 +29,7 @@ public class GoalManager : MonoBehaviour
         {
             result.SetActive(false); // 初期状態で非表示に
             titleButton.SetActive(false); // タイトルボタンも非表示に
+            GoalCamera.SetActive(false);
         }
     }
 
@@ -43,12 +46,13 @@ public class GoalManager : MonoBehaviour
             {
                 result.SetActive(isGoal);
                 titleButton.SetActive(isGoal);
-                
+                GoalCamera.SetActive(!isGoal);
                 Debug.Log("Result SetActive: " + isGoal);
             }
 
             wasGoal = isGoal;
         }
+        
     }
 
 }

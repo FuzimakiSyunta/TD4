@@ -21,13 +21,49 @@ public class EnemyBase : MonoBehaviour
     // 敵のアニメーション管理(敵のアニメーションを制御する)
 
 
+    private GameManager gameManagerScript;
+    public GameObject gameManager;
+
+    public Transform modelTransform;
+    public FrontWheelRotatorScript frontWheelRotator;
+    public RearWheelRotatorScript rearWheelRotator;
+
+    // 速度
+    float moveSpeed = 0f;
+    //加速
+    public float acceleration = 35f;
+    //減速
+    public float deceleration = 50f;
+    //最大速度
+    public float maxSpeed = 600f;
+    //ブレーキ時の減速度
+    public float brakePower = 300f;
+
+    float turnSpeed = 100f;
+    float rotationY = 0f;
+
+    float bankAngle = 10f;
+    float bankLerpSpeed = 5f;
+    float currentBank = 0f;
+    float targetBank = 0f;
+    float slopeAngle = 10f;
+
+    [SerializeField]
+    GoalScript goalScript;
+    JumpScript jumpScript;
+
+    bool wasGrounded = true;
+
+    [Header("移動量")]
+    public Vector3 moveVec = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
         // 各項目のリセット処理
 
-
+        // ランダムルートで初期化
+        routeController.InitWithRandomRoute();
 
     }
 
@@ -35,17 +71,80 @@ public class EnemyBase : MonoBehaviour
     void Update()
     {
         // ルート制御スクリプトが設定されている場合は、ルート制御の更新を行う
-        if (routeController != null) {
-            // ルート制御の更新処理を呼び出す
-            routeController.Invoke("Update", Time.deltaTime);
-            // ルート制御スクリプトから移動量を取得して、敵の位置を更新する
-            Vector3 moveDirection = routeController.transform.forward; // 仮の移動方向を取得
-            float moveSpeed = 30f; // 仮の移動速度を設定
-            transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
-        }
+        if (routeController != null)
+        {
+            // -- 加速処理 -- //
+            
+            // 目標速度に向けて加速（今は常時加速）
+            moveSpeed += acceleration * Time.deltaTime;
+            moveSpeed = Mathf.Clamp(moveSpeed, 0f, maxSpeed);
 
-        // 仮で  自身を前方に移動する
-        transform.Translate(Vector3.forward * Time.deltaTime * 30f);
+
+            // -- ルート計算処理 -- //
+
+            // ルート・移動量の更新
+            routeController.Advance(moveSpeed, Time.deltaTime);
+            // ルートに沿った移動方向を取得
+            moveVec = routeController.GetDirection().normalized;
+
+
+            // -- 移動処理 -- //
+            
+            // 実際の移動（速度ベース）
+            Vector3 move = moveVec * moveSpeed * Time.deltaTime;
+            transform.position += move;
+
+
+            // -- 回転処理 -- //
+
+            // 方向を移動量から計算
+            Quaternion targetRotation = Quaternion.LookRotation(moveVec, Vector3.up);
+            // 回転をスムーズに行う
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed / 100f);
+
+
+            //// -- 向き補正（徐々に回す）-- //
+            //Vector3 currentForward = transform.forward;
+
+            //// 地形法線
+            //Terrain terrain = Terrain.activeTerrain;
+            //Vector3 groundNormal = Vector3.up;
+            //if (terrain != null)
+            //{
+            //    float normX = transform.position.x / terrain.terrainData.size.x;
+            //    float normZ = transform.position.z / terrain.terrainData.size.z;
+            //    groundNormal = terrain.terrainData.GetInterpolatedNormal(normX, normZ);
+            //}
+
+            //// スムーズな回転（角速度制限あり）
+            //float rotationSpeed = 3.0f; // ラジアン/秒
+            //Vector3 newForward = Vector3.RotateTowards(currentForward, moveVec, rotationSpeed * Time.deltaTime, 0f);
+
+            //// 地形に沿った回転を適用
+            //Quaternion slopeRotation = Quaternion.LookRotation(newForward, groundNormal);
+            //transform.rotation = slopeRotation;
+
+            // --- 見た目の処理 ---
+            if (frontWheelRotator != null)
+                frontWheelRotator.Rotate(moveSpeed);
+
+            if (rearWheelRotator != null)
+                rearWheelRotator.Rotate(moveSpeed);
+        
 
     }
+
+
+    }
+
+    void HandleWheelAnimation()
+    {
+        if (frontWheelRotator != null)
+            frontWheelRotator.Rotate(moveSpeed);
+
+        if (rearWheelRotator != null)
+            rearWheelRotator.Rotate(moveSpeed);
+    }
+
+
 }

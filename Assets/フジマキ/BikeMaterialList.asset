@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21e44a48e55e89940b133062e3415d61, type: 3}
+  m_Name: BikeMaterialList
+  m_EditorClassIdentifier: 
+  materials:
+  - {fileID: 2100000, guid: 61388d590020b0c47b855f3c752dc583, type: 2}
+  - {fileID: 2100000, guid: f8d5e009079f0a74f8df6684615b20c9, type: 2}
+  - {fileID: 2100000, guid: 9ea50eb894143094484dc6d1378d18b7, type: 2}
+  - {fileID: 2100000, guid: 4aeb6063f78f2cc45b62248d9fada2d3, type: 2}
+  - {fileID: 2100000, guid: 18a557f902f7b5e419e249d7c0cf4b33, type: 2}
+  - {fileID: 2100000, guid: 522a612af3ca3de4690ad19178e8dbe0, type: 2}
+  - {fileID: 2100000, guid: 40dda54ad07232047ba0b0ec85feae8b, type: 2}
+  - {fileID: 2100000, guid: 2155dc890c360de4399c2b8564057a2d, type: 2}
+  - {fileID: 2100000, guid: 97ad8bab1ec3f27409ef799455d12ade, type: 2}
+  - {fileID: 2100000, guid: 066336ec012e9eb4fa53ffddb1ce8f2d, type: 2}
+  - {fileID: 2100000, guid: 841fc2afc2695b548beb3b1f1c2a71fb, type: 2}
+  - {fileID: 2100000, guid: 08e22c8123e176943b8104fc85eb41a9, type: 2}
+  - {fileID: 2100000, guid: 7572a263cabf2ec43a9cdfa1cf82e2a3, type: 2}

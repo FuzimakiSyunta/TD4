@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8924318830447796718}
   - component: {fileID: 4472512903712240964}
+  - component: {fileID: 3168719498172223467}
   m_Layer: 0
   m_Name: EnemyManagerPrefab
   m_TagString: Untagged
@@ -44,9 +45,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dd83e8f285b464d942f2843854a6a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  routeManager: {fileID: 3168719498172223467}
   enemyDatas:
-  - {fileID: 11400000, guid: 6ca6a383391ecbb4496870a077477b04, type: 2}
-  - {fileID: 11400000, guid: f21c3b433cc1bbf419b8334059e694f3, type: 2}
-  - {fileID: 11400000, guid: 3f2f729f5bfe43d4e8ba1da18f122a8b, type: 2}
+  - {fileID: 11400000, guid: f7df2ef9e4a0c034ab0372eb87f68bac, type: 2}
+  - {fileID: 11400000, guid: 1ee053c78e9ecb841ab8b1e55cfa400c, type: 2}
+  - {fileID: 11400000, guid: b98a56de608ec2442b3d9d2e5c85961b, type: 2}
   spawnedEnemies: []
   isSpawnEnemy: 0
+--- !u!114 &3168719498172223467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923909115363297368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e6ba03745eef2946b70b27a57efd103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  routeDatas:
+  - {fileID: 11400000, guid: 84b3a4747749f364785e741dff481840, type: 2}

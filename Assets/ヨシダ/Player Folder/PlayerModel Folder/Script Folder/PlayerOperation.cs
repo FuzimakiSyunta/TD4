@@ -25,11 +25,7 @@ public class PlayerOperation : MonoBehaviour
     float turnSpeed = 100f;
     float rotationY = 0f;
 
-    float bankAngle = 10f;
-    float bankLerpSpeed = 5f;
-    float currentBank = 0f;
-    float targetBank = 0f;
-    float slopeAngle = 10f;
+
     [SerializeField]
     GoalScript goalScript;
     JumpScript jumpScript;
@@ -59,6 +55,9 @@ public class PlayerOperation : MonoBehaviour
     {
         // 現在のプレイヤーの位置を取得
         Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, -4000f, 530f);
+        pos.z = Mathf.Clamp(pos.z, -17090f, 19585f);
+        transform.position = pos;
 
 
         //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
@@ -106,13 +105,16 @@ public class PlayerOperation : MonoBehaviour
         Quaternion slopeRotation = Quaternion.LookRotation(forward, groundNormal);
         transform.rotation = slopeRotation;
 
-        // 移動入力（W/S）
-        if (Input.GetKey(KeyCode.W))
-            playerSpeed += acceleration * Time.deltaTime;
-        else if (Input.GetKey(KeyCode.S))
-            playerSpeed -= acceleration * Time.deltaTime;
-        else
-            playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
+        if (!goalScript.IsGoal())
+        {
+            // 移動入力（W/S）
+            if (Input.GetKey(KeyCode.W))
+                playerSpeed += acceleration * Time.deltaTime;
+            else if (Input.GetKey(KeyCode.S))
+                playerSpeed -= acceleration * Time.deltaTime;
+            else
+                playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
+        }
 
         playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
 

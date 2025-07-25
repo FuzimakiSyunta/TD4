@@ -7,7 +7,7 @@ public class ImageSelector : MonoBehaviour
     public Color highlightColor = new Color(1, 1, 1, 1);
     public Color normalColor = new Color(1, 1, 1, 0.3f);
 
-    private int currentIndex = 0;
+    public int currentIndex = 0;
 
     void Start()
     {
