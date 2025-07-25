@@ -1,0 +1,66 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class SceneLoader : MonoBehaviour
+{
+    [Header("フェードに使うイメージ")]
+    public Image fadeImage;
+
+    [Header("次のシーン名")]
+    public string nextSceneName;
+
+    [Header("フェード速度")]
+    public float fadeSpeed = 1f;
+
+    private float fadeAlpha = 0f;
+    private bool isFading = false;
+
+    void Start()
+    {
+        if (fadeImage != null)
+        {
+            // 最初は透明にして非表示に
+            Color c = fadeImage.color;
+            fadeImage.color = new Color(c.r, c.g, c.b, 0f);
+            fadeImage.gameObject.SetActive(false);
+        }
+    }
+
+    void Update()
+    {
+        // Enterキーが押されたらフェード開始
+        if (Input.GetKeyDown(KeyCode.Return) && !isFading)
+        {
+            StartFadeAndLoad();
+        }
+
+        if (isFading && fadeImage != null)
+        {
+            fadeAlpha += fadeSpeed * Time.deltaTime;
+            fadeAlpha = Mathf.Clamp01(fadeAlpha);
+            fadeImage.color = new Color(0, 0, 0, fadeAlpha);
+
+            if (fadeAlpha >= 1f)
+            {
+                SceneManager.LoadScene(nextSceneName);
+            }
+        }
+    }
+
+    void StartFadeAndLoad()
+    {
+        if (fadeImage != null)
+        {
+            fadeAlpha = 0f;
+            fadeImage.gameObject.SetActive(true);
+            fadeImage.color = new Color(0, 0, 0, 0);
+            isFading = true;
+        }
+        else
+        {
+            // フェード無しで即シーン切り替え
+            SceneManager.LoadScene(nextSceneName);
+        }
+    }
+}
