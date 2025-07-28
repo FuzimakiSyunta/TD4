@@ -6,6 +6,9 @@ public class RouteController : MonoBehaviour
     [Header("ルートマネージャー参照")]
     public RouteManager routeManager;
 
+    // 現行ルートデータ
+    private CatmullRomRoute currentRoute;
+
     // ルートの制御点リスト
     private List<Vector3> controlPoints;
     // サンプリングされたポイントと累積距離のリスト
@@ -21,9 +24,6 @@ public class RouteController : MonoBehaviour
 
     // 現在のルートインデックスを取得
     public int GetCurrentRouteIndex() => currentRouteIndex;
-
-  
-
 
     // 次のルートに切り替え
     public void SwitchToNextRoute()
@@ -68,33 +68,7 @@ public class RouteController : MonoBehaviour
         initialized = true;
     }
 
-    private void BakeRoute()
-    {
-        sampledPoints.Clear();
-        cumulativeDistances.Clear();
-        float distSum = 0f;
-
-        for (int i = 0; i < controlPoints.Count - 3; i++)
-        {
-            for (int j = 0; j <= samplesPerSegment; j++)
-            {
-                float t = j / (float)samplesPerSegment;
-                Vector3 point = CatmullRom(
-                    controlPoints[i],
-                    controlPoints[i + 1],
-                    controlPoints[i + 2],
-                    controlPoints[i + 3],
-                    t
-                );
-
-                if (sampledPoints.Count > 0)
-                    distSum += Vector3.Distance(point, sampledPoints[^1]);
-
-                sampledPoints.Add(point);
-                cumulativeDistances.Add(distSum);
-            }
-        }
-    }
+   
 
     public void Advance(float speed,float deltaTime)
     {
@@ -104,15 +78,6 @@ public class RouteController : MonoBehaviour
         Vector3 pos = GetPositionByDistance(currentDistance);
         Vector3 next = GetPositionByDistance(currentDistance + 1f);
         transform.forward = (next - pos).normalized;
-    }
-
-    // 移動量の取得
-    public Vector3 GetDirection()
-    {
-        if (!initialized) return Vector3.zero;
-        Vector3 posNow = GetPositionByDistance(currentDistance);
-        Vector3 posNext = GetPositionByDistance(currentDistance + 1f);
-        return (posNext - posNow).normalized;
     }
 
     // ルートを変更する関数
@@ -144,33 +109,5 @@ public class RouteController : MonoBehaviour
         return sampledPoints[^1];
     }
 
-    private Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
-    {
-        float t2 = t * t;
-        float t3 = t2 * t;
-        return 0.5f * (
-            (2f * p1) +
-            (-p0 + p2) * t +
-            (2f * p0 - 5f * p1 + 4f * p2 - p3) * t2 +
-            (-p0 + 3f * p1 - 3f * p2 + p3) * t3
-        );
-    }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.cyan;
-        for (int i = 1; i < sampledPoints.Count; i++)
-        {
-            Gizmos.DrawLine(sampledPoints[i - 1], sampledPoints[i]);
-        }
-
-        Gizmos.color = Color.magenta;
-        if (controlPoints != null)
-        {
-            foreach (var p in controlPoints)
-            {
-                Gizmos.DrawSphere(p, 0.2f);
-            }
-        }
-    }
 }

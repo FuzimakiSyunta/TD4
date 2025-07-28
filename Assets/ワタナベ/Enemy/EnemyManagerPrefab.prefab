@@ -51,7 +51,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 93c452a20a9130048948980dc567ea20, type: 2}
   - {fileID: 11400000, guid: 9933b2c272e1f7d4bb498c9ee36ce0f0, type: 2}
   spawnedEnemies: []
-  isSpawnEnemy: 0
+  isSpawnEnemy: 1
 --- !u!114 &3168719498172223467
 MonoBehaviour:
   m_ObjectHideFlags: 0

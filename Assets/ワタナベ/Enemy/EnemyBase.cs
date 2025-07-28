@@ -50,6 +50,8 @@ public class EnemyBase : MonoBehaviour
 
     [SerializeField]
     GoalScript goalScript;
+
+    [SerializeField]
     JumpScript jumpScript;
 
     bool wasGrounded = true;
@@ -74,7 +76,7 @@ public class EnemyBase : MonoBehaviour
         if (routeController != null)
         {
             // -- 加速処理 -- //
-            
+
             // 目標速度に向けて加速（今は常時加速）
             moveSpeed += acceleration * Time.deltaTime;
             moveSpeed = Mathf.Clamp(moveSpeed, 0f, maxSpeed);
@@ -89,7 +91,7 @@ public class EnemyBase : MonoBehaviour
 
 
             // -- 移動処理 -- //
-            
+
             // 実際の移動（速度ベース）
             Vector3 move = moveVec * moveSpeed * Time.deltaTime;
             transform.position += move;
@@ -124,15 +126,12 @@ public class EnemyBase : MonoBehaviour
             //Quaternion slopeRotation = Quaternion.LookRotation(newForward, groundNormal);
             //transform.rotation = slopeRotation;
 
-            // --- 見た目の処理 ---
-            if (frontWheelRotator != null)
-                frontWheelRotator.Rotate(moveSpeed);
+            // -- 見た目の処理 -- //
 
-            if (rearWheelRotator != null)
-                rearWheelRotator.Rotate(moveSpeed);
+            // 前後ホイールのアニメーションを更新
+            HandleWheelAnimation();
         
-
-    }
+        }
 
 
     }

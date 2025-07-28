@@ -11,12 +11,28 @@ public class RouteData : ScriptableObject
     // ここに Boost, Jump などのメタ情報も追加可能
 }
 
+
 /// <summary>
-/// Catmull-Rom 曲線を計算するユーティリティクラス
+/// Catmull-Rom 曲線に基づくルートを表現するクラス
 /// </summary>
-public static class CatmullRom
+public class CatmullRomRoute : MonoBehaviour
 {
-    public static Vector3 Evaluate(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+    // ルートの制御点リスト
+    private List<Vector3> controlPoints;
+    // サンプリングされたポイントと累積距離のリスト
+    private List<Vector3> sampledPoints = new();
+    // 累積距離のリスト
+    private List<float> cumulativeDistances = new();
+
+    // 現在の距離
+    private float currentDistance = 0f;
+    // サンプリング数
+    private int samplesPerSegment = 20;
+    // 初期化フラグ
+    private bool initialized = false;
+
+    // Catmull-Rom 曲線の評価関数
+    private Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {
         float t2 = t * t;
         float t3 = t2 * t;
@@ -27,18 +43,6 @@ public static class CatmullRom
             (-p0 + 3f * p1 - 3f * p2 + p3) * t3
         );
     }
-}
-
-
-/// <summary>
-/// Catmull-Rom 曲線に基づくルートを表現するクラス
-/// </summary>
-public class CatmullRomRoute
-{
-    private List<Vector3> controlPoints;
-    private List<Vector3> sampledPoints = new();
-    private List<float> cumulativeDistances = new();
-    private int samplesPerSegment = 20;
 
     public void Setup(List<Vector3> points)
     {
@@ -46,30 +50,44 @@ public class CatmullRomRoute
         BakeRoute();
     }
 
-    private void BakeRoute()
+    public void BakeRoute()
     {
         sampledPoints.Clear();
         cumulativeDistances.Clear();
+        float distSum = 0f;
 
-        float distanceSum = 0f;
         for (int i = 0; i < controlPoints.Count - 3; i++)
         {
             for (int j = 0; j <= samplesPerSegment; j++)
             {
                 float t = j / (float)samplesPerSegment;
-                Vector3 point = CatmullRom.Evaluate(
-                    controlPoints[i], controlPoints[i + 1], controlPoints[i + 2], controlPoints[i + 3], t
+                Vector3 point = CatmullRom(
+                    controlPoints[i],
+                    controlPoints[i + 1],
+                    controlPoints[i + 2],
+                    controlPoints[i + 3],
+                    t
                 );
 
                 if (sampledPoints.Count > 0)
-                    distanceSum += Vector3.Distance(point, sampledPoints[^1]);
+                    distSum += Vector3.Distance(point, sampledPoints[^1]);
 
                 sampledPoints.Add(point);
-                cumulativeDistances.Add(distanceSum);
+                cumulativeDistances.Add(distSum);
             }
         }
     }
 
+    // 移動量の取得
+    public Vector3 GetDirection()
+    {
+        if (!initialized) return Vector3.zero;
+        Vector3 posNow = GetPositionByDistance(currentDistance);
+        Vector3 posNext = GetPositionByDistance(currentDistance + 1f);
+        return (posNext - posNow).normalized;
+    }
+
+    // 進行距離に応じて位置を取得する関数
     public Vector3 GetPositionByDistance(float distance)
     {
         if (sampledPoints.Count == 0) return Vector3.zero;
@@ -88,6 +106,9 @@ public class CatmullRomRoute
         }
         return sampledPoints[^1];
     }
+
+
+
 
     public float TotalDistance => cumulativeDistances.Count > 0 ? cumulativeDistances[^1] : 0f;
 
