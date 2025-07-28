@@ -23,7 +23,7 @@ public class DistanceToNearestCheckpoint : MonoBehaviour
     {
         if (currentIndex >= checkpoints.Length)
         {
-            distanceText.text = "ALL CHECKPOINTS CLEARED!";
+            //distanceText.text = "ALL CHECKPOINTS CLEARED!";
             enabled = false;
             return;
         }
