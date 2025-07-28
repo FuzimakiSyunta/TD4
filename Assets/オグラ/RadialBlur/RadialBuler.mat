@@ -63,8 +63,8 @@ Material:
     m_Floats:
     - _BlurFadeWidth: 0.1
     - _BlurOutFadeWidth: 0.179
-    - _BlurSamples: 3
-    - _BlurStrength: 0.029945495
+    - _BlurSamples: 6
+    - _BlurStrength: 0.05426133
     - _BumpScale: 1
     - _ClearBottomFadeWidth: 0.05
     - _ClearBottomYMax: 0.2

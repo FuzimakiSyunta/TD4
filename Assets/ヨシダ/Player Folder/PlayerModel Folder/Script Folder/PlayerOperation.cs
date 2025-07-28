@@ -37,6 +37,12 @@ public class PlayerOperation : MonoBehaviour
     private float accelerationDuration = 0.2f;
     private bool isAccelerating = false;
 
+    //加速か判定
+    public bool IsAccelerating
+    {
+        get { return isAccelerating; }
+    }
+
 
     void Start()
     {

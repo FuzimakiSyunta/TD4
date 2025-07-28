@@ -3157,6 +3157,7 @@ GameObject:
   - component: {fileID: 202230308}
   - component: {fileID: 202230307}
   - component: {fileID: 202230312}
+  - component: {fileID: 202230313}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: MainCamera
@@ -3314,6 +3315,26 @@ MonoBehaviour:
   blurStrength: 0.05
   blurSamples: 23
   blurCenter: {x: 0.5, y: 0.6}
+--- !u!114 &202230313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202230306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f98cac69cb129f94ba011e0c23f4d7b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerOperationScript: {fileID: 221083506}
+  mainCamera: {fileID: 202230310}
+  minBlurStrength: 0
+  maxBlurStrength: 0.06
+  minBlurSamples: 0
+  maxBlurSamples: 7
+  accelerationBlurMultiplier: 4
+  fixedBlurCenter: {x: 0.5, y: 0.6}
 --- !u!1001 &207574734
 PrefabInstance:
   m_ObjectHideFlags: 0
