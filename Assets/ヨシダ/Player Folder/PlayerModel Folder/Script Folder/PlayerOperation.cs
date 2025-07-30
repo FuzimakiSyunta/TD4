@@ -53,13 +53,13 @@ public class PlayerOperation : MonoBehaviour
         transform.position = pos;
 
 
-        //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
-        //{
-              // プレイヤーの入力処理
-              HandleInput();
+        if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
+        {
+            // プレイヤーの入力処理
+            HandleInput();
               // ホイールの回転アニメーション処理（走行演出）
               HandleWheelAnimation();       
-        // }
+        }
     }
 
     void HandleInput()
