@@ -13,7 +13,7 @@ public class GameStartScript : MonoBehaviour
     private GameManager gameManagerScript;
     public GameObject gameManager;
 
-
+   
     // 実行フレームによるタイミングのズレを抑えるため、
     // デルタタイムを使用する
     private float deltaTime = 0.0f;

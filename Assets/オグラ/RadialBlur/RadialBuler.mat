@@ -61,17 +61,29 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlurSamples: 13
-    - _BlurStrength: 0.1
+    - _BlurFadeWidth: 0.1
+    - _BlurOutFadeWidth: 0.179
+    - _BlurSamples: 6
+    - _BlurStrength: 0.05426133
     - _BumpScale: 1
+    - _ClearBottomFadeWidth: 0.05
+    - _ClearBottomYMax: 0.2
+    - _ClearBottomYMin: 0.1
+    - _ClearTopFadeWidth: 0.1
+    - _ClearTopThreshold: 0.8
+    - _ClearTopXHalfWidth: 0.2
+    - _ClearTopYEnd: 0.9
+    - _ClearTopYStart: 0.8
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _FullBlurRadius: 0.253
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
+    - _NoBlurRadius: 0.1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
@@ -80,7 +92,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _BlurCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _BlurCenter: {r: 0.5, g: 0.6, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

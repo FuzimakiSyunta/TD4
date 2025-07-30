@@ -2,22 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpeedMater : MonoBehaviour
+public class RadialBlerSpeed : MonoBehaviour
 {
     private PlayerOperation playerOperation;
     public GameObject playerOperationScript;
-
-    private GameManager gameManager;
-    public GameObject gamemanagerScript;
-
-    public GameObject speedMater_BackImage;
-    public GameObject tacoMeterImage;
-
-    // 最小・最大角度と速度
-    private float currentAngle = -120f;
-    private const float minAngle = 90f;
-    private const float maxAngle = -145f;
-    private const float maxSpeed = 3f;
 
     //ShaderCameraコンポーネントへの参照
     private ShaderCamera shaderCamera;
@@ -33,18 +21,16 @@ public class SpeedMater : MonoBehaviour
     //最高速度でのブラーサンプル数
     public int maxBlurSamples = 7;
 
+    //加速中のブラー強度とサンプル数の倍率
+    public float accelerationBlurMultiplier = 2.0f;
+
     //ブラー中心
-    public Vector2 fixedBlurCenter = new Vector2(0.5f, 0.6f); 
+    public Vector2 fixedBlurCenter = new Vector2(0.5f, 0.6f);
 
     // Start is called before the first frame update
     void Start()
     {
-        playerOperation = playerOperationScript.GetComponent<PlayerOperation>(); // 修正: PlayerOperation コンポーネントを取得
-        gameManager = gamemanagerScript.GetComponent<GameManager>(); // 修正: GameManager コンポーネントを取得
-        //スピードメーターUI初期化
-        speedMater_BackImage.SetActive(false);
-        // タコメーター非表示
-        tacoMeterImage.SetActive(false);
+        playerOperation = playerOperationScript.GetComponent<PlayerOperation>();
 
         //カメラからShaderCameraコンポーネントを取得
         if (mainCamera != null)
@@ -59,7 +45,7 @@ public class SpeedMater : MonoBehaviour
         }
         else
         {
-            // ゲーム開始時、ShaderCameraを一旦無効にしておく（ブラー消すため）
+            //ゲーム開始時、ShaderCameraを一旦無効にしておく
             shaderCamera.enabled = false;
 
             //ブラーの中心を固定値に設定
@@ -70,9 +56,6 @@ public class SpeedMater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SpeedMaterActive(); // スピードメーター/タコメーターの表示・非表示を更新
-        TacoMeterMove(); // タコメーターの動きを更新
-
         //ShaderCameraとPlayerOperationが正しく取得できていればブラー制御を行う
         if (shaderCamera != null && playerOperation != null)
         {
@@ -91,40 +74,22 @@ public class SpeedMater : MonoBehaviour
                 shaderCamera.enabled = false;
             }
 
+            //加速中かを判断しブラーの最大値を一時的に変更
+            float currentMaxBlurStrength = maxBlurStrength;
+            int currentMaxBlurSamples = maxBlurSamples;
+
+            if (playerOperation.IsAccelerating)
+            {
+                currentMaxBlurStrength *= accelerationBlurMultiplier;
+                currentMaxBlurSamples = Mathf.RoundToInt(maxBlurSamples * accelerationBlurMultiplier);
+            }
+
             //速度を0.0から1.0の範囲に正規化
             float normalizedSpeed = Mathf.Clamp01(currentSpeed / playerOperation.maxSpeed);
-
             //ぼかしの強度を速度に応じて線形補間し、ShaderCameraに設定
-            shaderCamera.blurStrength = Mathf.Lerp(minBlurStrength, maxBlurStrength, normalizedSpeed);
-
+            shaderCamera.blurStrength = Mathf.Lerp(minBlurStrength, currentMaxBlurStrength, normalizedSpeed);
             //サンプル数を速度に応じて線形補間し、整数に丸めてShaderCameraに設定
-            shaderCamera.blurSamples = Mathf.RoundToInt(Mathf.Lerp(minBlurSamples, maxBlurSamples, normalizedSpeed));
+            shaderCamera.blurSamples = Mathf.RoundToInt(Mathf.Lerp(minBlurSamples, currentMaxBlurSamples, normalizedSpeed));
         }
-    }
-
-    void SpeedMaterActive()
-    {
-        if (gameManager.IsGameStarted())
-        {
-            speedMater_BackImage.SetActive(true); // スピードメーター表示
-            // タコメーターの表示
-            tacoMeterImage.SetActive(true); // タコメーター表示
-        }
-        else
-        {
-            speedMater_BackImage.SetActive(false); // スピードメーター非表示
-            tacoMeterImage.SetActive(false); // タコメーター非表示
-        }
-    }
-
-    void TacoMeterMove()
-    {
-        float speed = playerOperation.GetPlayerSpeed();
-        float normalized = Mathf.Clamp01(speed / maxSpeed);
-
-        float targetAngle = Mathf.Lerp(minAngle, maxAngle, normalized);
-        currentAngle = Mathf.Lerp(currentAngle, targetAngle, Time.deltaTime * 5f);
-
-        tacoMeterImage.transform.localRotation = Quaternion.Euler(0f, 0f, currentAngle);
     }
 }
