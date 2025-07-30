@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,21 +6,23 @@ using UnityEngine;
 public class JumpScript : MonoBehaviour
 {
     private Rigidbody rb;
-    public float rotationX = 0f; // ← X軸回転角を保持
-    float jumpForce = 20f; // ジャンプの強さ
+    public float rotationX = 0f;
     private float turnX;
+    float jumpForce = 2f;
+    float floatDuration = 0.6f;
+    float floatDrag = 2f;
+    bool isJumping = false;
+    float jumpCooldown = 0.3f;
 
-    // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>(); // Rigidbodyを取得
+        rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        rotationX += turnX * 50f * Time.deltaTime; // ピッチ速度
-        rotationX = Mathf.Clamp(rotationX, -30f, 30f); // ピッチ制限
+        rotationX += turnX * 50f * Time.deltaTime;
+        rotationX = Mathf.Clamp(rotationX, -30f, 30f);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -27,25 +30,39 @@ public class JumpScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Slope"))
         {
             rotationX = -18f;
-            Debug.Log("坂です");
+            //Debug.Log("坂です");
         }
-
-        if (collision.gameObject.CompareTag("Jump"))
-        {
-
-            Debug.Log("ジャンプ");
-
-            // ジャンプ前に縦の速度をリセット
-            Vector3 velocity = rb.velocity;
-            velocity.y = 0f;
-            rb.velocity = velocity;
-
-            // 上＋前方向にジャンプ力を加える
-            Vector3 jumpDirection = (Vector3.up + transform.forward * 0.3f).normalized;
-            rb.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
-        }
-
     }
 
-   
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Jump") && !isJumping)
+        {
+            Vector3 jumpDirection = (Vector3.up * 1.2f + transform.forward * 0.5f + transform.right * 0.3f).normalized;
+
+            rb.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
+
+          //  Debug.Log("Jump Direction: " + jumpDirection);
+
+            StartCoroutine(ReduceGravityTemporarily());
+            StartCoroutine(TemporaryJumpLock());
+        }
+    }
+
+    private IEnumerator ReduceGravityTemporarily()
+    {
+        float originalDrag = rb.drag;
+        rb.drag = floatDrag;
+
+        yield return new WaitForSeconds(floatDuration);
+
+        rb.drag = originalDrag;
+    }
+
+    IEnumerator TemporaryJumpLock()
+    {
+        isJumping = true;
+        yield return new WaitForSeconds(jumpCooldown);
+        isJumping = false;
+    }
 }

@@ -4,8 +4,13 @@ using UnityEngine.UI;
 
 public class SceneSwitcher : MonoBehaviour
 {
-    public string nextSceneName;
+    public string[] nextSceneName;
     public Transform[] movingObjects;
+    //シーン移動先フラグ
+    public bool GameStartFlag = false;
+    public bool ColorChengeFlag = false;
+    //public bool GameStartFlag = false;
+
     private float moveSpeed = 7000f;
     private float leftEndX = -1600f;
     public Image fadeImage;
@@ -45,7 +50,23 @@ public class SceneSwitcher : MonoBehaviour
         if (ImageSelectorScript == null) return;
 
         float index = ImageSelectorScript.Imageindex();
+        // 0番目のImageが選択されている場合、ゲームスタートフラグを立てる
+        if (index==0)
+        {
+            GameStartFlag = true;
+        }
+        // 1番目のImageが選択されている場合、色変更フラグを立てる
+        if (index==1) {
+            ColorChengeFlag = true;
+        }
+        // 2番目のImageが選択されている場合、
+        //if (index == 2)
+        //{
+        //    ColorChengeFlag = true;
+        //}
 
+        // 0番目のImageが選択されている場合のみ処理を行う
+        //ゲームスタート
         if (index == 0 && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
         {
             isSequenceStarted = true;
@@ -61,7 +82,25 @@ public class SceneSwitcher : MonoBehaviour
                 fadeImage.gameObject.SetActive(true);
             }
         }
-        
+
+        // 1番目のImageが選択されている場合のみ処理を行う
+        //ゲームスタート
+        if (index == 1 && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
+        {
+            isSequenceStarted = true;
+            startTime = Time.time;
+
+            for (int i = 0; i < movingObjects.Length; i++)
+            {
+                startTimes[i] = startTime + i * delayBetweenStarts;
+            }
+
+            if (fadeImage != null)
+            {
+                fadeImage.gameObject.SetActive(true);
+            }
+            PlayerPrefs.Save();
+        }
 
         if (isSequenceStarted)
         {
@@ -74,10 +113,7 @@ public class SceneSwitcher : MonoBehaviour
                 {
                     MoveObject(movingObjects[i]);
                 }
-                else
-                {
-                    //allStarted = false;
-                }
+                
             }
 
             // 全部動き始めた後、一定時間でフェード開始
@@ -104,7 +140,7 @@ public class SceneSwitcher : MonoBehaviour
             obj.position += Vector3.left * moveSpeed * Time.deltaTime;
         }
     }
-
+    //フェードアウト処理
     void FadeOut()
     {
         if (fadeImage == null) return;
@@ -115,7 +151,14 @@ public class SceneSwitcher : MonoBehaviour
 
         if (fadeAlpha >= 1f)
         {
-            SceneManager.LoadScene(nextSceneName);
+            if (ColorChengeFlag)
+            {
+                SceneManager.LoadScene(nextSceneName[1]);
+            }
+            else if (GameStartFlag)
+            {
+                SceneManager.LoadScene(nextSceneName[0]);
+            }
         }
     }
 }

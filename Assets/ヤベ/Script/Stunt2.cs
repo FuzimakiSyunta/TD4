@@ -5,8 +5,10 @@ using UnityEngine;
 public class Stunt2 : MonoBehaviour
 {
     public Animator animator;
-
-    private bool isGrounded = false;
+    GroundContactDetection groundContactDetection;
+    public int currentScore = 0;
+    private HashSet<PlayerActionState> scoredStates = new HashSet<PlayerActionState>();
+    private float previousNormalizedTime = 0f;
 
     private enum PlayerActionState
     {
@@ -20,11 +22,20 @@ public class Stunt2 : MonoBehaviour
         SmallPose3 = 7
     }
 
-    PlayerActionState nextState = PlayerActionState.None;
+    private Dictionary<PlayerActionState, int> actionScores = new Dictionary<PlayerActionState, int>
+　　{
+        //スコアを加算設定
+    　　{ PlayerActionState.SmallPose1, 50 },
+    　　{ PlayerActionState.SmallPose2, 75 },
+    　　{ PlayerActionState.SmallPose3, 100 }
+　　};
 
+    PlayerActionState nextState = PlayerActionState.None;
+   
     void Start()
     {
         animator = GetComponent<Animator>();
+        groundContactDetection = GameObject.Find("Player").GetComponent<GroundContactDetection>();
     }
 
 
@@ -34,7 +45,8 @@ public class Stunt2 : MonoBehaviour
 
         SetActionState(currentPressedState);
 
-        if (!isGrounded)
+
+        if (groundContactDetection.isGrounded == true)
         {
             // 左右回避
             if (Input.GetKey(KeyCode.A))
@@ -45,24 +57,16 @@ public class Stunt2 : MonoBehaviour
             {
                 SetActionState(PlayerActionState.FallRight);
             }
-            // 攻撃
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                SetActionState(PlayerActionState.HitLeft);
-            }
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                SetActionState(PlayerActionState.HitRight);
-            }
+
             //何も押してない
             if (currentPressedState != PlayerActionState.None)
             {
                 SetActionState(PlayerActionState.None);
             }
         }
-        // 空中のスタント可能
-        if (!isGrounded)
+        if (groundContactDetection.isGrounded == false)
         {
+
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 SetActionState(PlayerActionState.SmallPose1);
@@ -77,34 +81,75 @@ public class Stunt2 : MonoBehaviour
             }
         }
 
-    }
 
-
-    void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            isGrounded = true;
-            Debug.Log("地面に接触している");
+            SetActionState(PlayerActionState.HitRight);
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            SetActionState(PlayerActionState.HitLeft);
+        }
+
+
+
+
+
     }
 
-    void OnCollisionExit(Collision collision)
+    public bool IsSmallPoseAnimating()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
-            Debug.Log("地面から離れた");
-        }
+        // アニメーション中かどうか調べる
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+
+        bool isPlaying =
+            (info.IsName("SmallPose1") || info.IsName("SmallPose2") || info.IsName("SmallPose3")) &&
+            info.normalizedTime < 1f;
+
+        return isPlaying;
     }
+
+    public void  CheckAndAddScore()
+    {
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+
+        // SmallPose1～3のいずれか
+        PlayerActionState? currentState = null;
+        if (info.IsName("SmallPose1")) currentState = PlayerActionState.SmallPose1;
+        else if (info.IsName("SmallPose2")) currentState = PlayerActionState.SmallPose2;
+        else if (info.IsName("SmallPose3")) currentState = PlayerActionState.SmallPose3;
+
+        if (currentState.HasValue)
+        {
+            float currentTime = info.normalizedTime;
+
+            // normalizedTimeが 1 → 0 にループした（≒アニメーション1周完了）とき
+            if (Mathf.Floor(previousNormalizedTime) < Mathf.Floor(currentTime))
+            {
+                currentScore += actionScores[currentState.Value];
+                Debug.Log($"スコア加算: +{actionScores[currentState.Value]} (合計: {currentScore})");
+            }
+
+            previousNormalizedTime = currentTime;
+        }
+        else
+        {
+            // ポーズ外ならリセット
+            previousNormalizedTime = 0f;
+        }
+
+       
+    }
+
 
     void SetActionState(PlayerActionState state)
-    {
-        if (nextState != state)
         {
-            nextState = state;
-            animator.SetInteger("ActionState", (int)nextState);
-            Debug.Log($"State Changed to: {nextState}");
+            if (nextState != state)
+            {
+                nextState = state;
+                animator.SetInteger("ActionState", (int)nextState);
+                //Debug.Log($"State Changed to: {nextState}");
+            }
         }
-    }
+    
 }

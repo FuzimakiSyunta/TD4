@@ -13,8 +13,14 @@ MonoBehaviour:
   m_Name: RouteDataTest
   m_EditorClassIdentifier: 
   controlPoints:
-  - {x: -1966, y: 0, z: 1775}
-  - {x: -1100, y: 0, z: 2715}
-  - {x: -200, y: 0, z: 2715}
-  - {x: 600, y: 0, z: 2000}
-  - {x: 600, y: 0, z: 2000}
+  - {x: -2, y: 0, z: 0}
+  - {x: -2, y: 0, z: 10}
+  - {x: -2, y: 0, z: 20}
+  - {x: -2, y: 0, z: 30}
+  - {x: 0, y: 0, z: 30}
+  - {x: 1.5, y: 0, z: 30}
+  - {x: 3, y: 0, z: 30}
+  - {x: 5, y: 0, z: 30}
+  - {x: 5, y: 0, z: 20}
+  - {x: 5, y: 0, z: 10}
+  - {x: 5, y: 0, z: 0}

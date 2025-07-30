@@ -6,9 +6,6 @@ public class RouteController : MonoBehaviour
     [Header("ルートマネージャー参照")]
     public RouteManager routeManager;
 
-    [Header("移動速度")]
-    public float speed = 20f;
-
     // ルートの制御点リスト
     private List<Vector3> controlPoints;
     // サンプリングされたポイントと累積距離のリスト
@@ -25,6 +22,7 @@ public class RouteController : MonoBehaviour
     // 現在のルートインデックスを取得
     public int GetCurrentRouteIndex() => currentRouteIndex;
 
+  
 
 
     // 次のルートに切り替え
@@ -98,7 +96,7 @@ public class RouteController : MonoBehaviour
         }
     }
 
-    public void Advance(float deltaTime)
+    public void Advance(float speed,float deltaTime)
     {
         if (!initialized) return;
 
@@ -109,12 +107,12 @@ public class RouteController : MonoBehaviour
     }
 
     // 移動量の取得
-    public Vector3 GetVelocity()
+    public Vector3 GetDirection()
     {
         if (!initialized) return Vector3.zero;
         Vector3 posNow = GetPositionByDistance(currentDistance);
         Vector3 posNext = GetPositionByDistance(currentDistance + 1f);
-        return (posNext - posNow).normalized * speed;
+        return (posNext - posNow).normalized;
     }
 
     // ルートを変更する関数

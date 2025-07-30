@@ -5,13 +5,14 @@ public class PlayerOperation : MonoBehaviour
 {
     private GameManager gameManagerScript;
     public GameObject gameManager;
+    private Stunt2 stunt2; 
 
     public Transform modelTransform;
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
 
     // プレイヤーの現在速度
-    float playerSpeed = 0f;
+   public float playerSpeed = 0f;
     //加速
     public float acceleration = 35f;
     //減速
@@ -24,19 +25,24 @@ public class PlayerOperation : MonoBehaviour
     float turnSpeed = 100f;
     float rotationY = 0f;
 
-    float bankAngle = 10f;
-    float bankLerpSpeed = 5f;
-    float currentBank = 0f;
-    float targetBank = 0f;
-    float slopeAngle = 10f;
+
     [SerializeField]
     GoalScript goalScript;
     JumpScript jumpScript;
 
-    bool wasGrounded = true;
-   
 
-  
+    bool wasGrounded = true;
+
+    private float accelerationTimer = 0f;
+    private float accelerationDuration = 0.2f;
+    private bool isAccelerating = false;
+
+    //加速か判定
+    public bool IsAccelerating
+    {
+        get { return isAccelerating; }
+    }
+
 
     void Start()
     {
@@ -65,8 +71,10 @@ public class PlayerOperation : MonoBehaviour
               // プレイヤーの入力処理
               HandleInput();
               // ホイールの回転アニメーション処理（走行演出）
-              HandleWheelAnimation();       
+              HandleWheelAnimation();
         // }
+        UpdateAcceleration();
+       // if (stunt2.IsSmallPoseAnimating() == true && )
     }
 
     void HandleInput()
@@ -103,13 +111,16 @@ public class PlayerOperation : MonoBehaviour
         Quaternion slopeRotation = Quaternion.LookRotation(forward, groundNormal);
         transform.rotation = slopeRotation;
 
-        // 移動入力（W/S）
-        if (Input.GetKey(KeyCode.W))
-            playerSpeed += acceleration * Time.deltaTime;
-        else if (Input.GetKey(KeyCode.S))
-            playerSpeed -= acceleration * Time.deltaTime;
-        else
-            playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
+        if (!goalScript.IsGoal())
+        {
+            // 移動入力（W/S）
+            if (Input.GetKey(KeyCode.W))
+                playerSpeed += acceleration * Time.deltaTime;
+            else if (Input.GetKey(KeyCode.S))
+                playerSpeed -= acceleration * Time.deltaTime;
+            else
+                playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
+        }
 
         playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
 
@@ -120,17 +131,37 @@ public class PlayerOperation : MonoBehaviour
     
     void HandleWheelAnimation()
     {
-        if (frontWheelRotator != null)
-            frontWheelRotator.Rotate(playerSpeed);
+        //if (frontWheelRotator != null)
+        //    frontWheelRotator.Rotate(playerSpeed);
 
-        if (rearWheelRotator != null)
-            rearWheelRotator.Rotate(playerSpeed);
+        //if (rearWheelRotator != null)
+        //    rearWheelRotator.Rotate(playerSpeed);
     }
 
     public float GetPlayerSpeed()
     {
         return playerSpeed;
     }
+    public void Acceleration()
+    {
+        maxSpeed = 5f;
+        playerSpeed = maxSpeed;
+        // 一定時間たったら戻す（実際の処理は外で管理）
+        accelerationTimer = accelerationDuration;
+        isAccelerating = true;
+    }
 
-    
+    void UpdateAcceleration()
+    {
+        if (isAccelerating ==true)
+        {
+            accelerationTimer -= Time.deltaTime;
+            if (accelerationTimer <= 0f)
+            {
+                maxSpeed = 3f; // 元に戻す値
+                isAccelerating = false;
+            }
+        }
+    }
+
 }
