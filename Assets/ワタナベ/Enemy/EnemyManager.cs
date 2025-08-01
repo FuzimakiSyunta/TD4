@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// ScriptableObjectを使用して敵キャラのデータを定義するクラスを作成
 /// </summary>
-[CreateAssetMenu(fileName = "EnemyData",menuName = "ScriptableObjects/EnemyData", order = 0)]
+[CreateAssetMenu(fileName = "EnemyData")]
 public class EnemyData : ScriptableObject
 {
     // プレハブ
@@ -45,7 +45,18 @@ public class EnemyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // 同階層にあるEnemyDataを取得
+        if (enemyDatas == null || enemyDatas.Length == 0)
+        {
+            // EnemyDataが設定されていない場合はエラーメッセージを表示
+            UnityEngine.Debug.LogError("敵キャラのデータが設定されていません。EnemyDataを設定してください。");
+        }
+        else
+        {
+            UnityEngine.Debug.Log("敵キャラのデータが設定されました。");
+        }
+
+
     }
 
     // Update is called once per frame

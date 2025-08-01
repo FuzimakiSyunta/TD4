@@ -12,11 +12,32 @@ public class RouteData : ScriptableObject
 }
 
 /// <summary>
-/// Catmull-Rom 曲線を計算するユーティリティクラス
+/// Catmull-Rom 曲線に基づくルートを表現するクラス
 /// </summary>
-public static class CatmullRom
+public class CatmullRomRoute : MonoBehaviour
 {
-    public static Vector3 Evaluate(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+    // ルートの制御点リスト
+    public List<Vector3> controlPoints;
+    // サンプリングされたポイントと累積距離のリスト
+    public List<Vector3> sampledPoints = new();
+    // 累積距離のリスト
+    public List<float> cumulativeDistances = new();
+
+  
+    // サンプリング数
+    public int samplesPerSegment = 20;
+    // 初期化フラグ
+    public bool initialized = false;
+    // ルート番号
+    public int routeIndex = 0;
+
+    public void SetCount(int index)
+    {
+        routeIndex = index;
+    }
+
+    // Catmull-Rom 曲線の評価関数
+    public Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {
         float t2 = t * t;
         float t3 = t2 * t;
@@ -27,49 +48,62 @@ public static class CatmullRom
             (-p0 + 3f * p1 - 3f * p2 + p3) * t3
         );
     }
-}
 
-
-/// <summary>
-/// Catmull-Rom 曲線に基づくルートを表現するクラス
-/// </summary>
-public class CatmullRomRoute
-{
-    private List<Vector3> controlPoints;
-    private List<Vector3> sampledPoints = new();
-    private List<float> cumulativeDistances = new();
-    private int samplesPerSegment = 20;
-
-    public void Setup(List<Vector3> points)
+    public void SetupRoute(List<Vector3> points)
     {
         controlPoints = points;
         BakeRoute();
+        initialized = true;
     }
 
-    private void BakeRoute()
+    public void BakeRoute()
     {
         sampledPoints.Clear();
         cumulativeDistances.Clear();
+        float distSum = 0f;
 
-        float distanceSum = 0f;
         for (int i = 0; i < controlPoints.Count - 3; i++)
         {
             for (int j = 0; j <= samplesPerSegment; j++)
             {
                 float t = j / (float)samplesPerSegment;
-                Vector3 point = CatmullRom.Evaluate(
-                    controlPoints[i], controlPoints[i + 1], controlPoints[i + 2], controlPoints[i + 3], t
+                Vector3 point = CatmullRom(
+                    controlPoints[i],
+                    controlPoints[i + 1],
+                    controlPoints[i + 2],
+                    controlPoints[i + 3],
+                    t
                 );
 
                 if (sampledPoints.Count > 0)
-                    distanceSum += Vector3.Distance(point, sampledPoints[^1]);
+                    distSum += Vector3.Distance(point, sampledPoints[^1]);
 
                 sampledPoints.Add(point);
-                cumulativeDistances.Add(distanceSum);
+                cumulativeDistances.Add(distSum);
             }
         }
     }
 
+    public void Advance(float currentDistance)
+    {
+        if (!initialized) return;
+
+
+        Vector3 pos = GetPositionByDistance(currentDistance);
+        Vector3 next = GetPositionByDistance(currentDistance + 1f);
+        transform.forward = (next - pos).normalized;
+    }
+
+    // 移動量の取得
+    public Vector3 GetDirection(float currentDistance)
+    {
+        if (!initialized) return Vector3.zero;
+        Vector3 posNow = GetPositionByDistance(currentDistance);
+        Vector3 posNext = GetPositionByDistance(currentDistance + 1f);
+        return (posNext - posNow).normalized;
+    }
+
+    // 進行距離に応じて位置を取得する関数
     public Vector3 GetPositionByDistance(float distance)
     {
         if (sampledPoints.Count == 0) return Vector3.zero;
@@ -92,7 +126,7 @@ public class CatmullRomRoute
     public float TotalDistance => cumulativeDistances.Count > 0 ? cumulativeDistances[^1] : 0f;
 
     // Gizmos描画用
-    public void DrawGizmos()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         for (int i = 1; i < sampledPoints.Count; i++)
@@ -101,10 +135,12 @@ public class CatmullRomRoute
         }
 
         Gizmos.color = Color.magenta;
-        foreach (var p in controlPoints)
+        if (controlPoints != null)
         {
-            Gizmos.DrawSphere(p, 0.2f);
+            foreach (var p in controlPoints)
+            {
+                Gizmos.DrawSphere(p, 0.2f);
+            }
         }
     }
-
 }
