@@ -10,6 +10,14 @@ public class Stunt2 : MonoBehaviour
     private HashSet<PlayerActionState> scoredStates = new HashSet<PlayerActionState>();
     private float previousNormalizedTime = 0f;
 
+    // Joy-Conスティックの入力閾値設定を追加
+    [Header("Joy-Con Input Thresholds")]
+    [Tooltip("スティックの傾きを検知する閾値（左右回避用）")]
+    public float stickAvoidThreshold = 0.5f;
+    [Tooltip("攻撃やスタントポーズ時のJoy-Con振り回し判定の加速度閾値")]
+    //左右に突き出す際の加速度の閾値
+    public float stuntSwingAccelThreshold = 0.5f;
+
     private enum PlayerActionState
     {
         None = 0,
@@ -49,11 +57,11 @@ public class Stunt2 : MonoBehaviour
         if (groundContactDetection.isGrounded == true)
         {
             // 左右回避
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(KeyCode.A) || (JCScript.Instance != null && JCScript.Instance.LeftStick.x < -stickAvoidThreshold))
             {
                 SetActionState(PlayerActionState.FallLeft);
             }
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.D) || (JCScript.Instance != null && JCScript.Instance.LeftStick.x > stickAvoidThreshold))
             {
                 SetActionState(PlayerActionState.FallRight);
             }
@@ -67,30 +75,33 @@ public class Stunt2 : MonoBehaviour
         if (groundContactDetection.isGrounded == false)
         {
 
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha1) || (JCScript.Instance != null && JCScript.Instance.RightYButton && JCScript.Instance.IsRightSwinging))
             {
                 SetActionState(PlayerActionState.SmallPose1);
             }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+            if (Input.GetKeyDown(KeyCode.Alpha2) || (JCScript.Instance != null && JCScript.Instance.RightXButton && JCScript.Instance.IsRightSwinging))
             {
                 SetActionState(PlayerActionState.SmallPose2);
             }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
+            if (Input.GetKeyDown(KeyCode.Alpha3) || (JCScript.Instance.IsRightSwinging) && (JCScript.Instance.IsLeftSwinging))
             {
                 SetActionState(PlayerActionState.SmallPose3);
             }
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) || (JCScript.Instance != null && JCScript.Instance.IsLeftSwinging && JCScript.Instance.LeftAccel.x < -stuntSwingAccelThreshold))
         {
             SetActionState(PlayerActionState.HitRight);
+            RightAttackAnimation();
+
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) || (JCScript.Instance != null && JCScript.Instance.IsRightSwinging && JCScript.Instance.RightAccel.x > stuntSwingAccelThreshold))
         {
             SetActionState(PlayerActionState.HitLeft);
-        }
+            LeftAttackAnimation();
 
+        }
 
 
 
@@ -137,11 +148,24 @@ public class Stunt2 : MonoBehaviour
             // ポーズ外ならリセット
             previousNormalizedTime = 0f;
         }
-
        
+     
+
     }
 
 
+
+    public bool RightAttackAnimation()
+    {
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+        return info.IsName("HitRight") && info.normalizedTime < 1f;
+    }
+
+    public bool LeftAttackAnimation()
+    {
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+        return info.IsName("HitLeft") && info.normalizedTime < 1f;
+    }
     void SetActionState(PlayerActionState state)
         {
             if (nextState != state)
