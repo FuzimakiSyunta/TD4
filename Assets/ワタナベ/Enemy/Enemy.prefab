@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6634339260141744370
 Transform:
   m_ObjectHideFlags: 0
@@ -303,6 +303,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       insertIndex: -1
       addedObject: {fileID: -5939816202886489511}
+    - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7176599283396213463}
   m_SourcePrefab: {fileID: 100100000, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
 --- !u!1 &3989910860262855915 stripped
 GameObject:
@@ -528,6 +531,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 706710498453070419, guid: a5235ee865af4a64a9b1f352214780e1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7206782148831051316}
+    - targetCorrespondingSourceObject: {fileID: 706710498453070419, guid: a5235ee865af4a64a9b1f352214780e1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8263396741317995169}
     - targetCorrespondingSourceObject: {fileID: 5585908485301182742, guid: a5235ee865af4a64a9b1f352214780e1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4147138102544111493}
@@ -598,7 +604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materialList: {fileID: 11400000, guid: d6e6c0fa7dec5824e8cb7fc6b47ca226, type: 2}
   colorIndex: {fileID: 11400000, guid: 03727ca513f16a848a4578fa175fa189, type: 2}
-  targetRenderer: {fileID: 60605287606792732}
+  targetRenderer: {fileID: 0}
   allowedScenes:
   - ColorChengeScene
 --- !u!4 &5247449155362744338 stripped

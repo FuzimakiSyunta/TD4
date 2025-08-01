@@ -63,8 +63,8 @@ Material:
     m_Floats:
     - _BlurFadeWidth: 0.1
     - _BlurOutFadeWidth: 0.179
-    - _BlurSamples: 5
-    - _BlurStrength: 0.046355747
+    - _BlurSamples: 16
+    - _BlurStrength: 0.03
     - _BumpScale: 1
     - _ClearBottomFadeWidth: 0.05
     - _ClearBottomYMax: 0.2
@@ -92,7 +92,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _BlurCenter: {r: 0.5, g: 0.6, b: 0, a: 0}
+    - _BlurCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
