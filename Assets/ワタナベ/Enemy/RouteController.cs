@@ -4,23 +4,38 @@ using UnityEngine;
 public class RouteController : MonoBehaviour
 {
     [Header("ルートマネージャー参照")]
-    public RouteManager routeManager;
+    private RouteManager routeManager;
 
     // 現行ルートデータ
     private CatmullRomRoute currentRoute;
-
-    // ルートの制御点リスト
-    private List<Vector3> controlPoints;
-    // サンプリングされたポイントと累積距離のリスト
-    private List<Vector3> sampledPoints = new();
-    // 累積距離のリスト
-    private List<float> cumulativeDistances = new();
-
-    private float currentDistance = 0f;
-    private int samplesPerSegment = 20;
-    private bool initialized = false;
-
+    // 使用ルート番号
     private int currentRouteIndex = 0;
+    // 現在の距離
+    public float currentDistance = 0f;
+
+    private void Start()
+    {
+       // ルートマネージャーを取得
+        if (routeManager == null)
+        {
+            routeManager = FindObjectOfType<RouteManager>();
+            if (routeManager == null)
+            {
+                UnityEngine.Debug.LogError("ルートマネージャーが見つかりません。シーンにRouteManagerを配置してください。");
+                return;
+            }
+        }
+        // 初期化時にランダムなルートを設定
+        InitWithRandomRoute();
+    }
+
+    public void Advance(float speed, float deltaTime)
+    {
+        //if (currentRoute==null) InitWithRandomRoute();
+        currentDistance += speed * deltaTime;
+        currentRoute.Advance(currentDistance);
+    }
+
 
     // 現在のルートインデックスを取得
     public int GetCurrentRouteIndex() => currentRouteIndex;
@@ -45,39 +60,50 @@ public class RouteController : MonoBehaviour
     // 初期化時にルートを設定する
     public void InitWithRoute(int routeIndex)
     {
-        controlPoints = routeManager.GetRoutePoints(routeIndex);
-        if (controlPoints == null || controlPoints.Count < 4)
+        if (routeManager == null)
         {
-            Debug.LogError("制御点が不足しています");
+            UnityEngine.Debug.LogError("ルートマネージャーが設定されていません。");
             return;
         }
-        BakeRoute();
-        initialized = true;
+        
+        currentRoute = routeManager.GetRoute(routeIndex);
+        
+        if(currentRoute == null)
+        {
+            UnityEngine.Debug.LogError("指定されたルートが存在しません。ルートインデックスを確認してください。");
+            return;
+        }
+        UnityEngine.Debug.Log("ルート 初期化成功");
     }
 
     // 初期化時にランダムなルートを設定する
     public void InitWithRandomRoute()
     {
-        controlPoints = routeManager.GetRandomRoutePoints();
-        if (controlPoints == null || controlPoints.Count < 4)
+        if (routeManager == null)
         {
-            Debug.LogError("制御点が不足しています");
+            UnityEngine.Debug.LogError("ルートマネージャーが設定されていません。");
             return;
         }
-        BakeRoute();
-        initialized = true;
+
+        currentRoute = routeManager.GetRandomRoute();
+        
+        if(currentRoute == null)
+        {
+            UnityEngine.Debug.LogError("ランダムルートの取得に失敗しました。ルートが存在しない可能性があります。");
+            return;
+        }
+
+        UnityEngine.Debug.Log("ランダムルート 初期化成功");
     }
 
-   
-
-    public void Advance(float speed,float deltaTime)
+    public CatmullRomRoute GetCurrentRoute()
     {
-        if (!initialized) return;
-
-        currentDistance += speed * deltaTime;
-        Vector3 pos = GetPositionByDistance(currentDistance);
-        Vector3 next = GetPositionByDistance(currentDistance + 1f);
-        transform.forward = (next - pos).normalized;
+        if (currentRoute == null)
+        {
+            UnityEngine.Debug.LogError("現在のルートが設定されていません。InitWithRouteまたはInitWithRandomRouteを呼び出してください。");
+            return null;
+        }
+        return currentRoute;
     }
 
     // ルートを変更する関数
@@ -85,29 +111,11 @@ public class RouteController : MonoBehaviour
     {
         currentRouteIndex = newRouteIndex;
         InitWithRoute(newRouteIndex);
-        currentDistance = 0f; // 進行距離リセット（継続したい場合は工夫可能）
     }
 
-    // 進行距離に基づいて位置を取得する関数
-    private Vector3 GetPositionByDistance(float distance)
+    public Vector3 GetDirection()
     {
-        if (sampledPoints.Count == 0) return Vector3.zero;
-        if (distance <= 0f) return sampledPoints[0];
-        if (distance >= cumulativeDistances[^1]) return sampledPoints[^1];
-
-        for (int i = 1; i < cumulativeDistances.Count; i++)
-        {
-            if (distance < cumulativeDistances[i])
-            {
-                float d0 = cumulativeDistances[i - 1];
-                float d1 = cumulativeDistances[i];
-                float t = Mathf.InverseLerp(d0, d1, distance);
-                return Vector3.Lerp(sampledPoints[i - 1], sampledPoints[i], t);
-            }
-        }
-
-        return sampledPoints[^1];
+        return currentRoute.GetDirection(currentDistance);
     }
-
 
 }

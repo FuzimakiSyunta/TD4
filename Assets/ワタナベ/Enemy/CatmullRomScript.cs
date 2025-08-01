@@ -11,28 +11,33 @@ public class RouteData : ScriptableObject
     // ここに Boost, Jump などのメタ情報も追加可能
 }
 
-
 /// <summary>
 /// Catmull-Rom 曲線に基づくルートを表現するクラス
 /// </summary>
 public class CatmullRomRoute : MonoBehaviour
 {
     // ルートの制御点リスト
-    private List<Vector3> controlPoints;
+    public List<Vector3> controlPoints;
     // サンプリングされたポイントと累積距離のリスト
-    private List<Vector3> sampledPoints = new();
+    public List<Vector3> sampledPoints = new();
     // 累積距離のリスト
-    private List<float> cumulativeDistances = new();
+    public List<float> cumulativeDistances = new();
 
-    // 現在の距離
-    private float currentDistance = 0f;
+  
     // サンプリング数
-    private int samplesPerSegment = 20;
+    public int samplesPerSegment = 20;
     // 初期化フラグ
-    private bool initialized = false;
+    public bool initialized = false;
+    // ルート番号
+    public int routeIndex = 0;
+
+    public void SetCount(int index)
+    {
+        routeIndex = index;
+    }
 
     // Catmull-Rom 曲線の評価関数
-    private Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+    public Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {
         float t2 = t * t;
         float t3 = t2 * t;
@@ -44,10 +49,11 @@ public class CatmullRomRoute : MonoBehaviour
         );
     }
 
-    public void Setup(List<Vector3> points)
+    public void SetupRoute(List<Vector3> points)
     {
         controlPoints = points;
         BakeRoute();
+        initialized = true;
     }
 
     public void BakeRoute()
@@ -78,8 +84,18 @@ public class CatmullRomRoute : MonoBehaviour
         }
     }
 
+    public void Advance(float currentDistance)
+    {
+        if (!initialized) return;
+
+
+        Vector3 pos = GetPositionByDistance(currentDistance);
+        Vector3 next = GetPositionByDistance(currentDistance + 1f);
+        transform.forward = (next - pos).normalized;
+    }
+
     // 移動量の取得
-    public Vector3 GetDirection()
+    public Vector3 GetDirection(float currentDistance)
     {
         if (!initialized) return Vector3.zero;
         Vector3 posNow = GetPositionByDistance(currentDistance);
@@ -107,13 +123,10 @@ public class CatmullRomRoute : MonoBehaviour
         return sampledPoints[^1];
     }
 
-
-
-
     public float TotalDistance => cumulativeDistances.Count > 0 ? cumulativeDistances[^1] : 0f;
 
     // Gizmos描画用
-    public void DrawGizmos()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         for (int i = 1; i < sampledPoints.Count; i++)
@@ -122,10 +135,12 @@ public class CatmullRomRoute : MonoBehaviour
         }
 
         Gizmos.color = Color.magenta;
-        foreach (var p in controlPoints)
+        if (controlPoints != null)
         {
-            Gizmos.DrawSphere(p, 0.2f);
+            foreach (var p in controlPoints)
+            {
+                Gizmos.DrawSphere(p, 0.2f);
+            }
         }
     }
-
 }

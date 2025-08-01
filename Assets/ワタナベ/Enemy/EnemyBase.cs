@@ -39,7 +39,8 @@ public class EnemyBase : MonoBehaviour
     //ブレーキ時の減速度
     public float brakePower = 300f;
 
-    float turnSpeed = 100f;
+    // 回転速度
+    public float turnSpeed = 360f;
     float rotationY = 0f;
 
     float bankAngle = 10f;
@@ -65,13 +66,16 @@ public class EnemyBase : MonoBehaviour
         // 各項目のリセット処理
 
         // ランダムルートで初期化
-        routeController.InitWithRandomRoute();
+        routeController.InitWithRoute(0);
+       
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        routeController.InitWithRoute(0);
+
         // ルート制御スクリプトが設定されている場合は、ルート制御の更新を行う
         if (routeController != null)
         {
@@ -87,7 +91,7 @@ public class EnemyBase : MonoBehaviour
             // ルート・移動量の更新
             routeController.Advance(moveSpeed, Time.deltaTime);
             // ルートに沿った移動方向を取得
-            moveVec = routeController.GetDirection().normalized;
+            moveVec = routeController.GetDirection();
 
 
             // -- 移動処理 -- //
