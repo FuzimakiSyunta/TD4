@@ -905,7 +905,7 @@ PrefabInstance:
     - target: {fileID: 4472512903712240964, guid: 143a51c95e18cf54e9642affd804edf8, type: 3}
       propertyPath: enemyDatas.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 30b32cf503802fe4da102e6a1a1a9e9d, type: 2}
+      objectReference: {fileID: 11400000, guid: b98a56de608ec2442b3d9d2e5c85961b, type: 2}
     - target: {fileID: 8924318830447796718, guid: 143a51c95e18cf54e9642affd804edf8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
