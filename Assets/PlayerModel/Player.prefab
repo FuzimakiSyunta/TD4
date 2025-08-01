@@ -571,7 +571,7 @@ MonoBehaviour:
   deceleration: 2
   maxSpeed: 3
   brakePower: 160
-  goalScript: {fileID: 0}
+  goalScript: {fileID: 6376642306434644482}
 --- !u!114 &6030314271079412270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -626,8 +626,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f8c58700ca8224a9aef0a1b0633347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rhitbox: {fileID: 0}
-  Lhitbox: {fileID: 0}
+  Rhitbox: {fileID: 855718100952253882}
+  Lhitbox: {fileID: 8294246942165697462}
 --- !u!23 &5772410527799040526 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
