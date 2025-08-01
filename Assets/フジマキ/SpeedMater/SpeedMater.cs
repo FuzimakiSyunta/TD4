@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpeedMater : MonoBehaviour
 {
-    private PlayerOperation playerOperation;
+    private JCKPlayerOperation playerOperation;
     public GameObject playerOperationScript;
 
     private GameManager gameManager;
@@ -29,7 +29,7 @@ public class SpeedMater : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerOperation = playerOperationScript.GetComponent<PlayerOperation>(); // 修正: PlayerOperation コンポーネントを取得
+        playerOperation = playerOperationScript.GetComponent<JCKPlayerOperation>(); // 修正: PlayerOperation コンポーネントを取得
         gameManager = gamemanagerScript.GetComponent<GameManager>(); // 修正: GameManager コンポーネントを取得
         //スピードメーターUI初期化
         speedMater_BackImage.SetActive(false);
