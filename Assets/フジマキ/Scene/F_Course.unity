@@ -3177,7 +3177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blurMaterial: {fileID: 2100000, guid: ae4e59a719a6b09488ef03b78bf777f3, type: 2}
-  blurStrength: 0.167
+  blurStrength: 0.04
   blurSamples: 16
   blurCenter: {x: 0.5, y: 0.5}
 --- !u!114 &202230316

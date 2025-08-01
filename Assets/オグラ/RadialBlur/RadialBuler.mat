@@ -64,7 +64,7 @@ Material:
     - _BlurFadeWidth: 0.1
     - _BlurOutFadeWidth: 0.179
     - _BlurSamples: 16
-    - _BlurStrength: 0.03
+    - _BlurStrength: 0.04
     - _BumpScale: 1
     - _ClearBottomFadeWidth: 0.05
     - _ClearBottomYMax: 0.2
