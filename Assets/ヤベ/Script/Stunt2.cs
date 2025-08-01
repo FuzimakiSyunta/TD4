@@ -93,12 +93,15 @@ public class Stunt2 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q) || (JCScript.Instance != null && JCScript.Instance.IsLeftSwinging && JCScript.Instance.LeftAccel.x < -stuntSwingAccelThreshold))
         {
             SetActionState(PlayerActionState.HitRight);
+            RightAttackAnimation();
+
         }
         if (Input.GetKeyDown(KeyCode.E) || (JCScript.Instance != null && JCScript.Instance.IsRightSwinging && JCScript.Instance.RightAccel.x > stuntSwingAccelThreshold))
         {
             SetActionState(PlayerActionState.HitLeft);
-        }
+            LeftAttackAnimation();
 
+        }
 
 
 
@@ -145,11 +148,24 @@ public class Stunt2 : MonoBehaviour
             // ポーズ外ならリセット
             previousNormalizedTime = 0f;
         }
-
        
+     
+
     }
 
 
+
+    public bool RightAttackAnimation()
+    {
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+        return info.IsName("HitRight") && info.normalizedTime < 1f;
+    }
+
+    public bool LeftAttackAnimation()
+    {
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+        return info.IsName("HitLeft") && info.normalizedTime < 1f;
+    }
     void SetActionState(PlayerActionState state)
         {
             if (nextState != state)

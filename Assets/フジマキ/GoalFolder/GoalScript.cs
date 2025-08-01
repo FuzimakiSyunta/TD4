@@ -12,11 +12,19 @@ public class GoalScript : MonoBehaviour
     bool goal = false;
     //チェックポイントフラグ
     private bool[] checkpoint = new bool[3] { false, false, false };
+    //チェックポイントUI
+    public GameObject[] checkPointUI; // 順番に消すオブジェクト
     // Start is called before the first frame update
     void Start()
     {
         goal = false;
         checkpoint = new bool[3] { false, false, false };
+        if (checkPointUI.Length >= 3)
+        {
+            checkPointUI[0].SetActive(true);
+            checkPointUI[1].SetActive(false);
+            checkPointUI[2].SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -34,18 +42,23 @@ public class GoalScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Checkpoint1"))
         {
             checkpoint[0] = true;
+            checkPointUI[0].SetActive(false);
+            checkPointUI[1].SetActive(true);
             Debug.Log("チェックポイント1に触れた");
         }
 
         if (collision.gameObject.CompareTag("Checkpoint2") && checkpoint[0] == true)
         {
             checkpoint[1] = true;
+            checkPointUI[1].SetActive(false);
+            checkPointUI[2].SetActive(true);
             Debug.Log("チェックポイント2に触れた");
         }
 
         if (collision.gameObject.CompareTag("Checkpoint3") && checkpoint[0] == true && checkpoint[1] == true)
         {
             checkpoint[2] = true;
+            checkPointUI[2].SetActive(false);
             Debug.Log("チェックポイント3に触れた");
         }
 

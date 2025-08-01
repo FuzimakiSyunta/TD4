@@ -12,7 +12,7 @@ public class PlayerOperation : MonoBehaviour
     public RearWheelRotatorScript rearWheelRotator;
 
     // プレイヤーの現在速度
-   public float playerSpeed = 0f;
+  　public float playerSpeed = 0f;
     //加速
     public float acceleration = 35f;
     //減速
@@ -34,14 +34,10 @@ public class PlayerOperation : MonoBehaviour
     bool wasGrounded = true;
 
     private float accelerationTimer = 0f;
-    private float accelerationDuration = 0.2f;
+    private float accelerationDuration = 2f;
     private bool isAccelerating = false;
 
-    //加速か判定
-    public bool IsAccelerating
-    {
-        get { return isAccelerating; }
-    }
+    Vector3 moveDir;
 
 
     void Start()
@@ -66,15 +62,17 @@ public class PlayerOperation : MonoBehaviour
         transform.position = pos;
 
 
-        //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
-        //{
+        if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
+        {
               // プレイヤーの入力処理
               HandleInput();
-              // ホイールの回転アニメーション処理（走行演出）
-              HandleWheelAnimation();
-        // }
+             
+         }
+        // ホイールの回転アニメーション処理（走行演出）
+        HandleWheelAnimation();
         UpdateAcceleration();
-       // if (stunt2.IsSmallPoseAnimating() == true && )
+       
+        
     }
 
     void HandleInput()
@@ -105,7 +103,7 @@ public class PlayerOperation : MonoBehaviour
         Vector3 forward = baseRotation * Vector3.forward;
 
         // 地形の傾斜に沿って補正（上下移動を許すなら ProjectOnPlane は使わない）
-        Vector3 moveDir = forward.normalized;
+        moveDir = forward.normalized;
 
         // 回転反映（地形に合わせる）
         Quaternion slopeRotation = Quaternion.LookRotation(forward, groundNormal);
@@ -122,20 +120,23 @@ public class PlayerOperation : MonoBehaviour
                 playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
         }
 
-        playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
+      
 
-        // 移動反映
-        transform.position += moveDir * playerSpeed * Time.deltaTime;
+        
     }
 
     
     void HandleWheelAnimation()
     {
-        //if (frontWheelRotator != null)
-        //    frontWheelRotator.Rotate(playerSpeed);
+        playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
+        // 移動反映
+        transform.position += moveDir * playerSpeed * Time.deltaTime;
 
-        //if (rearWheelRotator != null)
-        //    rearWheelRotator.Rotate(playerSpeed);
+
+        if (gameManagerScript.IsGameStarted() && goalScript.IsGoal())
+        {
+            playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
+        }
     }
 
     public float GetPlayerSpeed()
@@ -153,7 +154,7 @@ public class PlayerOperation : MonoBehaviour
 
     void UpdateAcceleration()
     {
-        if (isAccelerating ==true)
+        if (isAccelerating == true)
         {
             accelerationTimer -= Time.deltaTime;
             if (accelerationTimer <= 0f)
@@ -164,4 +165,6 @@ public class PlayerOperation : MonoBehaviour
         }
     }
 
+
+   
 }

@@ -24,17 +24,7 @@ public class SpeedMater : MonoBehaviour
     //カメラオブジェクトの参照
     public Camera mainCamera;
 
-    //速度0でのブラー強度
-    public float minBlurStrength = 0.0f;
-    //最高速度でのブラー強度
-    public float maxBlurStrength = 0.06f;
-    //速度0でのブラーサンプル数
-    public int minBlurSamples = 0;
-    //最高速度でのブラーサンプル数
-    public int maxBlurSamples = 7;
-
-    //ブラー中心
-    public Vector2 fixedBlurCenter = new Vector2(0.5f, 0.6f); 
+    
 
     // Start is called before the first frame update
     void Start()
@@ -55,15 +45,13 @@ public class SpeedMater : MonoBehaviour
         // ShaderCameraが見つからない場合のエラーログ
         if (shaderCamera == null)
         {
-            Debug.LogError("SpeedMater: ShaderCameraコンポーネントがメインカメラに見つかりません。メインカメラにShaderCameraスクリプトをアタッチしているか確認してください。");
+            //Debug.LogError("SpeedMater: ShaderCameraコンポーネントがメインカメラに見つかりません。メインカメラにShaderCameraスクリプトをアタッチしているか確認してください。");
         }
         else
         {
             // ゲーム開始時、ShaderCameraを一旦無効にしておく（ブラー消すため）
             shaderCamera.enabled = false;
 
-            //ブラーの中心を固定値に設定
-            shaderCamera.blurCenter = fixedBlurCenter;
         }
     }
 
@@ -93,12 +81,6 @@ public class SpeedMater : MonoBehaviour
 
             //速度を0.0から1.0の範囲に正規化
             float normalizedSpeed = Mathf.Clamp01(currentSpeed / playerOperation.maxSpeed);
-
-            //ぼかしの強度を速度に応じて線形補間し、ShaderCameraに設定
-            shaderCamera.blurStrength = Mathf.Lerp(minBlurStrength, maxBlurStrength, normalizedSpeed);
-
-            //サンプル数を速度に応じて線形補間し、整数に丸めてShaderCameraに設定
-            shaderCamera.blurSamples = Mathf.RoundToInt(Mathf.Lerp(minBlurSamples, maxBlurSamples, normalizedSpeed));
         }
     }
 
