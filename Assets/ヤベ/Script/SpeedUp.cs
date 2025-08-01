@@ -22,7 +22,8 @@ public class SpeedUp : MonoBehaviour
     {
         if(other.tag=="Player")
         {
-            operation.acceleration = 70f;
+            operation.Acceleration();
+            Debug.Log("ダッシュボードに乗った");
         }
     }
 
