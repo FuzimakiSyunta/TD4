@@ -62,7 +62,7 @@ public class RouteController : MonoBehaviour
     {
         if (routeManager == null)
         {
-            UnityEngine.Debug.LogError("ルートマネージャーが設定されていません。");
+            //UnityEngine.Debug.LogError("ルートマネージャーが設定されていません。");
             return;
         }
         
@@ -70,10 +70,10 @@ public class RouteController : MonoBehaviour
         
         if(currentRoute == null)
         {
-            UnityEngine.Debug.LogError("指定されたルートが存在しません。ルートインデックスを確認してください。");
+            //UnityEngine.Debug.LogError("指定されたルートが存在しません。ルートインデックスを確認してください。");
             return;
         }
-        UnityEngine.Debug.Log("ルート 初期化成功");
+        //UnityEngine.Debug.Log("ルート 初期化成功");
     }
 
     // 初期化時にランダムなルートを設定する
