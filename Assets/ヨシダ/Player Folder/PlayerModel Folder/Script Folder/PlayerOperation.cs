@@ -12,7 +12,7 @@ public class PlayerOperation : MonoBehaviour
     public RearWheelRotatorScript rearWheelRotator;
 
     // プレイヤーの現在速度
-   public float playerSpeed = 0f;
+  　public float playerSpeed = 0f;
     //加速
     public float acceleration = 35f;
     //減速
@@ -163,6 +163,7 @@ public class PlayerOperation : MonoBehaviour
             }
         }
     }
+
 
    
 }

@@ -85,16 +85,18 @@ public class Stunt2 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SetActionState(PlayerActionState.HitRight);
-           
+            RightAttackAnimation();
+
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             SetActionState(PlayerActionState.HitLeft);
+            LeftAttackAnimation();
+
         }
 
 
-   
-     //RightAttackAnimation();
+
 
     }
 
@@ -138,35 +140,24 @@ public class Stunt2 : MonoBehaviour
             // ポーズ外ならリセット
             previousNormalizedTime = 0f;
         }
-        RightAttackAnimation();
-        AttackAnimation();
+       
+     
 
     }
 
-    public bool RightAttackAnimation() 
+
+
+    public bool RightAttackAnimation()
     {
-        // アニメーション中かどうか調べる
         AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
-
-        bool isPlaying =
-            (info.IsName("FallRight") &&
-            info.normalizedTime < 1f);
-
-        return isPlaying;
+        return info.IsName("HitRight") && info.normalizedTime < 1f;
     }
 
-    public bool AttackAnimation()
+    public bool LeftAttackAnimation()
     {
-        //// アニメーション中かどうか調べる
         AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
-
-        bool isPlaying =
-            (info.IsName("FallRight") &&
-            info.normalizedTime < 1);
-
-        return isPlaying;
+        return info.IsName("HitLeft") && info.normalizedTime < 1f;
     }
-
     void SetActionState(PlayerActionState state)
         {
             if (nextState != state)

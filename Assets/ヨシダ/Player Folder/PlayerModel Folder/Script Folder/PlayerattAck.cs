@@ -22,24 +22,11 @@ public class PlayerattAck : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (stunt2.RightAttackAnimation() == true)
-        {
-            Rhitbox.SetActive(true);
-           
-        }
-        else if(stunt2.RightAttackAnimation() == false)
-        {
-            Rhitbox.SetActive(false);
-        }
+        // 右攻撃中ならRhitboxをオン、それ以外はオフ
+        Rhitbox.SetActive(stunt2.RightAttackAnimation());
 
-        if (stunt2.AttackAnimation() == true)
-        {
-            Lhitbox.SetActive(true);
-        }
-        else 
-        {
-            Lhitbox.SetActive(false);
-        }
+        // 左攻撃中ならLhitboxをオン、それ以外はオフ
+        Lhitbox.SetActive(stunt2.LeftAttackAnimation());
 
 
     }
