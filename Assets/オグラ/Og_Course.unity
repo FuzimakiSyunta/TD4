@@ -10048,6 +10048,10 @@ PrefabInstance:
       value: 221
       objectReference: {fileID: 0}
     - target: {fileID: 2301573529865899421, guid: 4e1d46c5413f53946aa39c7b1fa5157e, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 202230310}
+    - target: {fileID: 2301573529865899421, guid: 4e1d46c5413f53946aa39c7b1fa5157e, type: 3}
       propertyPath: gamemanagerScript
       value: 
       objectReference: {fileID: 1492532320}
@@ -29899,6 +29903,63 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2143036585}
   m_SourcePrefab: {fileID: 100100000, guid: de75c6a7d27beb64b96b3ef565c266c4, type: 3}
+--- !u!1001 &1745993997
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2165299713958159763, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1855.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165299713958159763, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.73656464
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165299713958159763, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1877.8176
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165299713958159763, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165299713958159763, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165299713958159763, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165299713958159763, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165299713958159763, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165299713958159763, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165299713958159763, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7134473465098023174, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
+      propertyPath: m_Name
+      value: JoyConManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5a84f0ec1db4cf8428c07679e38849f6, type: 3}
 --- !u!1 &1747429599
 GameObject:
   m_ObjectHideFlags: 0
@@ -34365,6 +34426,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 7206782147493264990}
   currentScore: 0
+  stickAvoidThreshold: 0.5
+  stuntSwingAccelThreshold: 0.5
 --- !u!1001 &2026138664
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36219,6 +36282,7 @@ GameObject:
   - component: {fileID: 499048695}
   - component: {fileID: 499048696}
   - component: {fileID: 6922488616289538378}
+  - component: {fileID: 6922488616289538379}
   m_Layer: 0
   m_Name: Player
   m_TagString: PlayerAttack
@@ -36233,7 +36297,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5391592884243180632}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42103341d3e7c0c4487417611df863be, type: 3}
   m_Name: 
@@ -36435,6 +36499,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79450bca690da804fa0b91273e19ed73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkPointUI: []
+--- !u!114 &6922488616289538379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5391592884243180632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ccff662bca3264ca000e93e310703d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 1492532320}
+  modelTransform: {fileID: 4726837343265683170}
+  frontWheelRotator: {fileID: 8967793626778496541}
+  rearWheelRotator: {fileID: 2387773492309424005}
+  playerSpeed: 0
+  acceleration: 1
+  deceleration: 2
+  maxSpeed: 3
+  brakePower: 160
+  goalScript: {fileID: 6922488616289538378}
 --- !u!33 &7007041282766405360
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -36936,6 +37023,7 @@ SceneRoots:
   - {fileID: 4126636640229009661}
   - {fileID: 291910242}
   - {fileID: 8282637138495986000}
+  - {fileID: 1745993997}
   - {fileID: 4726837343265683170}
   - {fileID: 1357902086}
   - {fileID: 2594243995011470631}
