@@ -3327,7 +3327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f98cac69cb129f94ba011e0c23f4d7b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JCplayerOperationScript: {fileID: 221083506}
+  jckPlayerOperationScript: {fileID: 221083506}
   mainCamera: {fileID: 202230310}
   minBlurStrength: 0
   maxBlurStrength: 0.06
@@ -9319,7 +9319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79450bca690da804fa0b91273e19ed73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &499048696
+--- !u!114 &499048701
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -31931,7 +31931,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5391592886117837874, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 499048696}
+      addedObject: {fileID: 499048701}
   m_SourcePrefab: {fileID: 100100000, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
 --- !u!1001 &1884578144
 PrefabInstance:
