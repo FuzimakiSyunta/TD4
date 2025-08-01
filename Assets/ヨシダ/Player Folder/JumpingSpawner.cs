@@ -16,6 +16,7 @@ public class JumpingSpawner : MonoBehaviour
     private string currentPrefabName = "小ジャンプ台";
 
     private Dictionary<string, GameObject> prefabDict;
+    private bool isSpawnMode = false;
 
     void Start()
     {
@@ -56,11 +57,18 @@ public class JumpingSpawner : MonoBehaviour
 
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            isSpawnMode = !isSpawnMode;
+            Debug.Log($"生成モード: {(isSpawnMode ? "ON" : "OFF")}");
+        }
+
         //キーでジャンプ台の種類を切り替え
         if (Input.GetKeyDown(KeyCode.Alpha5)) currentPrefabName = "小ジャンプ台";
         if (Input.GetKeyDown(KeyCode.Alpha6)) currentPrefabName = "大ジャンプ台";
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)&&isSpawnMode)
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
