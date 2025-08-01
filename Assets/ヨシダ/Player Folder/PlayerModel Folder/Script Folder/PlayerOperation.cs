@@ -39,6 +39,7 @@ public class PlayerOperation : MonoBehaviour
 
     Vector3 moveDir;
 
+
     void Start()
     {
         goalScript = GameObject.Find("Player").GetComponent<GoalScript>();

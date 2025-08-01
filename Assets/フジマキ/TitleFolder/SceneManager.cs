@@ -50,25 +50,13 @@ public class SceneSwitcher : MonoBehaviour
         if (ImageSelectorScript == null) return;
 
         float index = ImageSelectorScript.Imageindex();
-        // 0番目のImageが選択されている場合、ゲームスタートフラグを立てる
-        if (index==0)
-        {
-            GameStartFlag = true;
-        }
-        // 1番目のImageが選択されている場合、色変更フラグを立てる
-        if (index==1) {
-            ColorChengeFlag = true;
-        }
-        // 2番目のImageが選択されている場合、
-        //if (index == 2)
-        //{
-        //    ColorChengeFlag = true;
-        //}
+   
 
         // 0番目のImageが選択されている場合のみ処理を行う
         //ゲームスタート
         if (index == 0 && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
         {
+            GameStartFlag = true; // ← ここで設定
             isSequenceStarted = true;
             startTime = Time.time;
 
@@ -87,6 +75,8 @@ public class SceneSwitcher : MonoBehaviour
         //ゲームスタート
         if (index == 1 && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
         {
+
+            ColorChengeFlag = true; // ← ここで設定
             isSequenceStarted = true;
             startTime = Time.time;
 

@@ -32,28 +32,25 @@ public class GoalCamera : MonoBehaviour
 
         bool isGoal = goalScript.IsGoal();
 
-        if (isGoal != wasGoal)
+        // ゴール状態が切り替わった時だけ実行
+        if (isGoal)
         {
-            // ゴール状態が切り替わった時だけ実行
-            if (isGoal)
-            {
-                // ゴール時：ゲームカメラOFF、ゴールカメラON
-                gameCamera.enabled = false;
-                goalCamera.enabled = true;
-                Debug.Log("カメラが切り替わりました。");
-            }
-            else
-            {
-                // ゴール前：ゲームカメラON、ゴールカメラOFF
-                gameCamera.enabled = true;
-                goalCamera.enabled = false;
-                Debug.Log("ゲームカメラです");
-            }
-
-            wasGoal = isGoal;
+            // ゴール時：ゲームカメラOFF、ゴールカメラON
+            gameCamera.enabled = false;
+            goalCamera.enabled = true;
+            Debug.Log("カメラが切り替わりました。");
+        }
+        else
+        {
+            // ゴール前：ゲームカメラON、ゴールカメラOFF
+            gameCamera.enabled = true;
+            goalCamera.enabled = false;
+            Debug.Log("ゲームカメラです");
         }
 
-        if(goalCamera.enabled)
+        wasGoal = isGoal;
+
+        if (goalCamera.enabled)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
