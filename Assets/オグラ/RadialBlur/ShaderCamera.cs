@@ -23,7 +23,7 @@ public class ShaderCamera : MonoBehaviour
 
     void OnEnable()
     {
-        //この条件がtrueになると、スクリプトが無効になります
+        //この条件がtrueになると、スクリプトが無効になる
         if (blurMaterial == null || blurMaterial.shader == null || !blurMaterial.shader.isSupported)
         {
             enabled = true;
