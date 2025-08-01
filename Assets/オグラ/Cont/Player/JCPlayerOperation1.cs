@@ -1,18 +1,18 @@
 ﻿using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class PlayerOperation : MonoBehaviour
+public class JCKPlayerOperation : MonoBehaviour
 {
     private GameManager gameManagerScript;
     public GameObject gameManager;
-    private Stunt2 stunt2; 
+    private Stunt2 stunt2;
 
     public Transform modelTransform;
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
 
     // プレイヤーの現在速度
-   public float playerSpeed = 0f;
+    public float playerSpeed = 0f;
     //加速
     public float acceleration = 35f;
     //減速
@@ -34,10 +34,14 @@ public class PlayerOperation : MonoBehaviour
     bool wasGrounded = true;
 
     private float accelerationTimer = 0f;
-    private float accelerationDuration = 2f;
+    private float accelerationDuration = 0.2f;
     private bool isAccelerating = false;
 
-    Vector3 moveDir;
+    //加速か判定
+    public bool IsAccelerating
+    {
+        get { return isAccelerating; }
+    }
 
 
     void Start()
@@ -50,7 +54,7 @@ public class PlayerOperation : MonoBehaviour
         else
             Debug.LogError("GameManagerが設定されていません。");
 
-        
+
     }
 
     void Update()
@@ -62,31 +66,35 @@ public class PlayerOperation : MonoBehaviour
         transform.position = pos;
 
 
-        if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
-        {
-              // プレイヤーの入力処理
-              HandleInput();
-             
-         }
+        //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
+        //{
+        // プレイヤーの入力処理
+        HandleInput();
         // ホイールの回転アニメーション処理（走行演出）
         HandleWheelAnimation();
+        // }
         UpdateAcceleration();
-       
-        
+        // if (stunt2.IsSmallPoseAnimating() == true && )
     }
 
     void HandleInput()
     {
-        // 回転入力（左右/Y軸）
         float turnY = 0f;
         if (Mathf.Abs(playerSpeed) > 0.1f)
         {
+            // キーボード入力
             if (Input.GetKey(KeyCode.A)) turnY = -1f;
             else if (Input.GetKey(KeyCode.D)) turnY = 1f;
+
+            //Joy-Conの左スティック入力
+            if (JCScript.Instance != null && JCScript.Instance.LeftStick.x != 0)
+            {
+                turnY = JCScript.Instance.LeftStick.x;
+            }
         }
         rotationY += turnY * turnSpeed * Time.deltaTime;
 
-        // X/Y軸を含んだ回転を作成
+        //X/Y軸を含んだ回転を作成
         Quaternion baseRotation = Quaternion.Euler(jumpScript.rotationX, rotationY, 0f);
 
         // 地面の法線を取得（Terrain前提）
@@ -103,7 +111,7 @@ public class PlayerOperation : MonoBehaviour
         Vector3 forward = baseRotation * Vector3.forward;
 
         // 地形の傾斜に沿って補正（上下移動を許すなら ProjectOnPlane は使わない）
-        moveDir = forward.normalized;
+        Vector3 moveDir = forward.normalized;
 
         // 回転反映（地形に合わせる）
         Quaternion slopeRotation = Quaternion.LookRotation(forward, groundNormal);
@@ -111,32 +119,45 @@ public class PlayerOperation : MonoBehaviour
 
         if (!goalScript.IsGoal())
         {
-            // 移動入力（W/S）
-            if (Input.GetKey(KeyCode.W))
+            //移動入力（W/S,Joy-Con ZR/ZL）
+            bool forwardInput = Input.GetKey(KeyCode.W);
+            bool backwardInput = Input.GetKey(KeyCode.S);
+
+            //Joy-Conの入力を追加
+            if (JCScript.Instance != null)
+            {
+                forwardInput = forwardInput || JCScript.Instance.RightZRButton;
+                backwardInput = backwardInput || JCScript.Instance.LeftZLButton;
+            }
+
+            if (forwardInput)
+            {
                 playerSpeed += acceleration * Time.deltaTime;
-            else if (Input.GetKey(KeyCode.S))
+            }
+            else if (backwardInput)
+            {
                 playerSpeed -= acceleration * Time.deltaTime;
+            }
             else
+            {
                 playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
+            }
         }
 
-      
-
-        
-    }
-
-    
-    void HandleWheelAnimation()
-    {
         playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
+
         // 移動反映
         transform.position += moveDir * playerSpeed * Time.deltaTime;
+    }
 
 
-        if (gameManagerScript.IsGameStarted() && goalScript.IsGoal())
-        {
-            playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
-        }
+    void HandleWheelAnimation()
+    {
+        //if (frontWheelRotator != null)
+        //    frontWheelRotator.Rotate(playerSpeed);
+
+        //if (rearWheelRotator != null)
+        //    rearWheelRotator.Rotate(playerSpeed);
     }
 
     public float GetPlayerSpeed()
@@ -165,5 +186,4 @@ public class PlayerOperation : MonoBehaviour
         }
     }
 
-   
 }

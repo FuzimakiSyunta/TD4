@@ -85,6 +85,7 @@ public class Stunt2 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SetActionState(PlayerActionState.HitRight);
+           
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -92,8 +93,8 @@ public class Stunt2 : MonoBehaviour
         }
 
 
-
-
+   
+     //RightAttackAnimation();
 
     }
 
@@ -137,10 +138,34 @@ public class Stunt2 : MonoBehaviour
             // ポーズ外ならリセット
             previousNormalizedTime = 0f;
         }
+        RightAttackAnimation();
+        AttackAnimation();
 
-       
     }
 
+    public bool RightAttackAnimation() 
+    {
+        // アニメーション中かどうか調べる
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+
+        bool isPlaying =
+            (info.IsName("FallRight") &&
+            info.normalizedTime < 1f);
+
+        return isPlaying;
+    }
+
+    public bool AttackAnimation()
+    {
+        //// アニメーション中かどうか調べる
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+
+        bool isPlaying =
+            (info.IsName("FallRight") &&
+            info.normalizedTime < 1);
+
+        return isPlaying;
+    }
 
     void SetActionState(PlayerActionState state)
         {

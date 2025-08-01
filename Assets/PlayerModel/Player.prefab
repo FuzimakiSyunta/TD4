@@ -340,9 +340,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6030314271079412270}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6376642306434644482}
     - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7176599283396213463}
@@ -448,11 +445,12 @@ MonoBehaviour:
   modelTransform: {fileID: 4726837344603469448}
   frontWheelRotator: {fileID: 8967793626514058871}
   rearWheelRotator: {fileID: 2387773493656123375}
+  playerSpeed: 0
   acceleration: 1
   deceleration: 2
   maxSpeed: 3
   brakePower: 160
-  goalScript: {fileID: 6376642306434644482}
+  goalScript: {fileID: 0}
 --- !u!114 &6030314271079412270
 MonoBehaviour:
   m_ObjectHideFlags: 0
