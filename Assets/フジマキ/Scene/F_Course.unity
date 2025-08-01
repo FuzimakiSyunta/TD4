@@ -32570,18 +32570,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4726837344603469448, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.015
-      objectReference: {fileID: 0}
-    - target: {fileID: 4726837344603469448, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.015
-      objectReference: {fileID: 0}
-    - target: {fileID: 4726837344603469448, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.015
-      objectReference: {fileID: 0}
-    - target: {fileID: 4726837344603469448, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.243
       objectReference: {fileID: 0}
@@ -32649,26 +32637,6 @@ PrefabInstance:
       propertyPath: checkPointUI.Array.data[2]
       value: 
       objectReference: {fileID: 1033441939}
-    - target: {fileID: 7176599283396213463, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-      propertyPath: colorIndex
-      value: 
-      objectReference: {fileID: 11400000, guid: 03727ca513f16a848a4578fa175fa189, type: 2}
-    - target: {fileID: 7176599283396213463, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-      propertyPath: materialList
-      value: 
-      objectReference: {fileID: 11400000, guid: 21fc1b88583385d4d93b3a6180c51e01, type: 2}
-    - target: {fileID: 8263396741317995169, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-      propertyPath: colorIndex
-      value: 
-      objectReference: {fileID: 11400000, guid: 03727ca513f16a848a4578fa175fa189, type: 2}
-    - target: {fileID: 8263396741317995169, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-      propertyPath: materialList
-      value: 
-      objectReference: {fileID: 11400000, guid: d6e6c0fa7dec5824e8cb7fc6b47ca226, type: 2}
-    - target: {fileID: 8473334480993131678, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -412
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
