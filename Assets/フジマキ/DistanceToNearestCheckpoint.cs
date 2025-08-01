@@ -3,44 +3,42 @@ using TMPro;
 
 public class DistanceToNearestCheckpoint : MonoBehaviour
 {
-    public Transform player; // プレイヤーのTransform
-    public TextMeshProUGUI distanceText; // 距離表示用のテキスト
-    public float reachThreshold = 0f; // 到達判定の距離閾値
-
-    private Transform[] checkpoints; // チェックポイント配列
-    private int currentIndex = 0; // 現在のチェックポイントインデックス
-
-    void Start()
-    {
-        // チェックポイントの取得（名前で探す）
-        checkpoints = new Transform[3];
-        checkpoints[0] = GameObject.Find("CheckPoint1")?.transform;
-        checkpoints[1] = GameObject.Find("CheckPoint2")?.transform;
-        checkpoints[2] = GameObject.Find("CheckPoint3")?.transform;
-    }
+    public Transform player;
+    public TextMeshProUGUI[] distanceText;
+    public Transform[] checkpoints; // ← 追加：チェックポイントを手動設定
+    public float reachThreshold = 0f;
+    private int currentIndex = 0;
 
     void Update()
     {
-        if (currentIndex >= checkpoints.Length)
-        {
-            //distanceText.text = "ALL CHECKPOINTS CLEARED!";
-            enabled = false;
-            return;
-        }
-
-        if (player == null || distanceText == null || checkpoints[currentIndex] == null) return;
+        if (player == null || distanceText == null || checkpoints == null) return;
 
         Vector3 playerXZ = new Vector3(player.position.x, 0, player.position.z);
-        Vector3 checkpointXZ = new Vector3(checkpoints[currentIndex].position.x, 0, checkpoints[currentIndex].position.z);
-        float distance = Vector3.Distance(playerXZ, checkpointXZ);
 
-        distanceText.text = $"{distance:F0} m";
-
-        if (distance <= reachThreshold)
+        for (int i = 0; i < checkpoints.Length; i++)
         {
-            currentIndex++;
+            if (checkpoints[i] != null && distanceText[i] != null)
+            {
+                Vector3 checkpointXZ = new Vector3(checkpoints[i].position.x, 0, checkpoints[i].position.z);
+                float distance = Vector3.Distance(playerXZ, checkpointXZ);
+                distanceText[i].text = $"{distance:F0} m";
+            }
+        }
+
+        if (currentIndex < checkpoints.Length)
+        {
+            Vector3 targetCheckpointXZ = new Vector3(checkpoints[currentIndex].position.x, 0, checkpoints[currentIndex].position.z);
+            float currentDistance = Vector3.Distance(playerXZ, targetCheckpointXZ);
+            if (currentDistance <= reachThreshold)
+            {
+                currentIndex++;
+            }
+
+            if (currentIndex >= checkpoints.Length)
+            {
+                enabled = false;
+            }
         }
     }
-
-
 }
+
