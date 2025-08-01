@@ -39,7 +39,8 @@ public class EnemyBase : MonoBehaviour
     //ブレーキ時の減速度
     public float brakePower = 300f;
 
-    float turnSpeed = 100f;
+    // 回転速度
+    public float turnSpeed = 360f;
     float rotationY = 0f;
 
     float bankAngle = 10f;
@@ -50,6 +51,8 @@ public class EnemyBase : MonoBehaviour
 
     [SerializeField]
     GoalScript goalScript;
+
+    [SerializeField]
     JumpScript jumpScript;
 
     bool wasGrounded = true;
@@ -63,18 +66,21 @@ public class EnemyBase : MonoBehaviour
         // 各項目のリセット処理
 
         // ランダムルートで初期化
-        routeController.InitWithRandomRoute();
+        routeController.InitWithRoute(0);
+       
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        routeController.InitWithRoute(0);
+
         // ルート制御スクリプトが設定されている場合は、ルート制御の更新を行う
         if (routeController != null)
         {
             // -- 加速処理 -- //
-            
+
             // 目標速度に向けて加速（今は常時加速）
             moveSpeed += acceleration * Time.deltaTime;
             moveSpeed = Mathf.Clamp(moveSpeed, 0f, maxSpeed);
@@ -85,11 +91,11 @@ public class EnemyBase : MonoBehaviour
             // ルート・移動量の更新
             routeController.Advance(moveSpeed, Time.deltaTime);
             // ルートに沿った移動方向を取得
-            moveVec = routeController.GetDirection().normalized;
+            moveVec = routeController.GetDirection();
 
 
             // -- 移動処理 -- //
-            
+
             // 実際の移動（速度ベース）
             Vector3 move = moveVec * moveSpeed * Time.deltaTime;
             transform.position += move;
@@ -124,15 +130,12 @@ public class EnemyBase : MonoBehaviour
             //Quaternion slopeRotation = Quaternion.LookRotation(newForward, groundNormal);
             //transform.rotation = slopeRotation;
 
-            // --- 見た目の処理 ---
-            if (frontWheelRotator != null)
-                frontWheelRotator.Rotate(moveSpeed);
+            // -- 見た目の処理 -- //
 
-            if (rearWheelRotator != null)
-                rearWheelRotator.Rotate(moveSpeed);
+            // 前後ホイールのアニメーションを更新
+            HandleWheelAnimation();
         
-
-    }
+        }
 
 
     }
