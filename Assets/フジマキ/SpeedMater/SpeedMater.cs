@@ -61,27 +61,6 @@ public class SpeedMater : MonoBehaviour
         SpeedMaterActive(); // スピードメーター/タコメーターの表示・非表示を更新
         TacoMeterMove(); // タコメーターの動きを更新
 
-        //ShaderCameraとPlayerOperationが正しく取得できていればブラー制御を行う
-        if (shaderCamera != null && playerOperation != null)
-        {
-            //プレイヤーの現在の速度の絶対値を取得
-            float currentSpeed = Mathf.Abs(playerOperation.GetPlayerSpeed());
-
-            //ブラーの有効/無効にするロジック
-            //速度が0.1fより大きくあればブラーを有効にする
-            if (currentSpeed > 0.1f && !shaderCamera.enabled)
-            {
-                shaderCamera.enabled = true;
-            }
-            //速度が0.1f以下になればブラーを無効にする
-            else if (currentSpeed <= 0.1f && shaderCamera.enabled)
-            {
-                shaderCamera.enabled = false;
-            }
-
-            //速度を0.0から1.0の範囲に正規化
-            float normalizedSpeed = Mathf.Clamp01(currentSpeed / playerOperation.maxSpeed);
-        }
     }
 
     void SpeedMaterActive()
