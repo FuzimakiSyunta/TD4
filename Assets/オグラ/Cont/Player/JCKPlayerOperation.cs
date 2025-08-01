@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class JCKPlayerOperation : MonoBehaviour
+public class JCKPlayerOperation1 : MonoBehaviour
 {
     private GameManager gameManagerScript;
     public GameObject gameManager;

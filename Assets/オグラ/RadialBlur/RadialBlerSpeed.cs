@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class RadialBlerSpeed : MonoBehaviour
 {
-    private PlayerOperation playerOperation;
-    public GameObject playerOperationScript;
+    private JCKPlayerOperation jckPlayerOperation;
+    public GameObject jckPlayerOperationScript;
 
     //ShaderCameraコンポーネントへの参照
     private ShaderCamera shaderCamera;
@@ -30,7 +30,7 @@ public class RadialBlerSpeed : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerOperation = playerOperationScript.GetComponent<PlayerOperation>();
+        jckPlayerOperation = jckPlayerOperationScript.GetComponent<JCKPlayerOperation>();
 
         //カメラからShaderCameraコンポーネントを取得
         if (mainCamera != null)
@@ -56,11 +56,11 @@ public class RadialBlerSpeed : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //ShaderCameraとPlayerOperationが正しく取得できていればブラー制御を行う
-        if (shaderCamera != null && playerOperation != null)
+        //ShaderCameraとJCPlayerOperationが正しく取得できていればブラー制御を行う
+        if (shaderCamera != null && jckPlayerOperation != null)
         {
             //プレイヤーの現在の速度の絶対値を取得
-            float currentSpeed = Mathf.Abs(playerOperation.GetPlayerSpeed());
+            float currentSpeed = Mathf.Abs(jckPlayerOperation.GetPlayerSpeed());
 
             //ブラーの有効/無効にするロジック
             //速度が0.1fより大きくあればブラーを有効にする
@@ -78,14 +78,14 @@ public class RadialBlerSpeed : MonoBehaviour
             float currentMaxBlurStrength = maxBlurStrength;
             int currentMaxBlurSamples = maxBlurSamples;
 
-            if (playerOperation.IsAccelerating)
+            if (jckPlayerOperation.IsAccelerating)
             {
                 currentMaxBlurStrength *= accelerationBlurMultiplier;
                 currentMaxBlurSamples = Mathf.RoundToInt(maxBlurSamples * accelerationBlurMultiplier);
             }
 
             //速度を0.0から1.0の範囲に正規化
-            float normalizedSpeed = Mathf.Clamp01(currentSpeed / playerOperation.maxSpeed);
+            float normalizedSpeed = Mathf.Clamp01(currentSpeed / jckPlayerOperation.maxSpeed);
             //ぼかしの強度を速度に応じて線形補間し、ShaderCameraに設定
             shaderCamera.blurStrength = Mathf.Lerp(minBlurStrength, currentMaxBlurStrength, normalizedSpeed);
             //サンプル数を速度に応じて線形補間し、整数に丸めてShaderCameraに設定
