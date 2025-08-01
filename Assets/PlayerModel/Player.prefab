@@ -461,6 +461,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2839594442509480704}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 263828985713558342}
     - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7176599283396213463}
@@ -628,6 +631,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Rhitbox: {fileID: 855718100952253882}
   Lhitbox: {fileID: 8294246942165697462}
+--- !u!114 &263828985713558342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5391592886117837874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ccff662bca3264ca000e93e310703d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
+  modelTransform: {fileID: 4726837344603469448}
+  frontWheelRotator: {fileID: 8967793626514058871}
+  rearWheelRotator: {fileID: 2387773493656123375}
+  playerSpeed: 0
+  acceleration: 1
+  deceleration: 2
+  maxSpeed: 3
+  brakePower: 160
+  goalScript: {fileID: 6376642306434644482}
 --- !u!23 &5772410527799040526 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
@@ -814,6 +839,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 7206782148831051316}
   currentScore: 0
+  stickAvoidThreshold: 0.5
+  stuntSwingAccelThreshold: 0.5
 --- !u!4 &5247449155362744338 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 181672137174939881, guid: a5235ee865af4a64a9b1f352214780e1, type: 3}
