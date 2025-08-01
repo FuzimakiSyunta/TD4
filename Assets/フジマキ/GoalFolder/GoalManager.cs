@@ -7,10 +7,16 @@ public class GoalManager : MonoBehaviour
     // GoalScriptを取得するための参照
     private GoalScript goalScript;
     public GameObject goal;
+    // GameManagerの参照
+    public GameManager gameManagerScript;
+    public GameObject gameManager;
 
     // リザルト画面のUIなど
-    public GameObject result;
+    public GameObject goalImage;
     public GameObject titleButton;
+
+    // ミニマップ
+    public GameObject Minimap;
 
     // 前のゴール状態を保存
     private bool wasGoal = false;
@@ -23,9 +29,19 @@ public class GoalManager : MonoBehaviour
             goalScript = goal.GetComponent<GoalScript>();
         }
 
-        if (result != null)
+        // GameManagerの参照を取得
+        if (gameManager != null)
         {
-            result.SetActive(false); // 初期状態で非表示に
+            gameManagerScript = gameManager.GetComponent<GameManager>();
+        }
+        else
+        {
+            Debug.LogError("GameManagerが設定されていません。");
+        }
+
+        if (goalImage != null)
+        {
+            goalImage.SetActive(false); // 初期状態で非表示に
             titleButton.SetActive(false); // タイトルボタンも非表示に
         }
     }
@@ -39,16 +55,34 @@ public class GoalManager : MonoBehaviour
 
         if (isGoal != wasGoal)
         {
-            if (result != null)
+            if (goalImage != null)
             {
-                result.SetActive(isGoal);
+                goalImage.SetActive(isGoal);
                 titleButton.SetActive(isGoal);
                 Debug.Log("Result SetActive: " + isGoal);
             }
 
             wasGoal = isGoal;
         }
-        
-    }
 
+        if (goalScript.IsGoal()&&gameManagerScript.IsGameStarted())
+        {
+            // ゴール状態になったらミニマップを非表示にする
+            if (Minimap != null)
+            {
+                Minimap.SetActive(false);
+                Debug.Log("Minimap SetActive: false");
+            }
+        }
+        else
+        {
+            // ゴール状態でない場合はミニマップを表示する
+            if (Minimap != null)
+            {
+                Minimap.SetActive(true);
+                Debug.Log("Minimap SetActive: true");
+            }
+
+        }
+    }
 }
