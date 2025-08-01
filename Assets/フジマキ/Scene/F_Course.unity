@@ -3177,8 +3177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blurMaterial: {fileID: 2100000, guid: ae4e59a719a6b09488ef03b78bf777f3, type: 2}
-  blurStrength: 0.04
-  blurSamples: 16
+  blurStrength: 0
+  blurSamples: 1
   blurCenter: {x: 0.5, y: 0.5}
 --- !u!114 &202230316
 MonoBehaviour:
@@ -8097,6 +8097,11 @@ BoxCollider:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ecb2ec119cea8c247af7598924bc1cfd, type: 3}
   m_PrefabInstance: {fileID: 1048254701}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &406239011 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 855718100952253882, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+  m_PrefabInstance: {fileID: 1883570282}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &408276708
 PrefabInstance:
@@ -32561,6 +32566,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2839594442509480704, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: Lhitbox
+      value: 
+      objectReference: {fileID: 1921620777}
+    - target: {fileID: 2839594442509480704, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: Rhitbox
+      value: 
+      objectReference: {fileID: 406239011}
     - target: {fileID: 4726837344603469448, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.243
@@ -32605,18 +32618,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 5391592886117837874, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 5433320611376603201, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1492532320}
-    - target: {fileID: 6376642306434644482, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
-      propertyPath: checkPointUI.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6376642306434644482, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       propertyPath: checkPointUI.Array.data[0]
       value: 
@@ -33023,6 +33028,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 411796769}
   m_SourcePrefab: {fileID: 100100000, guid: de75c6a7d27beb64b96b3ef565c266c4, type: 3}
+--- !u!1 &1921620777 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8294246942165697462, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+  m_PrefabInstance: {fileID: 1883570282}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1922575037 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ecb2ec119cea8c247af7598924bc1cfd, type: 3}
