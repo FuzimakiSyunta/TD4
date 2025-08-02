@@ -18,8 +18,7 @@ public class EnemyData : ScriptableObject
     // 敵キャラの移動速度
     public float speed;
     // 敵キャラの行動タイプ(例:凶暴,規範的,平和主義者,チャレンジャー 等)
-    public string behaviorType; 
-   
+    public string behaviorType;
 }
 
 
@@ -42,9 +41,23 @@ public class EnemyManager : MonoBehaviour
     [Header("敵の生成関数を実行する変数(テスト用)")]
     public bool isSpawnEnemy = false;
 
+    // ★★ 追加：Resourcesからロードする用のファイル名
+    private string[] enemyDataNames = { "EnemyData1", "EnemyData2" };
+
     // Start is called before the first frame update
     void Start()
     {
+        // ★★ 追加：Resources フォルダから EnemyData を読み込む
+        enemyDatas = new EnemyData[enemyDataNames.Length];
+        for (int i = 0; i < enemyDataNames.Length; i++)
+        {
+            enemyDatas[i] = Resources.Load<EnemyData>(enemyDataNames[i]);
+            if (enemyDatas[i] == null)
+            {
+                UnityEngine.Debug.LogError($"Resources から {enemyDataNames[i]} の読み込みに失敗しました。");
+            }
+        }
+
         // 同階層にあるEnemyDataを取得
         if (enemyDatas == null || enemyDatas.Length == 0)
         {
@@ -55,8 +68,6 @@ public class EnemyManager : MonoBehaviour
         {
             UnityEngine.Debug.Log("敵キャラのデータが設定されました。");
         }
-
-
     }
 
     // Update is called once per frame
@@ -69,7 +80,6 @@ public class EnemyManager : MonoBehaviour
             // 生成処理が終わったらフラグをリセット
             isSpawnEnemy = false;
         }
-        
     }
 
     /// <summary>
@@ -84,15 +94,14 @@ public class EnemyManager : MonoBehaviour
         {
             // 敵キャラのデータを取得
             EnemyData data = enemyDatas[i];
+            if (data == null) continue; // nullチェック追加
+
             // 敵キャラのプレハブ・データを取得
             GameObject enemy = Instantiate(data.prefab, data.initialPosition, Quaternion.identity);
             // 生成した敵キャラを配列に追加
             spawnedEnemies.Add(enemy);
 
             UnityEngine.Debug.Log("敵キャラ" + i + "を生成しました: " + data.prefab.name + " 位置: " + data.initialPosition + " 体力: " + data.health + " 速度: " + data.speed + " 行動タイプ: " + data.behaviorType);
-
         }
-
     }
-
 }

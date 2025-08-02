@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/ColorChengeScene.unity"
     guid: 1510d2941effb12469ff9cd0d69e98e0
   - enabled: 1
-    path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/F_Course.unity"
-    guid: 8dc91249f59c09a48ae23a1cf3768891
+    path: "Assets/\u30D5\u30B8\u30DE\u30AD/Scene/NEW_F_Course.unity"
+    guid: bb322f5e4252adc4b93049b3981478db
   m_configObjects: {}

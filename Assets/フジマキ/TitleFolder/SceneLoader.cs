@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class SceneLoader : MonoBehaviour
 {
+    public PlayerColorChenge playerColorChengeScript; // プレイヤーのカラーチェンジスクリプト
+    public GameObject playerColorChenge; // プレイヤーのカラーチェンジオブジェクト
+
     [Header("フェードに使うイメージ")]
     public Image fadeImage;
 
@@ -18,6 +21,11 @@ public class SceneLoader : MonoBehaviour
 
     void Start()
     {
+        // PlayerColorChengeスクリプトの参照を取得
+        if (playerColorChenge != null)
+        {
+            playerColorChengeScript = playerColorChenge.GetComponent<PlayerColorChenge>();
+        }
         if (fadeImage != null)
         {
             // 最初は透明にして非表示に
@@ -29,12 +37,14 @@ public class SceneLoader : MonoBehaviour
 
     void Update()
     {
-        // Enterキーが押されたらフェード開始
-        if (Input.GetKeyDown(KeyCode.Return) && !isFading)
+        // Enterが押されたらフェード開始（押した瞬間1回のみ）
+        if (playerColorChengeScript.IsSelected() &&
+            Input.GetKeyDown(KeyCode.Return) && !isFading)
         {
             StartFadeAndLoad();
         }
 
+        // フェード処理中
         if (isFading && fadeImage != null)
         {
             fadeAlpha += fadeSpeed * Time.deltaTime;
