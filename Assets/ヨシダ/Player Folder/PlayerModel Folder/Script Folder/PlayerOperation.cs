@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerOperation : MonoBehaviour
@@ -39,6 +40,11 @@ public class PlayerOperation : MonoBehaviour
 
     Vector3 moveDir;
 
+    public float blinkDuration = 4f;     // 点滅する総時間
+    public float blinkInterval = 0.5f;   // 点滅の間隔
+   // public Renderer playerRenderer;      // プレイヤーの見た目
+
+
 
     void Start()
     {
@@ -67,7 +73,7 @@ public class PlayerOperation : MonoBehaviour
               // プレイヤーの入力処理
               HandleInput();
              
-         }
+        }
         // ホイールの回転アニメーション処理（走行演出）
         HandleWheelAnimation();
         UpdateAcceleration();
@@ -143,6 +149,7 @@ public class PlayerOperation : MonoBehaviour
     {
         return playerSpeed;
     }
+    //ジャンプ成功
     public void Acceleration()
     {
         maxSpeed = 5f;
@@ -164,7 +171,40 @@ public class PlayerOperation : MonoBehaviour
             }
         }
     }
+    //敵の攻撃の当たり判定
+    void OnCollisionEnter(Collision collision)
+    {    //(CompareTag("EnemyAttack") -> "PlayerAttack"に変更
+        if (collision.gameObject.CompareTag("EnemyAttack"))
+        {
+            playerSpeed = 0;
+            //点滅処理
+            StartCoroutine(BlinkCoroutine());
+        }
+    }
 
 
-   
+    //点滅処理
+    IEnumerator BlinkCoroutine()
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        int blinkCount = 10;
+        float blinkInterval = 0.1f;
+
+        for (int i = 0; i < blinkCount; i++)
+        {
+            foreach (Renderer r in renderers)
+            {
+                r.enabled = !r.enabled;
+            }
+            yield return new WaitForSeconds(blinkInterval);
+        }
+
+        // 最後はすべて表示状態に戻す
+        foreach (Renderer r in renderers)
+        {
+            r.enabled = true;
+        }
+    }
+
+
 }

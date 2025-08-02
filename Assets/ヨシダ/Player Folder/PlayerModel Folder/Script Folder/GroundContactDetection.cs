@@ -9,11 +9,17 @@ public class GroundContactDetection : MonoBehaviour
     int totalScore = 0;
     Stunt2 stunt2;
     PlayerOperation playerOperation;
+    public GameObject missObject;
+    public GameObject parfectObject;
+
+
     // Start is called before the first frame update
     void Start()
     {
         stunt2 = GameObject.Find("Armature").GetComponent<Stunt2>();
         playerOperation = GameObject.Find("Player").GetComponent<PlayerOperation>();
+        missObject.SetActive(false);
+        parfectObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -28,14 +34,17 @@ public class GroundContactDetection : MonoBehaviour
         {
             playerOperation.playerSpeed = 0;
             stunt2.currentScore = 0;
+            StartCoroutine(ShowTemporaryObject(missObject, 2f));
         }
         else if(isGrounded ==true)
         {
+            //成功
             if (stunt2.currentScore > 0)
             {
                 totalScore += stunt2.currentScore;
                 playerOperation.Acceleration();
-                Debug.Log($"totalScore: {totalScore}");
+                //オブジェクトを出現一定時間で消える
+                StartCoroutine(ShowTemporaryObject(parfectObject, 2f));
             }
 
             stunt2.currentScore = 0;
@@ -83,5 +92,13 @@ public class GroundContactDetection : MonoBehaviour
     public bool GetisGrounbed()
     {
         return isGrounded;
+    }
+
+
+    IEnumerator ShowTemporaryObject(GameObject obj, float duration)
+    {
+        obj.SetActive(true);                  // 表示
+        yield return new WaitForSeconds(duration);
+        obj.SetActive(false);                 // 消す
     }
 }

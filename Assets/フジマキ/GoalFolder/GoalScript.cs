@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoalScript : MonoBehaviour
+public class GoalScript: MonoBehaviour
 {
     //現在のラップ数
     int lap = 0;
@@ -42,37 +42,41 @@ public class GoalScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Checkpoint1"))
         {
             checkpoint[0] = true;
-            checkPointUI[0].SetActive(false);
-            checkPointUI[1].SetActive(true);
+            if (checkPointUI.Length >= 2)
+            {
+                checkPointUI[0].SetActive(false);
+                checkPointUI[1].SetActive(true);
+            }
             Debug.Log("チェックポイント1に触れた");
         }
 
         if (collision.gameObject.CompareTag("Checkpoint2") && checkpoint[0] == true)
         {
             checkpoint[1] = true;
-            checkPointUI[1].SetActive(false);
-            checkPointUI[2].SetActive(true);
+            if (checkPointUI.Length >= 3)
+            {
+                checkPointUI[1].SetActive(false);
+                checkPointUI[2].SetActive(true);
+            }
             Debug.Log("チェックポイント2に触れた");
         }
 
-        if (collision.gameObject.CompareTag("Checkpoint3") && checkpoint[0] == true && checkpoint[1] == true)
+        if (collision.gameObject.CompareTag("Checkpoint3") && checkpoint[0] && checkpoint[1])
         {
             checkpoint[2] = true;
-            checkPointUI[2].SetActive(false);
+            if (checkPointUI.Length >= 3)
+            {
+                checkPointUI[2].SetActive(false);
+            }
             Debug.Log("チェックポイント3に触れた");
         }
 
-        if (collision.gameObject.CompareTag("Goal") && checkpoint[0] == true && checkpoint[1] == true && checkpoint[2] == true)
+        if (collision.gameObject.CompareTag("Goal") && checkpoint[0] && checkpoint[1] && checkpoint[2])
         {
-            checkpoint[0] = false;
-            checkpoint[1] = false;
-            checkpoint[2] = false;
-
+            checkpoint[0] = checkpoint[1] = checkpoint[2] = false;
             lap += 1;
             Debug.Log("ゴール");
-
         }
-
     }
 
     public bool IsGoal()
