@@ -46,7 +46,7 @@ public class JCSceneManager : MonoBehaviour
 
         float index = ImageSelectorScript.Imageindex();
 
-        if (index == 0 && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
+        if (index == 0 && Input.GetKeyDown(KeyCode.Space) && !isSequenceStarted)
         {
             isSequenceStarted = true;
             startTime = Time.time;

@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class SceneSwitcher : MonoBehaviour
 {
+    //operationFadeのスクリプト
+    private OperationFade OperationFadeScript;
+    public GameObject OperationFade;
+
     public string[] nextSceneName;
     public Transform[] movingObjects;
     //シーン移動先フラグ
@@ -34,6 +38,10 @@ public class SceneSwitcher : MonoBehaviour
         {
             ImageSelectorScript = ImageSelector.GetComponent<ImageSelector>();
         }
+        if (OperationFade != null)
+        {
+            OperationFadeScript = OperationFade.GetComponent<OperationFade>();
+        }
 
         if (fadeImage != null)
         {
@@ -54,7 +62,7 @@ public class SceneSwitcher : MonoBehaviour
 
         // 0番目のImageが選択されている場合のみ処理を行う
         //ゲームスタート
-        if (index == 0 && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
+        if (index == 0 &&!OperationFadeScript.IsOperation()&&Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
         {
             GameStartFlag = true; // ← ここで設定
             isSequenceStarted = true;
@@ -73,7 +81,7 @@ public class SceneSwitcher : MonoBehaviour
 
         // 1番目のImageが選択されている場合のみ処理を行う
         //ゲームスタート
-        if (index == 1 && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
+        if (index == 1 && !OperationFadeScript.IsOperation() && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
         {
 
             ColorChengeFlag = true; // ← ここで設定
