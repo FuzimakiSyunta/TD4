@@ -692,6 +692,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 7206782148831051316}
   currentScore: 0
+  stickAvoidThreshold: 0.5
+  stuntSwingAccelThreshold: 0.5
 --- !u!4 &5247449155362744338 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 181672137174939881, guid: a5235ee865af4a64a9b1f352214780e1, type: 3}

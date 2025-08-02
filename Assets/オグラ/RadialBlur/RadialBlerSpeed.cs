@@ -4,92 +4,92 @@ using UnityEngine;
 
 public class RadialBlerSpeed : MonoBehaviour
 {
-    //private PlayerOperation playerOperation;
-    //public GameObject playerOperationScript;
+    //JCKPlayerOperationスクリプトの参照変数
+    private JCKPlayerOperation playerOperation;
 
-    ////ShaderCameraコンポーネントへの参照
-    //private ShaderCamera shaderCamera;
-    ////カメラオブジェクトの参照
-    //public Camera mainCamera;
+    //インスペクターで設定するゲームオブジェクト
+    public GameObject playerOperationScript;
 
-    ////速度0でのブラー強度
-    //public float minBlurStrength = 0.0f;
-    ////最高速度でのブラー強度
-    //public float maxBlurStrength = 0.06f;
-    ////速度0でのブラーサンプル数
-    //public int minBlurSamples = 0;
-    ////最高速度でのブラーサンプル数
-    //public int maxBlurSamples = 7;
+    //ShaderCameraコンポーネントへの参照
+    private ShaderCamera shaderCamera;
 
-    ////加速中のブラー強度とサンプル数の倍率
-    //public float accelerationBlurMultiplier = 2.0f;
+    //カメラオブジェクトの参照
+    public Camera mainCamera;
 
-    ////ブラー中心
-    //public Vector2 fixedBlurCenter = new Vector2(0.5f, 0.6f);
+    //速度0でのブラー強度
+    public float minBlurStrength = 0.0f;
+    //最高速度でのブラー強度
+    public float maxBlurStrength = 0.06f;
+    //速度0でのブラーサンプル数
+    public int minBlurSamples = 0;
+    //最高速度でのブラーサンプル数
+    public int maxBlurSamples = 7;
 
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-    //    playerOperation = playerOperationScript.GetComponent<PlayerOperation>();
+    //加速中のブラー強度とサンプル数の倍率
+    public float accelerationBlurMultiplier = 2.0f;
 
-    //    //カメラからShaderCameraコンポーネントを取得
-    //    if (mainCamera != null)
-    //    {
-    //        shaderCamera = mainCamera.GetComponent<ShaderCamera>();
-    //    }
+    //ブラー中心
+    public Vector2 fixedBlurCenter = new Vector2(0.5f, 0.6f);
 
-    //    // ShaderCameraが見つからない場合のエラーログ
-    //    if (shaderCamera == null)
-    //    {
-    //        Debug.LogError("SpeedMater: ShaderCameraコンポーネントがメインカメラに見つかりません。メインカメラにShaderCameraスクリプトをアタッチしているか確認してください。");
-    //    }
-    //    else
-    //    {
-    //        //ゲーム開始時、ShaderCameraを一旦無効にしておく
-    //        shaderCamera.enabled = false;
+    void Start()
+    {
+        if (playerOperationScript != null)
+        {
+            playerOperation = playerOperationScript.GetComponent<JCKPlayerOperation>();
+        }
 
-    //        //ブラーの中心を固定値に設定
-    //        shaderCamera.blurCenter = fixedBlurCenter;
-    //    }
-    //}
+        //カメラからShaderCameraコンポーネントを取得
+        if (mainCamera != null)
+        {
+            shaderCamera = mainCamera.GetComponent<ShaderCamera>();
+        }
 
-    //// Update is called once per frame
-    //void Update()
-    //{
-    //    //ShaderCameraとPlayerOperationが正しく取得できていればブラー制御を行う
-    //    if (shaderCamera != null && playerOperation != null)
-    //    {
-    //        //プレイヤーの現在の速度の絶対値を取得
-    //        float currentSpeed = Mathf.Abs(playerOperation.GetPlayerSpeed());
+        if (shaderCamera == null)
+        {
+            Debug.LogError("SpeedMater: ShaderCameraコンポーネントがメインカメラに見つかりません。メインカメラにShaderCameraスクリプトをアタッチしているか確認してください。");
+        }
+        else
+        {
+            shaderCamera.enabled = false;
+            shaderCamera.blurCenter = fixedBlurCenter;
+        }
+    }
 
-    //        //ブラーの有効/無効にするロジック
-    //        //速度が0.1fより大きくあればブラーを有効にする
-    //        if (currentSpeed > 0.1f && !shaderCamera.enabled)
-    //        {
-    //            shaderCamera.enabled = true;
-    //        }
-    //        //速度が0.1f以下になればブラーを無効にする
-    //        else if (currentSpeed <= 0.1f && shaderCamera.enabled)
-    //        {
-    //            shaderCamera.enabled = false;
-    //        }
+    void Update()
+    {
+        //ShaderCameraとプレイヤー操作スクリプトが正しく取得できていればブラー制御を行う
+        if (shaderCamera != null && playerOperation != null)
+        {
+            //プレイヤーの現在の速度の絶対値を取得
+            float currentSpeed = Mathf.Abs(playerOperation.GetPlayerSpeed());
 
-    //        //加速中かを判断しブラーの最大値を一時的に変更
-    //        float currentMaxBlurStrength = maxBlurStrength;
-    //        int currentMaxBlurSamples = maxBlurSamples;
+            //ブラーの有効/無効にするロジック
+            if (currentSpeed > 0.1f && !shaderCamera.enabled)
+            {
+                shaderCamera.enabled = true;
+            }
+            else if (currentSpeed <= 0.1f && shaderCamera.enabled)
+            {
+                shaderCamera.enabled = false;
+            }
 
-    //        //if (playerOperation.IsAccelerating)
-    //        //{
-    //        //    currentMaxBlurStrength *= accelerationBlurMultiplier;
-    //        //    currentMaxBlurSamples = Mathf.RoundToInt(maxBlurSamples * accelerationBlurMultiplier);
-    //        //}
+            //加速中かを判断しブラーの最大値を一時的に変更
+            float currentMaxBlurStrength = maxBlurStrength;
+            int currentMaxBlurSamples = maxBlurSamples;
 
-    //        ////速度を0.0から1.0の範囲に正規化
-    //        //float normalizedSpeed = Mathf.Clamp01(currentSpeed / playerOperation.maxSpeed);
-    //        ////ぼかしの強度を速度に応じて線形補間し、ShaderCameraに設定
-    //        //shaderCamera.blurStrength = Mathf.Lerp(minBlurStrength, currentMaxBlurStrength, normalizedSpeed);
-    //        ////サンプル数を速度に応じて線形補間し、整数に丸めてShaderCameraに設定
-    //        //shaderCamera.blurSamples = Mathf.RoundToInt(Mathf.Lerp(minBlurSamples, currentMaxBlurSamples, normalizedSpeed));
-    //    }
-    //}
+            if (playerOperation.IsAccelerating)
+            {
+                currentMaxBlurStrength *= accelerationBlurMultiplier;
+                currentMaxBlurSamples = Mathf.RoundToInt(maxBlurSamples * accelerationBlurMultiplier);
+            }
+
+            //速度を0.0から1.0の範囲に正規化
+            float normalizedSpeed = Mathf.Clamp01(currentSpeed / playerOperation.maxSpeed);
+
+            //ぼかしの強度を速度に応じて線形補間し、ShaderCameraに設定
+            shaderCamera.blurStrength = Mathf.Lerp(minBlurStrength, currentMaxBlurStrength, normalizedSpeed);
+            //サンプル数を速度に応じて線形補間し、整数に丸めてShaderCameraに設定
+            shaderCamera.blurSamples = Mathf.RoundToInt(Mathf.Lerp(minBlurSamples, currentMaxBlurSamples, normalizedSpeed));
+        }
+    }
 }
