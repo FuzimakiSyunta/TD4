@@ -7,10 +7,11 @@ public class SpeedDown : MonoBehaviour
 {
     [SerializeField]
     private PlayerOperation playerOperation;
+    public float deceleration;
     // Start is called before the first frame update
     void Start()
     {
-        
+        deceleration = 1.0f;
     }
 
     // Update is called once per frame
@@ -21,10 +22,18 @@ public class SpeedDown : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        //if (other.tag == "Player")
-        //{
-        //    playerOperation.playerSpeed -= playerOperation.deceleration;
-        //    Debug.Log("ダートに乗った");
-        //}
+        if (other.tag == "PlayerAttack")
+        {
+            playerOperation = other.GetComponent<PlayerOperation>();
+            if (Input.GetKey(KeyCode.W))
+            {
+                playerOperation.playerSpeed = Mathf.MoveTowards(playerOperation.playerSpeed, deceleration, 30f * Time.deltaTime);
+            }
+            else if(Input.GetKey(KeyCode.S))
+            {
+                playerOperation.playerSpeed = Mathf.MoveTowards(playerOperation.playerSpeed, -deceleration, 30f * Time.deltaTime);
+            }
+                Debug.Log("ダートに乗った");
+        }
     }
 }

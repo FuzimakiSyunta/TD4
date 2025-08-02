@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpeedUp : MonoBehaviour
 {
     [SerializeField]
-    private PlayerOperation operation;
+    private PlayerOperation playerOperation;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,9 +20,10 @@ public class SpeedUp : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.tag=="Player")
+        if(other.tag=="PlayerAttack")
         {
-            operation.Acceleration();
+            playerOperation = other.GetComponent<PlayerOperation>();
+            playerOperation.Acceleration();
             Debug.Log("ダッシュボードに乗った");
         }
     }
