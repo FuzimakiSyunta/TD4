@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpeedUp : MonoBehaviour
 {
     [SerializeField]
-    private PlayerOperation playerOperation;
+    private JCKPlayerOperation1 jckPlayerOperation1;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,8 +22,8 @@ public class SpeedUp : MonoBehaviour
     {
         if(other.tag=="PlayerAttack")
         {
-            playerOperation = other.GetComponent<PlayerOperation>();
-            playerOperation.Acceleration();
+            jckPlayerOperation1 = other.GetComponent<JCKPlayerOperation1>();
+            jckPlayerOperation1.Acceleration();
             Debug.Log("ダッシュボードに乗った");
         }
     }

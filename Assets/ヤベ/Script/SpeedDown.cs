@@ -6,8 +6,9 @@ using static UnityEngine.Rendering.HDROutputUtils;
 public class SpeedDown : MonoBehaviour
 {
     [SerializeField]
-    private PlayerOperation playerOperation;
+    private JCKPlayerOperation1 jckPlayerOperation1;
     public float deceleration;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -24,14 +25,14 @@ public class SpeedDown : MonoBehaviour
     {
         if (other.tag == "PlayerAttack")
         {
-            playerOperation = other.GetComponent<PlayerOperation>();
-            if (Input.GetKey(KeyCode.W))
+            jckPlayerOperation1 = other.GetComponent<JCKPlayerOperation1>();
+            if (Input.GetKey(KeyCode.W)||JCScript.Instance.RightZRButton)
             {
-                playerOperation.playerSpeed = Mathf.MoveTowards(playerOperation.playerSpeed, deceleration, 30f * Time.deltaTime);
+                jckPlayerOperation1.playerSpeed = Mathf.MoveTowards(jckPlayerOperation1.playerSpeed, deceleration, 30f * Time.deltaTime);
             }
-            else if(Input.GetKey(KeyCode.S))
+            else if(Input.GetKey(KeyCode.S) || JCScript.Instance.LeftZLButton)
             {
-                playerOperation.playerSpeed = Mathf.MoveTowards(playerOperation.playerSpeed, -deceleration, 30f * Time.deltaTime);
+                jckPlayerOperation1.playerSpeed = Mathf.MoveTowards(jckPlayerOperation1.playerSpeed, -deceleration, 30f * Time.deltaTime);
             }
                 Debug.Log("É_Å[ÉgÇ…èÊÇ¡ÇΩ");
         }

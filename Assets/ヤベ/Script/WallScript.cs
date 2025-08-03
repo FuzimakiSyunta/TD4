@@ -5,12 +5,14 @@ using UnityEngine;
 public class WallScript : MonoBehaviour
 {
     [SerializeField]
-    private PlayerOperation playerOperation;
+    private JCKPlayerOperation1 jckPlayerOperation1;
     public Vector3 inputDir;
+    [SerializeField]
+    private JCScript jcScript;
     // Start is called before the first frame update
     void Start()
     {
-        playerOperation = GetComponent<PlayerOperation>();
+        jckPlayerOperation1 = GetComponent<JCKPlayerOperation1>();
     }
 
     // Update is called once per frame
@@ -28,9 +30,9 @@ public class WallScript : MonoBehaviour
             Vector3 forward = transform.forward;
 
             // キー入力方向をベクトル化
-             inputDir = Vector3.zero;
-            if (Input.GetKey(KeyCode.W)) inputDir = forward;
-            else if (Input.GetKey(KeyCode.S)) inputDir = -forward;
+            inputDir = Vector3.zero;
+            if (Input.GetKey(KeyCode.W)|| jcScript.RightZRButton) inputDir = forward;
+            else if (Input.GetKey(KeyCode.S)|| jcScript.LeftZLButton) inputDir = -forward;
 
             // 壁との接触点を取得
             Vector3 wallPoint = other.ClosestPoint(transform.position);
@@ -42,7 +44,7 @@ public class WallScript : MonoBehaviour
             if (dot > 0.01f)
             {
                 // 入力方向と壁方向が一致 → 押し付けている → 停止
-                playerOperation.playerSpeed = 0;
+                jckPlayerOperation1.playerSpeed = 0;
                 Debug.Log("押し付けている方向 → 停止");
             }
             else
