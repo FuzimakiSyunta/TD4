@@ -58,7 +58,7 @@ public class JumpingSpawner : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.RightShift))
         {
             isSpawnMode = !isSpawnMode;
             Debug.Log($"ê∂ê¨ÉÇÅ[Éh: {(isSpawnMode ? "ON" : "OFF")}");
