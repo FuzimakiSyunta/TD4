@@ -14612,7 +14612,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 499048689}
-  distanceText: {fileID: 525104262}
+  distanceText: []
+  checkpoints: []
   reachThreshold: 1
 --- !u!114 &793294848
 MonoBehaviour:

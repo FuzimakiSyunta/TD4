@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerMaterialSwitcher : MonoBehaviour
+public class PlayerColorChenge : MonoBehaviour
 {
     [Header("共通のマテリアルリスト (ScriptableObject)")]
     [SerializeField] private MaterialList materialList;
@@ -15,6 +15,17 @@ public class PlayerMaterialSwitcher : MonoBehaviour
     [Header("カラーチェンジを許可するシーン名（カンマ区切り）")]
     public string[] allowedScenes = { "ColorChengeScene" };
 
+    public bool isSelected = false; // ← 追加: 選択状態を管理するフラグ
+
+    public GameObject redArrow_Right;
+    public GameObject redArrow_Left;
+
+    public float aroowActiveTime = 0.0f; // ← 追加: 矢印のアクティブ時間
+
+    public GameObject playerIcon;
+
+    // キーが押されたかどうかのフラグ
+    private bool hasPressedEnter = false;
     void Start()
     {
         if (targetRenderer == null)
@@ -29,11 +40,49 @@ public class PlayerMaterialSwitcher : MonoBehaviour
 
     void Update()
     {
-        if (!IsSceneAllowed()) return; // ← 現在のシーンが対象外なら入力を無視
+        if (!IsSceneAllowed() || IsSelected()) return; // ← 現在のシーンが対象外なら入力を無視
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) SwitchToNextMaterial();
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) SwitchToBackMaterial();
+        // →キーが押された瞬間
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            SwitchToNextMaterial();
+            redArrow_Right.SetActive(true);
+            redArrow_Left.SetActive(false);
+        }
+
+        // ←キーが押された瞬間
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            SwitchToBackMaterial();
+            redArrow_Left.SetActive(true);
+            redArrow_Right.SetActive(false);
+        }
+
+        // →キーを離した瞬間
+        if (Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            redArrow_Right.SetActive(false);
+        }
+
+        // ←キーを離した瞬間
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            redArrow_Left.SetActive(false);
+        }
+
+        // プレイヤーアイコンの表示切り替え
+        if (!isSelected)
+        {
+            playerIcon.SetActive(true);
+        }
+        else
+        {
+            playerIcon.SetActive(false);
+        }
+
+        Selected();
     }
+
 
     bool IsSceneAllowed() // ← 追加: シーン名が許可されているか確認
     {
@@ -90,4 +139,22 @@ public class PlayerMaterialSwitcher : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    // ↓これで選択後はもう1回押されるまで反応しない
+    void Selected()
+    {
+        if (!hasPressedEnter && Input.GetKeyDown(KeyCode.Return))
+        {
+            hasPressedEnter = true;
+            isSelected = true;
+        }
+    }
+
+
+    public bool IsSelected()
+    {
+        return isSelected;
+    }
+
+   
+    
 }

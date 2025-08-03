@@ -3,44 +3,65 @@ using TMPro;
 
 public class DistanceToNearestCheckpoint : MonoBehaviour
 {
-    public Transform player; // プレイヤーのTransform
-    public TextMeshProUGUI distanceText; // 距離表示用のテキスト
-    public float reachThreshold = 0f; // 到達判定の距離閾値
-
-    private Transform[] checkpoints; // チェックポイント配列
-    private int currentIndex = 0; // 現在のチェックポイントインデックス
+    public Transform player;
+    public TextMeshProUGUI[] distanceText;
+    public Transform[] checkpoints;
+    public float reachThreshold = 0f;
+    private int currentIndex = 0;
+    public GoalScript goalScript;
+    public GameObject goal;
 
     void Start()
     {
-        // チェックポイントの取得（名前で探す）
-        checkpoints = new Transform[3];
-        checkpoints[0] = GameObject.Find("CheckPoint1")?.transform;
-        checkpoints[1] = GameObject.Find("CheckPoint2")?.transform;
-        checkpoints[2] = GameObject.Find("CheckPoint3")?.transform;
+        if (goal != null)
+        {
+            goalScript = goal.GetComponent<GoalScript>();
+        }
     }
 
     void Update()
     {
-        if (currentIndex >= checkpoints.Length)
+        if (player == null || distanceText == null || checkpoints == null || goalScript == null) return;
+
+        // ゴールしたら距離表示をクリアして停止
+        if (goalScript.IsGoal())
         {
-            //distanceText.text = "ALL CHECKPOINTS CLEARED!";
+            foreach (var text in distanceText)
+            {
+                if (text != null) text.text = "";
+            }
             enabled = false;
             return;
         }
 
-        if (player == null || distanceText == null || checkpoints[currentIndex] == null) return;
-
+        // 距離を計算して表示
         Vector3 playerXZ = new Vector3(player.position.x, 0, player.position.z);
-        Vector3 checkpointXZ = new Vector3(checkpoints[currentIndex].position.x, 0, checkpoints[currentIndex].position.z);
-        float distance = Vector3.Distance(playerXZ, checkpointXZ);
 
-        distanceText.text = $"{distance:F0} m";
-
-        if (distance <= reachThreshold)
+        for (int i = 0; i < checkpoints.Length; i++)
         {
-            currentIndex++;
+            if (checkpoints[i] != null && distanceText[i] != null)
+            {
+                Vector3 checkpointXZ = new Vector3(checkpoints[i].position.x, 0, checkpoints[i].position.z);
+                float distance = Vector3.Distance(playerXZ, checkpointXZ);
+                distanceText[i].text = $"{distance:F0} m";
+            }
+        }
+
+        // 一つのチェックポイントに近づいたら次へ
+        if (currentIndex < checkpoints.Length)
+        {
+            Vector3 targetCheckpointXZ = new Vector3(checkpoints[currentIndex].position.x, 0, checkpoints[currentIndex].position.z);
+            float currentDistance = Vector3.Distance(playerXZ, targetCheckpointXZ);
+            if (currentDistance <= reachThreshold)
+            {
+                currentIndex++;
+
+                // 最後まで行ったら次のラップへ繰り返す（ゴールしない限り）
+                if (currentIndex >= checkpoints.Length)
+                {
+                    currentIndex = 0;
+                }
+            }
         }
     }
-
-
 }
