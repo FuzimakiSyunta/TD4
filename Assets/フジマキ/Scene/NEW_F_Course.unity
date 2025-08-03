@@ -6512,7 +6512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f862909d0cfa144865e9705bc6dd6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jckPlayerOperation: {fileID: 0}
+  jckPlayerOperation: {fileID: 499048705}
   inputDir: {x: 0, y: 0, z: 0}
   jcScript: {fileID: 1239288447}
 --- !u!1 &504361025 stripped
@@ -8762,10 +8762,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 41174676184611234, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
+      propertyPath: jckPlayerOperation
+      value: 
+      objectReference: {fileID: 499048705}
     - target: {fileID: 233717553469047479, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 241731453607422009, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
+      propertyPath: jckPlayerOperation
+      value: 
+      objectReference: {fileID: 499048705}
     - target: {fileID: 855379056733390452, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -8782,6 +8790,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: -6674707590277094044, guid: 4be614a5d99077944afb064eb51a7cc3, type: 3}
+    - target: {fileID: 1371881714144272600, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
+      propertyPath: jckPlayerOperation
+      value: 
+      objectReference: {fileID: 499048705}
     - target: {fileID: 1920558137637865913, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -8858,6 +8870,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: -6674707590277094044, guid: 4be614a5d99077944afb064eb51a7cc3, type: 3}
+    - target: {fileID: 3879752783022341342, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
+      propertyPath: jckPlayerOperation
+      value: 
+      objectReference: {fileID: 499048705}
     - target: {fileID: 3992474616864825589, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -8974,6 +8990,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -2447776121362496397, guid: 9169c2207adef834d830d4ab4cacb2d3, type: 3}
+    - target: {fileID: 7997835525248873339, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
+      propertyPath: jckPlayerOperation
+      value: 
+      objectReference: {fileID: 499048705}
     - target: {fileID: 8172614289935360715, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
