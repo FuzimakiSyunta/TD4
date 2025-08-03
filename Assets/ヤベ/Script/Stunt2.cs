@@ -83,10 +83,10 @@ public class Stunt2 : MonoBehaviour
             {
                 SetActionState(PlayerActionState.SmallPose2);
             }
-            //if (Input.GetKeyDown(KeyCode.Alpha3) || (JCScript.Instance.IsRightSwinging) && (JCScript.Instance.IsLeftSwinging))
-            //{
-            //    SetActionState(PlayerActionState.SmallPose3);
-            //}
+            if (Input.GetKeyDown(KeyCode.Alpha3) || (JCScript.Instance.IsRightSwinging) && (JCScript.Instance.IsLeftSwinging))
+            {
+                SetActionState(PlayerActionState.SmallPose3);
+            }
         }
 
 
