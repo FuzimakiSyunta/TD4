@@ -66,13 +66,13 @@ public class JCKPlayerOperation : MonoBehaviour
         transform.position = pos;
 
 
-        //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
-        //{
-        // プレイヤーの入力処理
-        HandleInput();
+        if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
+        {
+            // プレイヤーの入力処理
+            HandleInput();
         // ホイールの回転アニメーション処理（走行演出）
         HandleWheelAnimation();
-        // }
+        }
         UpdateAcceleration();
         // if (stunt2.IsSmallPoseAnimating() == true && )
     }
@@ -153,11 +153,15 @@ public class JCKPlayerOperation : MonoBehaviour
 
     void HandleWheelAnimation()
     {
-        //if (frontWheelRotator != null)
-        //    frontWheelRotator.Rotate(playerSpeed);
+        playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
+        // 移動反映
+        //transform.position += moveDir * playerSpeed * Time.deltaTime;
 
-        //if (rearWheelRotator != null)
-        //    rearWheelRotator.Rotate(playerSpeed);
+
+        if (gameManagerScript.IsGameStarted() && goalScript.IsGoal())
+        {
+            playerSpeed = Mathf.MoveTowards(playerSpeed, 0f, deceleration * Time.deltaTime);
+        }
     }
 
     public float GetPlayerSpeed()
