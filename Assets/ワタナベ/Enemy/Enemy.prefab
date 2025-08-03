@@ -303,6 +303,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       insertIndex: -1
       addedObject: {fileID: -5939816202886489511}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2177047764359150170}
     - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7176599283396213463}
@@ -424,7 +427,7 @@ MonoBehaviour:
   rearWheelRotator: {fileID: 2387773493656123375}
   acceleration: 1
   deceleration: 2
-  maxSpeed: 4
+  maxSpeed: 1
   brakePower: 200
   turnSpeed: 360
   goalScript: {fileID: 0}
@@ -443,6 +446,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentDistance: 0
+--- !u!114 &2177047764359150170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5391592886117837874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79450bca690da804fa0b91273e19ed73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkPointUI: []
+  rankText: {fileID: 0}
 --- !u!23 &5772410527799040526 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}

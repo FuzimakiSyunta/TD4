@@ -1,24 +1,30 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GoalScript: MonoBehaviour
 {
-    //Œ»İ‚Ìƒ‰ƒbƒv”
+    //ç¾åœ¨ã®ãƒ©ãƒƒãƒ—æ•°
     int lap = 0;
-    //•K—v‚Èƒ‰ƒbƒv”
+    //å¿…è¦ãªãƒ©ãƒƒãƒ—æ•°
     int needLap = 1;
-    //ƒS[ƒ‹ƒtƒ‰ƒO
+    //ã‚´ãƒ¼ãƒ«ãƒ•ãƒ©ã‚°
     bool goal = false;
-    //ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒgƒtƒ‰ƒO
+    //ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆãƒ•ãƒ©ã‚°
     private bool[] checkpoint = new bool[3] { false, false, false };
-    //ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒgUI
-    public GameObject[] checkPointUI; // ‡”Ô‚ÉÁ‚·ƒIƒuƒWƒFƒNƒg
+    //ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆUI
+    public GameObject[] checkPointUI; // é †ç•ªã«æ¶ˆã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+
+    public TMPro.TextMeshProUGUI rankText;
     // Start is called before the first frame update
     void Start()
     {
         goal = false;
         checkpoint = new bool[3] { false, false, false };
+
+        // âœ… ã“ã‚ŒãŒå¿…é ˆï¼ç™»éŒ²ã—ã¦ã„ãªã„ã¨é †ä½ã«å«ã¾ã‚Œãªã„
+        RaceManager.Instance.RegisterRacer(this);
+
         if (checkPointUI.Length >= 3)
         {
             checkPointUI[0].SetActive(true);
@@ -30,13 +36,42 @@ public class GoalScript: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(goal) return;
+
+        int rank = RaceManager.Instance.GetCurrentRank(this);
+
+        // ãƒ­ã‚°ï¼ˆé †ä½ç¢ºèªç”¨ï¼‰
+        Debug.Log(name + " ã®ç¾åœ¨é †ä½: " + rank + "ä½");
+
+        // è¡¨ç¤ºç”¨
+        if (rankText != null)
+        {
+            rankText.text = RankToString(rank);
+        }
+
+        // ã‚´ãƒ¼ãƒ«åˆ¤å®š
         if (lap == needLap)
         {
             goal = true;
-            //‚±‚±‚ÉƒV[ƒ“Ø‚è‘Ö‚¦‚ğ“ü‚ê‚é
-            //Debug.Log("ƒS[ƒ‹‚µ‚½");
+            RaceManager.Instance.FinishRacer(this);
+        }
+
+
+    }
+
+    string RankToString(int rank)
+    {
+        switch (rank)
+        {
+            case 1: return "1";
+            case 2: return "2";
+            case 3: return "3";
+            case 4: return "4";
+            case 5: return "5";
+            default: return rank + "ä½";
         }
     }
+
     void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("Checkpoint1"))
@@ -47,7 +82,7 @@ public class GoalScript: MonoBehaviour
                 checkPointUI[0].SetActive(false);
                 checkPointUI[1].SetActive(true);
             }
-            Debug.Log("ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒg1‚ÉG‚ê‚½");
+            Debug.Log("ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆ1ã«è§¦ã‚ŒãŸ");
         }
 
         if (collision.gameObject.CompareTag("Checkpoint2") && checkpoint[0] == true)
@@ -58,7 +93,7 @@ public class GoalScript: MonoBehaviour
                 checkPointUI[1].SetActive(false);
                 checkPointUI[2].SetActive(true);
             }
-            Debug.Log("ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒg2‚ÉG‚ê‚½");
+            Debug.Log("ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆ2ã«è§¦ã‚ŒãŸ");
         }
 
         if (collision.gameObject.CompareTag("Checkpoint3") && checkpoint[0] && checkpoint[1])
@@ -68,19 +103,35 @@ public class GoalScript: MonoBehaviour
             {
                 checkPointUI[2].SetActive(false);
             }
-            Debug.Log("ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒg3‚ÉG‚ê‚½");
+            Debug.Log("ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆ3ã«è§¦ã‚ŒãŸ");
         }
 
         if (collision.gameObject.CompareTag("Goal") && checkpoint[0] && checkpoint[1] && checkpoint[2])
         {
             checkpoint[0] = checkpoint[1] = checkpoint[2] = false;
             lap += 1;
-            Debug.Log("ƒS[ƒ‹");
+            Debug.Log("ã‚´ãƒ¼ãƒ«");
         }
     }
 
     public bool IsGoal()
     {
         return goal;
+    }
+
+    public int GetProgress()
+    {
+        int progress = lap * 1000;
+
+        for (int i = 0; i < checkpoint.Length; i++)
+        {
+            if (checkpoint[i]) progress += 100;
+            else break;
+        }
+
+        // ã‚ˆã‚Šç²¾å¯†ã«é€²æ—ã‚’ã¤ã‘ã‚‹ï¼ˆå‰é€²è·é›¢ãªã©ã‚’åŠ å‘³ï¼‰
+        progress += (int)transform.position.z;
+
+        return progress;
     }
 }

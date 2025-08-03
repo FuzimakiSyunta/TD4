@@ -42,7 +42,8 @@ public class PlayerOperation : MonoBehaviour
 
     public float blinkDuration = 4f;     // 点滅する総時間
     public float blinkInterval = 0.5f;   // 点滅の間隔
-   // public Renderer playerRenderer;      // プレイヤーの見た目
+                                         // public Renderer playerRenderer;      // プレイヤーの見た目
+   private bool playeraccel = false;
 
 
 
@@ -118,7 +119,7 @@ public class PlayerOperation : MonoBehaviour
         if (!goalScript.IsGoal())
         {
             // 移動入力（W/S）
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.W) && playeraccel == false)
                 playerSpeed += acceleration * Time.deltaTime;
             else if (Input.GetKey(KeyCode.S))
                 playerSpeed -= acceleration * Time.deltaTime;
@@ -180,11 +181,31 @@ public class PlayerOperation : MonoBehaviour
             //点滅処理
             StartCoroutine(BlinkCoroutine());
         }
+
+       
+
     }
 
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
 
-    //点滅処理
-    IEnumerator BlinkCoroutine()
+            playeraccel = true;
+            playerSpeed = 0;
+            Debug.Log("atari");
+
+
+        }
+        else
+        {
+           playeraccel = false;
+        }
+
+    }
+
+        //点滅処理
+        IEnumerator BlinkCoroutine()
     {
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
         int blinkCount = 10;
