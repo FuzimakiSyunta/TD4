@@ -13,6 +13,7 @@ public class WallScript : MonoBehaviour
     void Start()
     {
         jckPlayerOperation1 = GetComponent<JCKPlayerOperation1>();
+        jcScript = GameObject.Find("JCScriptObj").GetComponent<JCScript>();
     }
 
     // Update is called once per frame
