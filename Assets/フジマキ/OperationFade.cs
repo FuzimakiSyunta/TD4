@@ -23,13 +23,13 @@ public class OperationFade : MonoBehaviour
     void OnUI()
     {
        
-        if (Input.GetKeyDown(KeyCode.Q)/*||JCScript.Instance.RightYButton*/)
+        if (Input.GetKeyDown(KeyCode.Y) || JCScript.Instance.RightYButton)
         {
             // èàóùì‡óe
             isoperation = true;
             operationUI.SetActive(true);
         }
-        else if(Input.GetKeyDown(KeyCode.B)/*|| JCScript.Instance.RightBButton*/)
+        else if(Input.GetKeyDown(KeyCode.B) || JCScript.Instance.RightBButton)
         {
             isoperation = false;
             operationUI.SetActive(false);

@@ -32,6 +32,9 @@ public class SceneSwitcher : MonoBehaviour
 
     public GameObject selectBand;
 
+    private bool wasRightAButtonPressed = false;
+    private bool hasStartedLoading = false;
+
     void Start()
     {
         if (ImageSelector != null)
@@ -58,47 +61,56 @@ public class SceneSwitcher : MonoBehaviour
         if (ImageSelectorScript == null) return;
 
         float index = ImageSelectorScript.Imageindex();
-   
+
+        //Joy-ConのAボタンの現在の状態を取得
+        bool isRightAButtonPressed = (JCScript.Instance != null) ? JCScript.Instance.RightAButton : false;
 
         // 0番目のImageが選択されている場合のみ処理を行う
         //ゲームスタート
-        if (index == 0 &&!OperationFadeScript.IsOperation()&&Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
+        if (!hasStartedLoading)
         {
-            GameStartFlag = true; // ← ここで設定
-            isSequenceStarted = true;
-            startTime = Time.time;
-
-            for (int i = 0; i < movingObjects.Length; i++)
+            if ((index == 0 && !OperationFadeScript.IsOperation() && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted) || (index == 0 && !OperationFadeScript.IsOperation() && JCScript.Instance.RightAButton && !isSequenceStarted))
             {
-                startTimes[i] = startTime + i * delayBetweenStarts;
-            }
+                GameStartFlag = true; // ← ここで設定
+                isSequenceStarted = true;
+                startTime = Time.time;
 
-            if (fadeImage != null)
-            {
-                fadeImage.gameObject.SetActive(true);
+                for (int i = 0; i < movingObjects.Length; i++)
+                {
+                    startTimes[i] = startTime + i * delayBetweenStarts;
+                }
+
+                if (fadeImage != null)
+                {
+                    fadeImage.gameObject.SetActive(true);
+                }
             }
         }
 
         // 1番目のImageが選択されている場合のみ処理を行う
         //ゲームスタート
-        if (index == 1 && !OperationFadeScript.IsOperation() && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
+        if (!hasStartedLoading)
         {
-
-            ColorChengeFlag = true; // ← ここで設定
-            isSequenceStarted = true;
-            startTime = Time.time;
-
-            for (int i = 0; i < movingObjects.Length; i++)
+            if ((index == 1 && !OperationFadeScript.IsOperation() && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted) || ((index == 1 && !OperationFadeScript.IsOperation() && JCScript.Instance.RightAButton && !isSequenceStarted)))
             {
-                startTimes[i] = startTime + i * delayBetweenStarts;
-            }
 
-            if (fadeImage != null)
-            {
-                fadeImage.gameObject.SetActive(true);
+                ColorChengeFlag = true; // ← ここで設定
+                isSequenceStarted = true;
+                startTime = Time.time;
+
+                for (int i = 0; i < movingObjects.Length; i++)
+                {
+                    startTimes[i] = startTime + i * delayBetweenStarts;
+                }
+
+                if (fadeImage != null)
+                {
+                    fadeImage.gameObject.SetActive(true);
+                }
+                PlayerPrefs.Save();
             }
-            PlayerPrefs.Save();
         }
+        wasRightAButtonPressed = isRightAButtonPressed;
 
         if (isSequenceStarted)
         {

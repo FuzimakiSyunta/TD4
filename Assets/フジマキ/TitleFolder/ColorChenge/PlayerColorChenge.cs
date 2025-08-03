@@ -155,7 +155,7 @@ public class PlayerColorChenge : MonoBehaviour
     {
         //Joy-Con‚ÌAƒ{ƒ^ƒ“‚ÌŒ»İ‚Ìó‘Ô‚ğæ“¾
         bool currentAButtonState = (JCScript.Instance != null) ? JCScript.Instance.RightAButton : false;
-        if ((!hasPressedEnter && Input.GetKeyDown(KeyCode.Return)) || (!hasPressedEnter && JCScript.Instance.RightAButton))
+        if ((!hasPressedEnter && Input.GetKeyDown(KeyCode.Return))||( !hasPressedEnter && JCScript.Instance.RightAButton))
         {
             hasPressedEnter = true;
             isSelected = true;

@@ -19,6 +19,11 @@ public class SceneLoader : MonoBehaviour
     private float fadeAlpha = 0f;
     private bool isFading = false;
 
+    //joy-conのAボタンが前に押されていたか記録するフラグ
+    private bool AButtonFlag = false;
+
+    private bool hasStartedLoading = false;
+
     void Start()
     {
         // PlayerColorChengeスクリプトの参照を取得
@@ -37,12 +42,19 @@ public class SceneLoader : MonoBehaviour
 
     void Update()
     {
+        //Joy-conが押された瞬間判定
+        bool AButtonState = JCScript.Instance.RightAButton;
+
         // Enterが押されたらフェード開始（押した瞬間1回のみ）
-        if (playerColorChengeScript.IsSelected() &&
-            Input.GetKeyDown(KeyCode.Return) && !isFading)
+        if (!hasStartedLoading)
         {
-            StartFadeAndLoad();
+            if ((Input.GetKeyDown(KeyCode.Return) && playerColorChengeScript.IsSelected() && !isFading) ||
+                (AButtonState && !AButtonFlag && playerColorChengeScript.IsSelected()))
+            {
+                StartFadeAndLoad();
+            }
         }
+        AButtonFlag = AButtonState;
 
         // フェード処理中
         if (isFading && fadeImage != null)
