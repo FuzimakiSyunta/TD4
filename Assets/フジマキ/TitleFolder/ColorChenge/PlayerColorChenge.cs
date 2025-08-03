@@ -24,6 +24,11 @@ public class PlayerColorChenge : MonoBehaviour
 
     public GameObject playerIcon;
 
+    //Joy-Conの左右Aボタンが前に押されていたかを記録するフラグ
+    private bool wasDPadLeftPressed = false;
+    private bool wasDPadRightPressed = false;
+    private bool wasAButtonPressed = false;
+
     // キーが押されたかどうかのフラグ
     private bool hasPressedEnter = false;
     void Start()
@@ -42,8 +47,12 @@ public class PlayerColorChenge : MonoBehaviour
     {
         if (!IsSceneAllowed() || IsSelected()) return; // ← 現在のシーンが対象外なら入力を無視
 
+        //Joy-Conの現在の十字キーの状態を取得
+        bool currentDPadLeft = (JCScript.Instance != null) ? JCScript.Instance.LeftDPadLeft : false;
+        bool currentDPadRight = (JCScript.Instance != null) ? JCScript.Instance.LeftDPadRight : false;
+
         // →キーが押された瞬間
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow) || (currentDPadRight && !wasDPadRightPressed))
         {
             SwitchToNextMaterial();
             redArrow_Right.SetActive(true);
@@ -51,12 +60,14 @@ public class PlayerColorChenge : MonoBehaviour
         }
 
         // ←キーが押された瞬間
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || (currentDPadLeft && !wasDPadLeftPressed))
         {
             SwitchToBackMaterial();
             redArrow_Left.SetActive(true);
             redArrow_Right.SetActive(false);
         }
+        wasDPadLeftPressed = currentDPadLeft;
+        wasDPadRightPressed = currentDPadRight;
 
         // →キーを離した瞬間
         if (Input.GetKeyUp(KeyCode.RightArrow))
@@ -142,11 +153,14 @@ public class PlayerColorChenge : MonoBehaviour
     // ↓これで選択後はもう1回押されるまで反応しない
     void Selected()
     {
-        if (!hasPressedEnter && Input.GetKeyDown(KeyCode.Return))
+        //Joy-ConのAボタンの現在の状態を取得
+        bool currentAButtonState = (JCScript.Instance != null) ? JCScript.Instance.RightAButton : false;
+        if ((!hasPressedEnter && Input.GetKeyDown(KeyCode.Return))||( !hasPressedEnter && JCScript.Instance.RightAButton))
         {
             hasPressedEnter = true;
             isSelected = true;
         }
+        wasAButtonPressed = currentAButtonState;
     }
 
 

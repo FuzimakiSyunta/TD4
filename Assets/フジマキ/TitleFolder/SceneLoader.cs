@@ -42,7 +42,6 @@ public class SceneLoader : MonoBehaviour
     {
         //Joy-conが押された瞬間判定
         bool AButtonState = JCScript.Instance.RightAButton;
-        AButtonFlag = AButtonState;
 
         // Enterが押されたらフェード開始（押した瞬間1回のみ）
         if ((playerColorChengeScript.IsSelected() &&
@@ -50,6 +49,7 @@ public class SceneLoader : MonoBehaviour
         {
             StartFadeAndLoad();
         }
+        AButtonFlag = AButtonState;
 
         // フェード処理中
         if (isFading && fadeImage != null)

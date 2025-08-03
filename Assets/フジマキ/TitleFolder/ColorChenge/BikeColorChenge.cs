@@ -23,6 +23,11 @@ public class BikeMaterialSwitcher : MonoBehaviour
 
     public GameObject bikeIcon; // バイクアイコンの参照
 
+    //Joy-Conの左右Aボタンが前に押されていたかを記録するフラグ
+    private bool wasDPadLeftPressed = false;
+    private bool wasDPadRightPressed = false;
+    private bool wasAButtonPressed = false;
+
     void Start()
     {
         if (targetRenderer == null)
@@ -45,8 +50,12 @@ public class BikeMaterialSwitcher : MonoBehaviour
     {
         if (!IsSceneAllowed() || !playerColorChengeScript.IsSelected()) return;
 
+        //Joy-Conの現在の十字キーの状態を取得
+        bool currentDPadLeft = (JCScript.Instance != null) ? JCScript.Instance.LeftDPadLeft : false;
+        bool currentDPadRight = (JCScript.Instance != null) ? JCScript.Instance.LeftDPadRight : false;
+
         // →キーを押した瞬間
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || (currentDPadLeft && !wasDPadLeftPressed))
         {
             SwitchToNext();
             redArrow_Right.SetActive(true);
