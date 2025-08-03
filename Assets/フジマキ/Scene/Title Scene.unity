@@ -1845,6 +1845,10 @@ PrefabInstance:
       propertyPath: movingObjects.Array.data[2]
       value: 
       objectReference: {fileID: 2044989353}
+    - target: {fileID: 6601014993555938023, guid: 274aa0c94a01f1148a221ed132713190, type: 3}
+      propertyPath: nextSceneName.Array.data[0]
+      value: Yabe_Course
+      objectReference: {fileID: 0}
     - target: {fileID: 8641628081284853432, guid: 274aa0c94a01f1148a221ed132713190, type: 3}
       propertyPath: images.Array.data[0]
       value: 

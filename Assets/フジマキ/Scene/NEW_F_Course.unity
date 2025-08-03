@@ -6512,7 +6512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f862909d0cfa144865e9705bc6dd6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jckPlayerOperation: {fileID: 499048705}
+  jckPlayerOperation: {fileID: 0}
   inputDir: {x: 0, y: 0, z: 0}
   jcScript: {fileID: 1239288447}
 --- !u!1 &504361025 stripped
