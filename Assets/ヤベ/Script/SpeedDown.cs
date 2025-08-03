@@ -6,11 +6,13 @@ using static UnityEngine.Rendering.HDROutputUtils;
 public class SpeedDown : MonoBehaviour
 {
     [SerializeField]
-    private PlayerOperation playerOperation;
+    private JCKPlayerOperation1 jckPlayerOperation1;
+    public float deceleration;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        deceleration = 1.0f;
     }
 
     // Update is called once per frame
@@ -21,10 +23,18 @@ public class SpeedDown : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        //if (other.tag == "Player")
-        //{
-        //    playerOperation.playerSpeed -= playerOperation.deceleration;
-        //    Debug.Log("ダートに乗った");
-        //}
+        if (other.tag == "PlayerAttack")
+        {
+            jckPlayerOperation1 = other.GetComponent<JCKPlayerOperation1>();
+            if (Input.GetKey(KeyCode.W)||JCScript.Instance.RightZRButton)
+            {
+                jckPlayerOperation1.playerSpeed = Mathf.MoveTowards(jckPlayerOperation1.playerSpeed, deceleration, 30f * Time.deltaTime);
+            }
+            else if(Input.GetKey(KeyCode.S) || JCScript.Instance.LeftZLButton)
+            {
+                jckPlayerOperation1.playerSpeed = Mathf.MoveTowards(jckPlayerOperation1.playerSpeed, -deceleration, 30f * Time.deltaTime);
+            }
+                Debug.Log("ダートに乗った");
+        }
     }
 }
