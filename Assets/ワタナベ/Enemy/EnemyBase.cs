@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-
     // 敵ステータス管理(性格・バイクの性能・体力・運転能力などのステータスを取得する)
     EnemyData enemyData;
 
