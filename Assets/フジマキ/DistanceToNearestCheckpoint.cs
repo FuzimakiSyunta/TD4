@@ -5,14 +5,36 @@ public class DistanceToNearestCheckpoint : MonoBehaviour
 {
     public Transform player;
     public TextMeshProUGUI[] distanceText;
-    public Transform[] checkpoints; // ← 追加：チェックポイントを手動設定
+    public Transform[] checkpoints;
     public float reachThreshold = 0f;
     private int currentIndex = 0;
+    public GoalScript goalScript;
+    public GameObject goal;
+
+    void Start()
+    {
+        if (goal != null)
+        {
+            goalScript = goal.GetComponent<GoalScript>();
+        }
+    }
 
     void Update()
     {
-        if (player == null || distanceText == null || checkpoints == null) return;
+        if (player == null || distanceText == null || checkpoints == null || goalScript == null) return;
 
+        // ゴールしたら距離表示をクリアして停止
+        if (goalScript.IsGoal())
+        {
+            foreach (var text in distanceText)
+            {
+                if (text != null) text.text = "";
+            }
+            enabled = false;
+            return;
+        }
+
+        // 距離を計算して表示
         Vector3 playerXZ = new Vector3(player.position.x, 0, player.position.z);
 
         for (int i = 0; i < checkpoints.Length; i++)
@@ -25,6 +47,7 @@ public class DistanceToNearestCheckpoint : MonoBehaviour
             }
         }
 
+        // 一つのチェックポイントに近づいたら次へ
         if (currentIndex < checkpoints.Length)
         {
             Vector3 targetCheckpointXZ = new Vector3(checkpoints[currentIndex].position.x, 0, checkpoints[currentIndex].position.z);
@@ -32,13 +55,13 @@ public class DistanceToNearestCheckpoint : MonoBehaviour
             if (currentDistance <= reachThreshold)
             {
                 currentIndex++;
-            }
 
-            if (currentIndex >= checkpoints.Length)
-            {
-                enabled = false;
+                // 最後まで行ったら次のラップへ繰り返す（ゴールしない限り）
+                if (currentIndex >= checkpoints.Length)
+                {
+                    currentIndex = 0;
+                }
             }
         }
     }
 }
-
