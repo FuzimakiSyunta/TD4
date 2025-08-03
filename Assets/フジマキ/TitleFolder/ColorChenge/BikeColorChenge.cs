@@ -55,14 +55,14 @@ public class BikeMaterialSwitcher : MonoBehaviour
         bool currentDPadRight = (JCScript.Instance != null) ? JCScript.Instance.LeftDPadRight : false;
 
         // →キーを押した瞬間
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) || (currentDPadLeft && !wasDPadLeftPressed))
+        if (Input.GetKeyDown(KeyCode.RightArrow) || (currentDPadRight && !wasDPadRightPressed))
         {
             SwitchToNext();
             redArrow_Right.SetActive(true);
             redArrow_Left.SetActive(false);
         }
         // ←キーを押した瞬間
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || (currentDPadLeft && !wasDPadLeftPressed))
         {
             SwitchToBack();
             redArrow_Left.SetActive(true);
