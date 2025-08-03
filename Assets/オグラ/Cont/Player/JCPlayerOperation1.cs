@@ -11,25 +11,18 @@ public class JCKPlayerOperation1 : MonoBehaviour
     public FrontWheelRotatorScript frontWheelRotator;
     public RearWheelRotatorScript rearWheelRotator;
 
-    // プレイヤーの現在速度
     public float playerSpeed = 0f;
-    //加速
     public float acceleration = 35f;
-    //減速
     public float deceleration = 50f;
-    //最大速度
     public float maxSpeed = 600f;
-    //ブレーキ時の原則
     public float brakePower = 300f;
 
     float turnSpeed = 100f;
     float rotationY = 0f;
 
-
     [SerializeField]
     GoalScript goalScript;
     JumpScript jumpScript;
-
 
     bool wasGrounded = true;
 
@@ -37,56 +30,44 @@ public class JCKPlayerOperation1 : MonoBehaviour
     private float accelerationDuration = 0.2f;
     private bool isAccelerating = false;
 
-    //加速か判定
-    public bool IsAccelerating
-    {
-        get { return isAccelerating; }
-    }
-
+    public bool IsAccelerating => isAccelerating;
 
     void Start()
     {
-        goalScript = GameObject.Find("Player").GetComponent<GoalScript>();
-        jumpScript = GameObject.Find("Player").GetComponent<JumpScript>();
+        goalScript = GameObject.Find("Player")?.GetComponent<GoalScript>();
+        jumpScript = GameObject.Find("Player")?.GetComponent<JumpScript>();
+
+        if (goalScript == null) Debug.LogError("goalScriptがnullです。PlayerにGoalScriptがついているか確認してください。");
+        if (jumpScript == null) Debug.LogError("jumpScriptがnullです。PlayerにJumpScriptがついているか確認してください。");
 
         if (gameManager != null)
             gameManagerScript = gameManager.GetComponent<GameManager>();
         else
             Debug.LogError("GameManagerが設定されていません。");
-
-
     }
 
     void Update()
     {
-        // 現在のプレイヤーの位置を取得
         Vector3 pos = transform.position;
         pos.x = Mathf.Clamp(pos.x, -4000f, 530f);
         pos.z = Mathf.Clamp(pos.z, -17090f, 19585f);
         transform.position = pos;
 
-
-        //if (gameManagerScript.IsGameStarted() && !goalScript.IsGoal())
-        //{
-        // プレイヤーの入力処理
         HandleInput();
-        // ホイールの回転アニメーション処理（走行演出）
         HandleWheelAnimation();
-        // }
         UpdateAcceleration();
-        // if (stunt2.IsSmallPoseAnimating() == true && )
     }
 
     void HandleInput()
     {
+        if (goalScript == null || jumpScript == null) return;
+
         float turnY = 0f;
         if (Mathf.Abs(playerSpeed) > 0.1f)
         {
-            // キーボード入力
             if (Input.GetKey(KeyCode.A)) turnY = -1f;
             else if (Input.GetKey(KeyCode.D)) turnY = 1f;
 
-            //Joy-Conの左スティック入力
             if (JCScript.Instance != null && JCScript.Instance.LeftStick.x != 0)
             {
                 turnY = JCScript.Instance.LeftStick.x;
@@ -94,10 +75,9 @@ public class JCKPlayerOperation1 : MonoBehaviour
         }
         rotationY += turnY * turnSpeed * Time.deltaTime;
 
-        //X/Y軸を含んだ回転を作成
         Quaternion baseRotation = Quaternion.Euler(jumpScript.rotationX, rotationY, 0f);
 
-        // 地面の法線を取得（Terrain前提）
+        // 地形法線の取得（Terrainがnullになるビルド対策あり）
         Terrain terrain = Terrain.activeTerrain;
         Vector3 groundNormal = Vector3.up;
         if (terrain != null)
@@ -106,24 +86,24 @@ public class JCKPlayerOperation1 : MonoBehaviour
             float normZ = transform.position.z / terrain.terrainData.size.z;
             groundNormal = terrain.terrainData.GetInterpolatedNormal(normX, normZ);
         }
+        else
+        {
+            Debug.LogWarning("ビルド時に Terrain.activeTerrain が null です");
+        }
 
-        // 上下の傾きを含んだ forward 方向
         Vector3 forward = baseRotation * Vector3.forward;
-
-        // 地形の傾斜に沿って補正（上下移動を許すなら ProjectOnPlane は使わない）
         Vector3 moveDir = forward.normalized;
 
-        // 回転反映（地形に合わせる）
-        Quaternion slopeRotation = Quaternion.LookRotation(forward, groundNormal);
-        transform.rotation = slopeRotation;
+        // 通常通り回転を上書き（変化なし）
+        transform.rotation = Quaternion.LookRotation(forward, groundNormal);
+        // もし回転のブレが気になるなら以下に差し替えてもOK（挙動は変わらずスムーズになる）
+        // transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(forward, groundNormal), 10f * Time.deltaTime);
 
         if (!goalScript.IsGoal())
         {
-            //移動入力（W/S,Joy-Con ZR/ZL）
             bool forwardInput = Input.GetKey(KeyCode.W);
             bool backwardInput = Input.GetKey(KeyCode.S);
 
-            //Joy-Conの入力を追加
             if (JCScript.Instance != null)
             {
                 forwardInput = forwardInput || JCScript.Instance.RightZRButton;
@@ -145,11 +125,8 @@ public class JCKPlayerOperation1 : MonoBehaviour
         }
 
         playerSpeed = Mathf.Clamp(playerSpeed, -maxSpeed * 0.5f, maxSpeed);
-
-        // 移動反映
         transform.position += moveDir * playerSpeed * Time.deltaTime;
     }
-
 
     void HandleWheelAnimation()
     {
@@ -164,26 +141,25 @@ public class JCKPlayerOperation1 : MonoBehaviour
     {
         return playerSpeed;
     }
+
     public void Acceleration()
     {
         maxSpeed = 5f;
         playerSpeed = maxSpeed;
-        // 一定時間たったら戻す（実際の処理は外で管理）
         accelerationTimer = accelerationDuration;
         isAccelerating = true;
     }
 
     void UpdateAcceleration()
     {
-        if (isAccelerating == true)
+        if (isAccelerating)
         {
             accelerationTimer -= Time.deltaTime;
             if (accelerationTimer <= 0f)
             {
-                maxSpeed = 3f; // 元に戻す値
+                maxSpeed = 3f;
                 isAccelerating = false;
             }
         }
     }
-
 }

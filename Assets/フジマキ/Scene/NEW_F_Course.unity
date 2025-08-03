@@ -6491,7 +6491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1492532320}
-  modelTransform: {fileID: 499048689}
+  modelTransform: {fileID: 1641144193}
   frontWheelRotator: {fileID: 1294559709}
   rearWheelRotator: {fileID: 1441192525}
   playerSpeed: 0
@@ -8886,6 +8886,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2377376760783321371, guid: 766a19a2e98e1a14b86eb9c8c9a9750f, type: 3}
+    - target: {fileID: 4033123267188206814, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 202230310}
     - target: {fileID: 4593279012183522848, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
       propertyPath: m_LocalScale.z
       value: 1.7
@@ -16924,6 +16928,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1105054281}
   m_SourcePrefab: {fileID: 100100000, guid: de75c6a7d27beb64b96b3ef565c266c4, type: 3}
+--- !u!4 &1641144193 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5325838301879257040, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+  m_PrefabInstance: {fileID: 1883570282}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1644744185 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: de75c6a7d27beb64b96b3ef565c266c4, type: 3}
@@ -18815,7 +18824,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5433320611376603201, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5433320611376603201, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       propertyPath: goalScript
@@ -18828,7 +18837,7 @@ PrefabInstance:
     - target: {fileID: 5433320611376603201, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       propertyPath: modelTransform
       value: 
-      objectReference: {fileID: 499048689}
+      objectReference: {fileID: 1641144193}
     - target: {fileID: 6376642306434644482, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       propertyPath: needLap
       value: 1
@@ -18853,6 +18862,10 @@ PrefabInstance:
       propertyPath: parfectObject
       value: 
       objectReference: {fileID: 1301862423}
+    - target: {fileID: 6691399809177825705, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      propertyPath: m_Constraints
+      value: 122
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
