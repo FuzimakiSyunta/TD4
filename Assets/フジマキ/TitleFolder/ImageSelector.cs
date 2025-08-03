@@ -9,6 +9,10 @@ public class ImageSelector : MonoBehaviour
 
     public int currentIndex = 0;
 
+    //Joy-Conの左右ボタンが前に押されていたかを記録するフラグ
+    private bool wasDPadLeftPressed = false;
+    private bool wasDPadRightPressed = false;
+
     void Start()
     {
         UpdateHighlight();
@@ -16,16 +20,22 @@ public class ImageSelector : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        //Joy-Conの現在の十字キーの状態を取得
+        bool currentDPadLeft = (JCScript.Instance != null) ? JCScript.Instance.LeftDPadLeft : false;
+        bool currentDPadRight = (JCScript.Instance != null) ? JCScript.Instance.LeftDPadRight : false;
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || (currentDPadLeft && !wasDPadLeftPressed))
         {
             currentIndex = (currentIndex + 1) % images.Length;
             UpdateHighlight();
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || (currentDPadRight && !wasDPadRightPressed))
         {
             currentIndex = (currentIndex - 1 + images.Length) % images.Length;
             UpdateHighlight();
         }
+        wasDPadLeftPressed = currentDPadLeft;
+        wasDPadRightPressed = currentDPadRight;
     }
 
     void UpdateHighlight()

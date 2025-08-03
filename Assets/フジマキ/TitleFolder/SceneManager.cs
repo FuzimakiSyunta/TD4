@@ -62,7 +62,7 @@ public class SceneSwitcher : MonoBehaviour
 
         // 0番目のImageが選択されている場合のみ処理を行う
         //ゲームスタート
-        if (index == 0 &&!OperationFadeScript.IsOperation()&&Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
+        if ((index == 0 &&!OperationFadeScript.IsOperation()&&Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)|| JCScript.Instance.RightAButton)
         {
             GameStartFlag = true; // ← ここで設定
             isSequenceStarted = true;
@@ -81,7 +81,7 @@ public class SceneSwitcher : MonoBehaviour
 
         // 1番目のImageが選択されている場合のみ処理を行う
         //ゲームスタート
-        if (index == 1 && !OperationFadeScript.IsOperation() && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)
+        if ((index == 1 && !OperationFadeScript.IsOperation() && Input.GetKeyDown(KeyCode.Return) && !isSequenceStarted)|| JCScript.Instance.RightAButton)
         {
 
             ColorChengeFlag = true; // ← ここで設定
