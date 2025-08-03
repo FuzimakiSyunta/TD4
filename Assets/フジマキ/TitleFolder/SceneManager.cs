@@ -32,6 +32,8 @@ public class SceneSwitcher : MonoBehaviour
 
     public GameObject selectBand;
 
+    private bool wasRightAButtonPressed = false;
+
     void Start()
     {
         if (ImageSelector != null)
@@ -58,7 +60,9 @@ public class SceneSwitcher : MonoBehaviour
         if (ImageSelectorScript == null) return;
 
         float index = ImageSelectorScript.Imageindex();
-   
+
+        //Joy-ConのAボタンの現在の状態を取得
+        bool isRightAButtonPressed = (JCScript.Instance != null) ? JCScript.Instance.RightAButton : false;
 
         // 0番目のImageが選択されている場合のみ処理を行う
         //ゲームスタート
@@ -99,6 +103,7 @@ public class SceneSwitcher : MonoBehaviour
             }
             PlayerPrefs.Save();
         }
+        wasRightAButtonPressed = isRightAButtonPressed;
 
         if (isSequenceStarted)
         {
