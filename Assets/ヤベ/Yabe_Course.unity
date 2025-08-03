@@ -1544,6 +1544,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecb2ec119cea8c247af7598924bc1cfd, type: 3}
+--- !u!4 &119631261 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8832944420647422612, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
+  m_PrefabInstance: {fileID: 2848677039254727571}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &120618747 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2387773493656123375, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
@@ -8691,6 +8696,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3282913, y: 1.4596949, z: 0.000000087004594}
   m_Center: {x: 0.65414566, y: -0.71984744, z: -0.000000038793516}
+--- !u!1 &470675369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 470675370}
+  - component: {fileID: 470675371}
+  m_Layer: 0
+  m_Name: StageCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &470675370
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470675369}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.66, y: 1.5, z: 7.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 119631261}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &470675371
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470675369}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 20, y: 10, z: 41}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &483708472 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ee8c436a418ad2c4caa7e14a1b8c4465, type: 3}
@@ -37224,7 +37282,10 @@ PrefabInstance:
       objectReference: {fileID: -6674707590277094044, guid: 4be614a5d99077944afb064eb51a7cc3, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8832944420647422612, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 470675370}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1206034987814415756, guid: d9b226fb5606d4a45b2b2fae0d7f1c32, type: 3}
       insertIndex: -1
