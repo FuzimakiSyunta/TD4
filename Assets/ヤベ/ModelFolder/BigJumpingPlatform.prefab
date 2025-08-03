@@ -433,14 +433,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4870576897004564358, guid: 7f510117c28e248498168b3b08440fd2, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 3943661617375395351, guid: 9ca5ff7820dd9564f9a950f007f97771, type: 3}
     - target: {fileID: -1989191637576807209, guid: 7f510117c28e248498168b3b08440fd2, type: 3}
       propertyPath: m_TagString
       value: Savable
       objectReference: {fileID: 0}
     - target: {fileID: -156725795573372730, guid: 7f510117c28e248498168b3b08440fd2, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -156725795573372730, guid: 7f510117c28e248498168b3b08440fd2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: -876546973899608171, guid: e64c1d2a637c35242b9e3f9495c9bb87, type: 3}
+      objectReference: {fileID: -9130586711530211351, guid: 9ca5ff7820dd9564f9a950f007f97771, type: 3}
+    - target: {fileID: -156725795573372730, guid: 7f510117c28e248498168b3b08440fd2, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2377376760783321371, guid: 9ca5ff7820dd9564f9a950f007f97771, type: 3}
+    - target: {fileID: -156725795573372730, guid: 7f510117c28e248498168b3b08440fd2, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: -8657442495611329697, guid: 9ca5ff7820dd9564f9a950f007f97771, type: 3}
     - target: {fileID: 919132149155446097, guid: 7f510117c28e248498168b3b08440fd2, type: 3}
       propertyPath: m_Name
       value: BigJumpingPlatform
@@ -516,7 +532,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 3943661617375395351, guid: 7f510117c28e248498168b3b08440fd2, type: 3}
+  m_Mesh: {fileID: 3943661617375395351, guid: 9ca5ff7820dd9564f9a950f007f97771, type: 3}
 --- !u!4 &7937233587633601570 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7f510117c28e248498168b3b08440fd2, type: 3}
