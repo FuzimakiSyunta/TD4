@@ -521,7 +521,7 @@ MonoBehaviour:
   maxSpeed: 1
   brakePower: 200
   turnSpeed: 360
-  goalScript: {fileID: 0}
+  goalScript: {fileID: 2177047764359150170}
   jumpScript: {fileID: 6030314271079412270}
   moveVec: {x: 0, y: 0, z: 0}
 --- !u!114 &-5939816202886489511
@@ -549,8 +549,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79450bca690da804fa0b91273e19ed73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  needLap: 1
   checkPointUI: []
-  rankText: {fileID: 0}
+  rankText: {fileID: 9095910958993736817, guid: 21ac09cfa77e1394f944cea60831a590, type: 3}
 --- !u!23 &5772410527799040526 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: 75348a68a0a4f1b4cbf529fd2274be04, type: 3}
