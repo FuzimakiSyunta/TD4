@@ -5,14 +5,14 @@ using UnityEngine;
 public class WallScript : MonoBehaviour
 {
     [SerializeField]
-    private JCKPlayerOperation1 jckPlayerOperation1;
+    private JCKPlayerOperation jckPlayerOperation;
     public Vector3 inputDir;
     [SerializeField]
     private JCScript jcScript;
     // Start is called before the first frame update
     void Start()
     {
-        jckPlayerOperation1 = GetComponent<JCKPlayerOperation1>();
+        jckPlayerOperation = GetComponent<JCKPlayerOperation>();
         jcScript = GameObject.Find("JCScriptObj").GetComponent<JCScript>();
     }
 
@@ -47,7 +47,7 @@ public class WallScript : MonoBehaviour
             if (dot > 0.01f)
             {
                 // ‰Ÿ‚µ•t‚¯‚Ä‚¢‚é•ûŒü ¨ ’â~
-                jckPlayerOperation1.playerSpeed = 0;
+                jckPlayerOperation.playerSpeed = 0;
                 Debug.Log("‰Ÿ‚µ•t‚¯‚Ä‚¢‚é•ûŒü ¨ ’â~");
             }
             else

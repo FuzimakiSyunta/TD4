@@ -9099,7 +9099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f862909d0cfa144865e9705bc6dd6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jckPlayerOperation1: {fileID: 0}
+  jckPlayerOperation: {fileID: 0}
   inputDir: {x: 0, y: 0, z: 0}
   jcScript: {fileID: 1239288447}
 --- !u!114 &499048706
@@ -9109,7 +9109,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 221083506}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e6a5bade19a09c48bc8562baabecc12, type: 3}
   m_Name: 
@@ -9118,6 +9118,28 @@ MonoBehaviour:
   modelTransform: {fileID: 0}
   frontWheelRotator: {fileID: 1784603189}
   rearWheelRotator: {fileID: 120618747}
+  playerSpeed: 0
+  acceleration: 1
+  deceleration: 2
+  maxSpeed: 3
+  brakePower: 160
+  goalScript: {fileID: 0}
+--- !u!114 &499048714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221083506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ccff662bca3264ca000e93e310703d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 201825089}
+  modelTransform: {fileID: 0}
+  frontWheelRotator: {fileID: 0}
+  rearWheelRotator: {fileID: 0}
   playerSpeed: 0
   acceleration: 1
   deceleration: 2
@@ -33182,6 +33204,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5391592886117837874, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
       insertIndex: -1
       addedObject: {fileID: 499048706}
+    - targetCorrespondingSourceObject: {fileID: 5391592886117837874, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 499048714}
   m_SourcePrefab: {fileID: 100100000, guid: eee286f34a7ae3b44b61a7389535d683, type: 3}
 --- !u!1001 &1884578144
 PrefabInstance:
