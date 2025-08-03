@@ -68,7 +68,8 @@ public class BikeMaterialSwitcher : MonoBehaviour
             redArrow_Left.SetActive(true);
             redArrow_Right.SetActive(false);
         }
-
+        wasDPadLeftPressed = currentDPadLeft;
+        wasDPadRightPressed = currentDPadRight;
         // Å®ÉLÅ[Çó£ÇµÇΩèuä‘
         if (Input.GetKeyUp(KeyCode.RightArrow))
         {
