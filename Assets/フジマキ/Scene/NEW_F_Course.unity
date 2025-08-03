@@ -18179,6 +18179,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: GoalCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 3812133706355500184, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
+      propertyPath: m_text
+      value: B
+      objectReference: {fileID: 0}
+    - target: {fileID: 3812133706355500184, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.08614121
+      objectReference: {fileID: 0}
+    - target: {fileID: 3812133706355500184, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3812133706355500184, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278195967
+      objectReference: {fileID: 0}
     - target: {fileID: 6521594928720312571, guid: 6a9e001b2c8bc804a852172e60c87862, type: 3}
       propertyPath: m_FontData.m_Font
       value: 
