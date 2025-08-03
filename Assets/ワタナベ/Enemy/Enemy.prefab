@@ -518,7 +518,7 @@ MonoBehaviour:
   rearWheelRotator: {fileID: 2387773493656123375}
   acceleration: 1
   deceleration: 2
-  maxSpeed: 1
+  maxSpeed: 3
   brakePower: 200
   turnSpeed: 360
   goalScript: {fileID: 2177047764359150170}

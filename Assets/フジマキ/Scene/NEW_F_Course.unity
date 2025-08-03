@@ -6491,7 +6491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1492532320}
-  modelTransform: {fileID: 0}
+  modelTransform: {fileID: 499048689}
   frontWheelRotator: {fileID: 1294559709}
   rearWheelRotator: {fileID: 1441192525}
   playerSpeed: 0
