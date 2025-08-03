@@ -32,7 +32,9 @@ public class SceneSwitcher : MonoBehaviour
 
     public GameObject selectBand;
 
-    private bool wasRightAButtonPressed = false;
+    //joy-conのAボタンが前に押されていたか記録するフラグ
+    private bool AButtonFlag = false;
+
     private bool hasStartedLoading = false;
 
     void Start()
@@ -62,8 +64,7 @@ public class SceneSwitcher : MonoBehaviour
 
         float index = ImageSelectorScript.Imageindex();
 
-        //Joy-ConのAボタンの現在の状態を取得
-        bool isRightAButtonPressed = (JCScript.Instance != null) ? JCScript.Instance.RightAButton : false;
+        bool AButtonState = JCScript.Instance.RightAButton;
 
         // 0番目のImageが選択されている場合のみ処理を行う
         //ゲームスタート
@@ -110,7 +111,7 @@ public class SceneSwitcher : MonoBehaviour
                 PlayerPrefs.Save();
             }
         }
-        wasRightAButtonPressed = isRightAButtonPressed;
+        AButtonFlag = AButtonState;
 
         if (isSequenceStarted)
         {
@@ -123,11 +124,11 @@ public class SceneSwitcher : MonoBehaviour
                 {
                     MoveObject(movingObjects[i]);
                 }
-                
+
             }
 
             // 全部動き始めた後、一定時間でフェード開始
-            if ( !isFading && Time.time >= startTimes[startTimes.Length - 1] + 1f)
+            if (!isFading && Time.time >= startTimes[startTimes.Length - 1] + 1f)
             {
                 isFading = true;
             }

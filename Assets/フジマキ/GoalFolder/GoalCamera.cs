@@ -16,7 +16,7 @@ public class GoalCamera : MonoBehaviour
     public string nextSceneName;
 
     //Joy-ConのAボタンが前のフレームで押されていたかを記録するフラグ
-    private bool wasAButtonPressed = false;
+    private bool wasBButtonPressed = false;
 
     private void Start()
     {
@@ -53,16 +53,16 @@ public class GoalCamera : MonoBehaviour
 
         wasGoal = isGoal;
 
-        bool currentAButtonState = (JCScript.Instance != null) ? JCScript.Instance.RightAButton : false;
+        bool currentBButtonState = (JCScript.Instance != null) ? JCScript.Instance.RightBButton : false;
 
         if (goalCamera.enabled)
         {
-            if ((Input.GetKeyDown(KeyCode.Space))|| (currentAButtonState && !wasAButtonPressed))
+            if ((Input.GetKeyDown(KeyCode.Space)) || (currentBButtonState && !wasBButtonPressed))
             {
                 // スペースキーが押されたら次のシーンへ遷移
                 UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);
             }
-            wasAButtonPressed = currentAButtonState;
+            wasBButtonPressed = currentBButtonState;
         }
 
     }
