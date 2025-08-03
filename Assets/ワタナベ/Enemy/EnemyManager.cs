@@ -4,25 +4,6 @@ using System.Diagnostics;
 using UnityEngine;
 
 /// <summary>
-/// ScriptableObjectを使用して敵キャラのデータを定義するクラスを作成
-/// </summary>
-[CreateAssetMenu(fileName = "EnemyData")]
-public class EnemyData : ScriptableObject
-{
-    // プレハブ
-    public GameObject prefab;
-    // 初期座標
-    public Vector3 initialPosition;
-    // 敵キャラの体力
-    public int health;
-    // 敵キャラの移動速度
-    public float speed;
-    // 敵キャラの行動タイプ(例:凶暴,規範的,平和主義者,チャレンジャー 等)
-    public string behaviorType;
-}
-
-
-/// <summary>
 /// 敵キャラ管理クラス
 /// </summary>
 public class EnemyManager : MonoBehaviour
@@ -41,32 +22,19 @@ public class EnemyManager : MonoBehaviour
     [Header("敵の生成関数を実行する変数(テスト用)")]
     public bool isSpawnEnemy = false;
 
-    // ★★ 追加：Resourcesからロードする用のファイル名
-    private string[] enemyDataNames = { "EnemyData1", "EnemyData2" };
-
     // Start is called before the first frame update
     void Start()
     {
-        // ★★ 追加：Resources フォルダから EnemyData を読み込む
-        enemyDatas = new EnemyData[enemyDataNames.Length];
-        for (int i = 0; i < enemyDataNames.Length; i++)
-        {
-            enemyDatas[i] = Resources.Load<EnemyData>(enemyDataNames[i]);
-            if (enemyDatas[i] == null)
-            {
-                UnityEngine.Debug.LogError($"Resources から {enemyDataNames[i]} の読み込みに失敗しました。");
-            }
-        }
+        // Resourcesフォルダから全てのEnemyDataを自動で読み込む
+        enemyDatas = Resources.LoadAll<EnemyData>("");
 
-        // 同階層にあるEnemyDataを取得
         if (enemyDatas == null || enemyDatas.Length == 0)
         {
-            // EnemyDataが設定されていない場合はエラーメッセージを表示
             UnityEngine.Debug.LogError("敵キャラのデータが設定されていません。EnemyDataを設定してください。");
         }
         else
         {
-            UnityEngine.Debug.Log("敵キャラのデータが設定されました。");
+            UnityEngine.Debug.Log($"敵キャラのデータが{enemyDatas.Length}件設定されました。");
         }
     }
 
